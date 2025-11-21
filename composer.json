@@ -8,6 +8,12 @@
         "framework"
     ],
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Yonathan Castillo",
+            "email": "leothan522@gmail.com"
+        }
+    ],
     "require": {
         "php": "^8.2",
         "laravel-lang/common": "^6.7",
@@ -32,7 +38,10 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/Http/Funciones/Funciones.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
