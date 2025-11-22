@@ -26,6 +26,13 @@ class DatabaseSeeder extends Seeder
             RediSeeder::class,
             EstadoSeeder::class,
             MunicipioSeeder::class,
+            TipoPersonalSeeder::class,
+            CategoriaSeeder::class,
+            TipoObppSeeder::class,
+            TipoPoblacionSeeder::class,
+            AreaSeeder::class,
+            AreaItemSeeder::class,
+            AreaProcesoSeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
         ]);
