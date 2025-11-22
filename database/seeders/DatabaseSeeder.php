@@ -23,6 +23,9 @@ class DatabaseSeeder extends Seeder
         ]);*/
 
         $this->call([
+            RediSeeder::class,
+            EstadoSeeder::class,
+            MunicipioSeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
         ]);
