@@ -1186,7 +1186,7 @@ class GestionHumanaSeeder extends Seeder
                 'ente' => $nomina['ente'],
                 'redis_id' => $this->getRedi($nomina['redi']),
                 'estados_id' => $this->getEstado($nomina['estado']),
-                'municipios_id' => $this->getMunicipio($nomina['municipio']),
+                'municipios_id' => $this->getMunicipio($nomina['municipio'], $this->getEstado($nomina['estado'])),
                 'parroquia' => $nomina['parroquia'],
                 'observacion' => $nomina['observacion'],
                 'fecha' => $nomina['fecha'] ? Carbon::parse($nomina['fecha']) : null
@@ -1218,9 +1218,9 @@ class GestionHumanaSeeder extends Seeder
         return $estado?->id;
     }
 
-    protected function getMunicipio($nomina)
+    protected function getMunicipio($nomina, $estado)
     {
-        $municipio = Municipio::where('nombre', $nomina)->first();
+        $municipio = Municipio::where('nombre', $nomina)->where('estados_id', $estado)->first();
         return $municipio?->id;
     }
 

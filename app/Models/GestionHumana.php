@@ -35,7 +35,7 @@ class GestionHumana extends Model
 
     public function categoria(): BelongsTo
     {
-        return $this->belongsTo(GestionHumana::class, 'categorias_id', 'id');
+        return $this->belongsTo(Categoria::class, 'categorias_id', 'id');
     }
 
     public function redi(): BelongsTo

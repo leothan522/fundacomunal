@@ -73,6 +73,7 @@ class DashboardPanelProvider extends PanelProvider
                     ->url(route('profile.show'))
                     ->extraAttributes(['class' => 'menu-link']),
                 'logout' => fn(Action $action) => $action->extraAttributes(['onclick' => "Alpine.store('loader').show()"])
-            ]);
+            ])
+            ->sidebarFullyCollapsibleOnDesktop();
     }
 }
