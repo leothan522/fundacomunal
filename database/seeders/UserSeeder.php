@@ -42,7 +42,7 @@ class UserSeeder extends Seeder
             if (!$exite && !empty($nomina->email)){
 
                 $user = User::factory()->create([
-                  'name' => $nomina->nombre.' '.$nomina->apellido,
+                  'name' => $this->getPrimerNombreApellido($nomina->nombre).' '.$this->getPrimerNombreApellido($nomina->apellido),
                   'email' => $nomina->email,
                   'password' => Hash::make($nomina->cedula),
                   'phone' => $nomina->telefono,
@@ -74,5 +74,11 @@ class UserSeeder extends Seeder
 
             }
         }
+    }
+
+    protected function getPrimerNombreApellido(string $nombreApellido): string
+    {
+        // strtok devuelve la primera palabra antes de un espacio
+        return strtok($nombreApellido, " ");
     }
 }
