@@ -17,5 +17,15 @@ class RoleSeeder extends Seeder
         Role::create([
             'name' => 'admin',
         ]);
+
+        $areasSustantivas = [
+            "PARTICIPACION",
+            "FORMACION",
+            "FORTALECIMIENTO",
+            'GESTION HUMANA',
+        ];
+        foreach ($areasSustantivas as $area){
+            Role::create(['name' => $area]);
+        }
     }
 }

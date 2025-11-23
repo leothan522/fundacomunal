@@ -16,7 +16,8 @@ class TipoPersonalSeeder extends Seeder
         $tipoPersonal = [
             "ADMINISTRATIVO",
             "OBRERO",
-            "PROMOTORES"
+            "PROMOTORES",
+            "COORDINADOR(A) ESTADAL"
         ];
 
         foreach ($tipoPersonal as $tipo){
