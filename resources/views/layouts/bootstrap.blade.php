@@ -138,7 +138,7 @@
 </head>
 <body style="background-color: #eee;">
 
-<div class="position-relative gradient-form" style="min-height: 100vh;">
+<div class="position-relative gradient-form" style="min-height: 100vh; z-index: 2; /* siempre por encima del footer */">
     <div class="position-absolute top-50 start-50 translate-middle container">
 
 
@@ -180,6 +180,11 @@
 
     </div>
 </div>
+
+<!-- Footer Sticky -->
+<footer class="text-center py-2 bg-light border-top fixed-bottom" style="z-index: 1;">
+    <small class="text-muted">Desarrollado por Ing. Yonathan Castillo</small>
+</footer>
 
 <!-- Preloader -->
 <div id="preloader"></div>
