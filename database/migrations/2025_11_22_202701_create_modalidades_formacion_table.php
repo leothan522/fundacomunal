@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tipos_obpp', function (Blueprint $table) {
+        Schema::create('modalidades_formacion', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->boolean('fortalecimiento')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tipos_obpp');
+        Schema::dropIfExists('modalidades_formacion');
     }
 };

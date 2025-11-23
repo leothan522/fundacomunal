@@ -33,6 +33,11 @@ class DatabaseSeeder extends Seeder
             AreaSeeder::class,
             AreaItemSeeder::class,
             AreaProcesoSeeder::class,
+            TipoEconomicaSeeder::class,
+            EtapaSeeder::class,
+            EstrategiaFormacionSeeder::class,
+            ModalidadFormacionSeeder::class,
+            MedioVerificacionSeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
         ]);

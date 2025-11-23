@@ -25,8 +25,23 @@ class TipoObppSeeder extends Seeder
             "CIRCUITO"
         ];
 
+        $fortalecimiento = [
+            "UNIDAD DE PRODUCCION FAMILIAR",
+            "EMPRESA DE PROPIEDAD SOCIAL DIRECTA COMUNAL",
+            "EMPRESA DE PROPIEDAD SOCIAL INDIRECTA COMUNAL",
+            "EMPRESA DE PRODUCCION SOCIAL MIXTA",
+            "GRUPOS DE INTERCAMBIO SOLIDARIO",
+            "COOPERATIVAS",
+        ];
+
         foreach ($tiposObpp as $tipo){
-            TipoObpp::create(['nombre' => $tipo]);
+            $is_fortalecimiento = in_array($tipo, $fortalecimiento) ? 1 : 0;
+            TipoObpp::create([
+                'nombre' => $tipo,
+                'fortalecimiento' => $is_fortalecimiento
+            ]);
         }
+
+
     }
 }
