@@ -19,4 +19,9 @@ class Redi extends Model
         return $this->hasMany(Estado::class, 'redis_id', 'id');
     }
 
+    public function trabajadores(): HasMany
+    {
+        return $this->hasMany(GestionHumana::class, 'redis_id', 'id');
+    }
+
 }

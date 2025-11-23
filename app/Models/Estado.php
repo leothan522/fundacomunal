@@ -26,4 +26,9 @@ class Estado extends Model
         return $this->hasMany(Municipio::class, 'estados_id', 'id');
     }
 
+    public function trabajadores(): HasMany
+    {
+        return $this->hasMany(GestionHumana::class, 'estados_id', 'id');
+    }
+
 }

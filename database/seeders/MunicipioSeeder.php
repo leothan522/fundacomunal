@@ -56,9 +56,21 @@ class MunicipioSeeder extends Seeder
                 "TOCOPERO","URUMACO","ZAMORA"
             ],
             "GUARICO" => [
-                "CAMAGUAN","CHAGUARAMAS","EL SOCORRO","JUAN GERMAN ROSCIO","LEONARDO INFANTE","LAS MERCEDES",
-                "ORTIZ","SAN JOSE DE GUARIBE","SAN JOSE DE GUAYABAL","SAN JUAN DE LOS MORROS","SANTA MARIA DE IPIRE",
-                "ZARAZA"
+                "CAMAGUAN",
+                "CHAGUARAMAS",
+                "EL SOCORRO",
+                "FRANCISCO DE MIRANDA",
+                "JOSE FELIX RIBAS",
+                "JOSE TADEO MONAGAS",
+                "JUAN GERMAN ROSCIO",
+                "JULIAN MELLADO",
+                "LAS MERCEDES",
+                "LEONARDO INFANTE",
+                "ORTIZ",
+                "PEDRO ZARAZA",
+                "SAN GERONIMO DE GUAYABAL",
+                "SAN JOSE DE GUARIBE",
+                "SANTA MARIA DE IPIRE"
             ],
             "LA GUAIRA" => [
                 "VARGAS"

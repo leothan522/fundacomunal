@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\GestionHumana;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -32,6 +33,46 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('admin1234'),
             ]);
             $admin->assignRole('admin');
+        }
+
+        //Usuarios Para el Personal
+        $gestiosHumana = GestionHumana::all();
+        foreach ($gestiosHumana as $nomina){
+            $exite = User::where('email', $nomina->email)->first();
+            if (!$exite && !empty($nomina->email)){
+
+                $user = User::factory()->create([
+                  'name' => $nomina->nombre.' '.$nomina->apellido,
+                  'email' => $nomina->email,
+                  'password' => Hash::make($nomina->cedula),
+                  'phone' => $nomina->telefono,
+                  'access_panel' => 1,
+                ]);
+
+                if ($nomina->tipoPersonal->nombre == 'PROMOTORES'){
+                    $user->assignRole('PARTICIPACION');
+                }
+
+                if ($nomina->tipoPersonal->nombre == 'COORDINADOR(A) ESTADAL'){
+                    $user->assignRole('admin');
+                }
+
+                //JOSE HERNADEZ - CONTROL Y SEGUIMIENTO
+                if ($nomina->cedula == '12840320'){
+                    $user->assignRole('admin');
+                }
+
+                //ALIDA ARREAZA - RRHH
+                if ($nomina->cedula == '9892363'){
+                    $user->assignRole('GESTION HUMANA');
+                }
+
+                //ZULIMAR RODRIGUEZ - FORMACION
+                if ($nomina->cedula == '18803525'){
+                    $user->assignRole('FORMACION');
+                }
+
+            }
         }
     }
 }
