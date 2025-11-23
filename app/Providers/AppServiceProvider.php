@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use Filament\Support\Facades\FilamentView;
+use Filament\View\PanelsRenderHook;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
@@ -30,5 +33,17 @@ class AppServiceProvider extends ServiceProvider
                 return Route::get('/'.config('app.livewire').'/livewire/livewire.js', $handle);
             });
         }
+
+        //Loader en el Dashboard
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::HEAD_START,
+            fn(): string => Blade::render(view('components.loader-css')->render())
+        );
+
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::BODY_END,
+            fn(): string => Blade::render(view('components.loader-html')->render())
+        );
+
     }
 }

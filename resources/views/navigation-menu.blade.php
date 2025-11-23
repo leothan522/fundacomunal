@@ -5,14 +5,14 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('filament.dashboard.pages.dashboard') }}">
+                    <a href="{{ route('filament.dashboard.pages.dashboard') }}" @click="document.querySelector('#preloader').classList.remove('hidden')">
                         <x-application-mark class="block h-9 w-auto" />
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('filament.dashboard.pages.dashboard') }}" :active="request()->routeIs('home')">
+                    <x-nav-link href="{{ route('filament.dashboard.pages.dashboard') }}" :active="request()->routeIs('home')" @click="document.querySelector('#preloader').classList.remove('hidden')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
@@ -98,7 +98,7 @@
                                 {{ __('Manage Account') }}
                             </div>
 
-                            <x-dropdown-link href="{{ route('profile.show') }}">
+                            <x-dropdown-link href="{{ route('profile.show') }}" @click="document.querySelector('#preloader').classList.remove('hidden')">
                                 {{ __('Profile') }}
                             </x-dropdown-link>
 
@@ -115,7 +115,7 @@
                                 @csrf
 
                                 <x-dropdown-link href="{{ route('logout') }}"
-                                         @click.prevent="$root.submit();">
+                                         @click.prevent="$root.submit();document.querySelector('#preloader').classList.remove('hidden')">
                                     {{ __('Log Out') }}
                                 </x-dropdown-link>
                             </form>

@@ -66,6 +66,8 @@ class DashboardPanelProvider extends PanelProvider
                 'profile' => fn(Action $action) => $action
                     ->label(auth()->user()->name)
                     ->url(route('profile.show'))
+                    ->extraAttributes(['class' => 'menu-link']),
+                'logout' => fn(Action $action) => $action->extraAttributes(['onclick' => "Alpine.store('loader').show()"])
             ]);
     }
 }

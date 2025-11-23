@@ -29,6 +29,45 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/sweetalert2.js'])
 
+        <style>
+
+            /*--------------------------------------------------------------
+            # Preloader
+            --------------------------------------------------------------*/
+            #preloader {
+                position: fixed;
+                inset: 0;
+                z-index: 999999;
+                overflow: hidden;
+                background: #ffffff;
+                transition: all 0.6s ease-out;
+            }
+
+            #preloader:before {
+                content: "";
+                position: fixed;
+                top: calc(50% - 30px);
+                left: calc(50% - 30px);
+                border: 6px solid #ffffff;
+                border-color: #1977cc transparent #1977cc transparent;
+                border-radius: 50%;
+                width: 60px;
+                height: 60px;
+                animation: animate-preloader 1.5s linear infinite;
+            }
+
+            @keyframes animate-preloader {
+                0% {
+                    transform: rotate(0deg);
+                }
+
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+
+        </style>
+
         <!-- Styles -->
         @livewireStyles
     </head>
@@ -53,10 +92,21 @@
             </main>
         </div>
 
+        <!-- Preloader -->
+        <div id="preloader"></div>
+
         @stack('modals')
 
         @livewireScripts
         @include('sweetalert2::index')
+
+        <script>
+            //Script para ejecurar el preloader
+            window.addEventListener('load', function () {
+                document.querySelector('#preloader').classList.add('hidden');
+            });
+        </script>
+
         <script>
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', () => {
