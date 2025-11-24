@@ -4,6 +4,7 @@ namespace App\Filament\Resources\GestionHumanas\Tables;
 
 use App\Models\Categoria;
 use App\Models\GestionHumana;
+use Carbon\Carbon;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
@@ -21,6 +22,10 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use pxlrbt\FilamentExcel\Actions\ExportBulkAction;
+use pxlrbt\FilamentExcel\Columns\Column;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
 
 class GestionHumanasTable
 {
@@ -124,6 +129,24 @@ class GestionHumanasTable
                         ->authorizeIndividualRecords('forceDelete'),
                     RestoreBulkAction::make()
                         ->authorizeIndividualRecords('restore'),
+                ]),
+                ExportBulkAction::make()->exports([
+                    ExcelExport::make()->withColumns([
+                        Column::make('updated_at')->heading('FECHA')->formatStateUsing(fn($state) => Carbon::parse($state)->format('d/m/Y')),
+                        Column::make('redi.nombre')->heading('REDI'),
+                        Column::make('estado.nombre')->heading('ESTADO'),
+                        Column::make('municipio.nombre')->heading('MUNICIPIO'),
+                        Column::make('parroquia')->heading('PARROQUIA'),
+                        Column::make('tipoPersonal.nombre')->heading('LABOR QUE EJERCE'),
+                        Column::make('categoria.nombre')->heading('CATEGORIA'),
+                        Column::make('nombre')->heading('NOMBRE'),
+                        Column::make('apellido')->heading('APELLIDO'),
+                        Column::make('cedula')->heading('CÉDULA'),
+                        Column::make('telefono')->heading('TELÉFONO'),
+                        Column::make('email')->heading('CORREO'),
+                        Column::make('ente')->heading('ÓRGANO O ENTE ADSCRITO'),
+                        Column::make('observacion')->heading('OBSERVACIÓN'),
+                    ])
                 ]),
                 Action::make('actualizar')
                     ->icon(Heroicon::ArrowPath)
