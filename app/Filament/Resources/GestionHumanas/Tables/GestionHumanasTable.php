@@ -13,6 +13,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
 use Filament\Support\Enums\Width;
@@ -22,6 +23,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use pxlrbt\FilamentExcel\Actions\ExportBulkAction;
 use pxlrbt\FilamentExcel\Columns\Column;
@@ -36,20 +38,23 @@ class GestionHumanasTable
                 TextColumn::make('personal')
                     ->default(fn(GestionHumana $record): string => $record->cedula)
                     ->numeric()
-                    ->description(fn(GestionHumana $record): string => $record->nombre . ' ' . $record->apellido)
+                    ->description(fn(GestionHumana $record): string => Str::upper($record->nombre . ' ' . $record->apellido))
                     ->wrap()
                     ->hiddenFrom('md'),
                 TextColumn::make('cedula')
                     ->label('Cédula')
                     ->numeric()
+                    ->searchable()
                     ->sortable()
                     ->visibleFrom('md'),
                 TextColumn::make('nombre')
+                    ->formatStateUsing(fn(string $state): string => Str::upper($state))
                     ->wrap()
                     ->searchable()
                     ->sortable()
                     ->visibleFrom('md'),
                 TextColumn::make('apellido')
+                    ->formatStateUsing(fn(string $state): string => Str::upper($state))
                     ->wrap()
                     ->searchable()
                     ->sortable()->visibleFrom('md'),
@@ -60,6 +65,7 @@ class GestionHumanasTable
                     ->visibleFrom('md'),
                 TextColumn::make('email')
                     ->label(__('Email'))
+                    ->formatStateUsing(fn(string $state): string => Str::lower($state))
                     ->searchable()
                     ->limit(20)
                     ->visibleFrom('md'),
@@ -118,6 +124,10 @@ class GestionHumanasTable
                         ->modalHeading(fn(GestionHumana $record): string => $record->nombre . ' ' . $record->apellido)
                         ->modalWidth(Width::Small)
                     ,
+                    ViewAction::make()
+                    ->extraModalFooterActions(fn(Action $action): array => [
+                        EditAction::make()
+                    ]),
                     EditAction::make(),
                     DeleteAction::make(),
                 ])
@@ -139,18 +149,19 @@ class GestionHumanasTable
                         Column::make('parroquia')->heading('PARROQUIA'),
                         Column::make('tipoPersonal.nombre')->heading('LABOR QUE EJERCE'),
                         Column::make('categoria.nombre')->heading('CATEGORIA'),
-                        Column::make('nombre')->heading('NOMBRE'),
-                        Column::make('apellido')->heading('APELLIDO'),
+                        Column::make('nombre')->heading('NOMBRE')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('apellido')->heading('APELLIDO')->formatStateUsing(fn($state) => Str::upper($state)),
                         Column::make('cedula')->heading('CÉDULA'),
                         Column::make('telefono')->heading('TELÉFONO'),
-                        Column::make('email')->heading('CORREO'),
-                        Column::make('ente')->heading('ÓRGANO O ENTE ADSCRITO'),
-                        Column::make('observacion')->heading('OBSERVACIÓN'),
+                        Column::make('email')->heading('CORREO')->formatStateUsing(fn($state) => Str::lower($state)),
+                        Column::make('ente')->heading('ÓRGANO O ENTE ADSCRITO')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('observacion')->heading('OBSERVACIÓN')->formatStateUsing(fn($state) => Str::upper($state)),
                     ])
                 ]),
                 Action::make('actualizar')
                     ->icon(Heroicon::ArrowPath)
                     ->iconButton(),
-            ]);
+            ])
+            ->recordUrl(null);
     }
 }

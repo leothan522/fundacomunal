@@ -9,7 +9,7 @@
                 :icon="\Filament\Support\Icons\Heroicon::OutlinedMapPin"
                 @click="Alpine.store('loader').show()"
             >
-                <strong>Ubicación Geográfica </strong>
+                <strong>Ubicación Geográfica</strong>
             </x-filament::link>
 
             <p class="fi-filament-info-widget-version">

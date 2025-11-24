@@ -63,7 +63,7 @@ class GestionHumanaForm
                     ])
                     ->compact()
                     ->collapsible(),
-                Section::make('Ubicación Geografica')
+                Section::make('Ubicación Geográfica')
                     ->schema([
                         Select::make('redis_id')
                             ->label('REDI')
