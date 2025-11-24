@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use App\Http\Middleware\AccessPanel;
 use App\Http\Middleware\UserIsActive;
 use Filament\Actions\Action;
+use Filament\Enums\ThemeMode;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -74,6 +75,7 @@ class DashboardPanelProvider extends PanelProvider
                     ->extraAttributes(['class' => 'menu-link']),
                 'logout' => fn(Action $action) => $action->extraAttributes(['onclick' => "Alpine.store('loader').show()"])
             ])
-            ->sidebarFullyCollapsibleOnDesktop();
+            ->sidebarFullyCollapsibleOnDesktop()
+            ->defaultThemeMode(ThemeMode::Dark);
     }
 }

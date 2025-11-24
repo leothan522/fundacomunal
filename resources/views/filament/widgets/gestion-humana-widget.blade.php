@@ -27,7 +27,7 @@
                     target="_blank"--}}
                     @click="Alpine.store('loader').show()"
                 >
-                    {{ \Illuminate\Support\Str::upper($tipo->nombre) }} - {{ cerosIzquierda($tipo->trabajadores->count()) }}
+                    {{ \Illuminate\Support\Str::upper($tipo->nombre) }} - <span style="color: #0d6efd;">{{ cerosIzquierda($tipo->trabajadores->count()) }}</span>
                 </x-filament::link>
             @endforeach
         </div>
