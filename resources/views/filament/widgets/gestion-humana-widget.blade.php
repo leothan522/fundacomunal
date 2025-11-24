@@ -12,7 +12,7 @@
             </x-filament::link>
 
             <p class="fi-filament-info-widget-version">
-                {{ $totalTrabajadores }} Tranajadores
+                {{ $totalTrabajadores }} Trabajadores
             </p>
         </div>
 
@@ -27,7 +27,7 @@
                     target="_blank"--}}
                     @click="Alpine.store('loader').show()"
                 >
-                    {{ \Illuminate\Support\Str::upper($tipo->nombre) }} - <span style="color: #0d6efd;">{{ cerosIzquierda($tipo->trabajadores->count()) }}</span>
+                    {{ \Illuminate\Support\Str::upper($tipo->nombre) }} - {{ cerosIzquierda($tipo->trabajadores->count()) }}
                 </x-filament::link>
             @endforeach
         </div>

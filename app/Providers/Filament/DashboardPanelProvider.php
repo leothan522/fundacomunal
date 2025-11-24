@@ -75,7 +75,6 @@ class DashboardPanelProvider extends PanelProvider
                     ->extraAttributes(['class' => 'menu-link']),
                 'logout' => fn(Action $action) => $action->extraAttributes(['onclick' => "Alpine.store('loader').show()"])
             ])
-            ->sidebarFullyCollapsibleOnDesktop()
-            ->defaultThemeMode(ThemeMode::Dark);
+            ->sidebarFullyCollapsibleOnDesktop();
     }
 }

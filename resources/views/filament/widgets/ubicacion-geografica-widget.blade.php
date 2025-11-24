@@ -13,7 +13,7 @@
             </x-filament::link>
 
             <p class="fi-filament-info-widget-version">
-                {{ $totalTrabajadores }} Tranajadores
+                {{ $totalTrabajadores }} Trabajadores
             </p>
         </div>
 
