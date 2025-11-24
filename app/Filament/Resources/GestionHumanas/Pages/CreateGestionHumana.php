@@ -8,4 +8,6 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateGestionHumana extends CreateRecord
 {
     protected static string $resource = GestionHumanaResource::class;
+    protected ?string $heading = 'Crear Trabajador';
+    protected static bool $canCreateAnother = false;
 }

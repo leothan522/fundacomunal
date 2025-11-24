@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\GestionHumanas\Tables;
 
+use App\Models\Categoria;
 use App\Models\GestionHumana;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
@@ -11,6 +12,9 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
+use Filament\Forms\Components\Select;
+use Filament\Notifications\Notification;
+use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -59,8 +63,9 @@ class GestionHumanasTable
                     ->alignCenter()
                     ->visibleFrom('md'),
                 TextColumn::make('categoria.nombre')
-                    ->numeric()
-                    ->sortable()
+                    ->default('-')
+                    ->alignCenter()
+                    ->wrap()
                     ->visibleFrom('md'),
             ])
             ->filters([
@@ -84,6 +89,30 @@ class GestionHumanasTable
             ])
             ->recordActions([
                 ActionGroup::make([
+                    Action::make('editCategoria')
+                        ->label('Categoria')
+                        ->icon(Heroicon::OutlinedChevronUpDown)
+                        ->fillForm(fn(GestionHumana $record): array => [
+                            'categorias_id' => $record->categorias_id
+                        ])
+                        ->schema([
+                            Select::make('categorias_id')
+                                ->label('Categoria')
+                                ->options(Categoria::query()->pluck('nombre', 'id'))
+                                ->searchable()
+                                ->required()
+                        ])
+                        ->action(function (array $data, GestionHumana $record): void {
+                            $record->categorias_id = $data['categorias_id'];
+                            $record->save();
+                            Notification::make()
+                                ->title('Categoria Actualizada')
+                                ->success()
+                                ->send();
+                        })
+                        ->modalHeading(fn(GestionHumana $record): string => $record->nombre . ' ' . $record->apellido)
+                        ->modalWidth(Width::Small)
+                    ,
                     EditAction::make(),
                     DeleteAction::make(),
                 ])
@@ -91,8 +120,10 @@ class GestionHumanasTable
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
-                    ForceDeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
+                    ForceDeleteBulkAction::make()
+                        ->authorizeIndividualRecords('forceDelete'),
+                    RestoreBulkAction::make()
+                        ->authorizeIndividualRecords('restore'),
                 ]),
                 Action::make('actualizar')
                     ->icon(Heroicon::ArrowPath)
