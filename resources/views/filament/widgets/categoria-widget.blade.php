@@ -17,17 +17,17 @@
         </div>
 
         <div class="fi-filament-info-widget-links">
-            @foreach($categorias as $municipio)
+            @foreach($categorias as $categoria)
                 <x-filament::link
                     color="gray"
-                    href="{{ route('filament.dashboard.resources.gestion-humana.index') }}"
+                    href="{{ route('filament.dashboard.resources.gestion-humana.index').'?filters[Categoria][value]='.$categoria->id }}"
                     {{--:icon="\Filament\Support\Icons\Heroicon::BookOpen"
                     :icon-alias="\Filament\View\PanelsIconAlias::WIDGETS_FILAMENT_INFO_OPEN_DOCUMENTATION_BUTTON"--}}
                     {{--rel="noopener noreferrer"
                     target="_blank"--}}
                     @click="Alpine.store('loader').show()"
                 >
-                    {{ \Illuminate\Support\Str::upper($municipio->nombre) }} - {{ cerosIzquierda($municipio->trabajadores->count()) }}
+                    {{ \Illuminate\Support\Str::upper($categoria->nombre) }} - {{ cerosIzquierda($categoria->trabajadores->count()) }}
                 </x-filament::link>
             @endforeach
         </div>

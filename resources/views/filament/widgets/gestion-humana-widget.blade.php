@@ -20,7 +20,7 @@
             @foreach($tipoPersonal as $tipo)
                 <x-filament::link
                     color="gray"
-                    href="{{ route('filament.dashboard.resources.gestion-humana.index') }}"
+                    href="{{ route('filament.dashboard.resources.gestion-humana.index').'?filters[Tipo%20Personal][value]='.$tipo->id }}"
                     {{--:icon="\Filament\Support\Icons\Heroicon::BookOpen"
                     :icon-alias="\Filament\View\PanelsIconAlias::WIDGETS_FILAMENT_INFO_OPEN_DOCUMENTATION_BUTTON"--}}
                     {{--rel="noopener noreferrer"
