@@ -72,6 +72,9 @@ class UserSeeder extends Seeder
                     $user->assignRole('FORMACION');
                 }
 
+                //VINCULO EL USUARIO AL TRABAJADOR
+                $nomina->users_id = $user->id;
+                $nomina->save();
             }
         }
     }

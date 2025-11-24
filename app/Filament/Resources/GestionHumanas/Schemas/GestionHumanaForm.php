@@ -21,6 +21,7 @@ class GestionHumanaForm
                     ->schema([
                         TextInput::make('cedula')
                             ->label('Cédula')
+                            ->unique()
                             ->required()
                             ->numeric(),
                         TextInput::make('nombre')
@@ -33,7 +34,8 @@ class GestionHumanaForm
                             ->required(),
                         TextInput::make('email')
                             ->label(__('Email'))
-                            ->email(),
+                            ->email()
+                            ->unique(),
                     ])
                     ->compact()
                     ->collapsible()

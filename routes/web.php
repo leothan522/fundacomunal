@@ -12,6 +12,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/home', function () {
-        return view('dashboard');
+        return redirect()->route('web.index');
+        //return view('dashboard');
     })->name('home');
 });

@@ -4,6 +4,7 @@ namespace App\Filament\Resources\GestionHumanas\Tables;
 
 use App\Models\Categoria;
 use App\Models\GestionHumana;
+use App\Models\User;
 use Carbon\Carbon;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
@@ -23,6 +24,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use pxlrbt\FilamentExcel\Actions\ExportBulkAction;
@@ -122,12 +124,67 @@ class GestionHumanasTable
                                 ->send();
                         })
                         ->modalHeading(fn(GestionHumana $record): string => $record->nombre . ' ' . $record->apellido)
-                        ->modalWidth(Width::Small)
-                    ,
+                        ->modalWidth(Width::Small),
                     ViewAction::make()
-                    ->extraModalFooterActions(fn(Action $action): array => [
-                        EditAction::make()
-                    ]),
+                        ->extraModalFooterActions(fn(Action $action): array => [
+                            EditAction::make()
+                        ]),
+                    Action::make('crearusuario')
+                        ->label('Crear Usuario')
+                        ->icon(Heroicon::OutlinedUserPlus)
+                        ->color('info')
+                        ->requiresConfirmation()
+                        ->modalIcon(Heroicon::OutlinedUserPlus)
+                        ->hidden(fn(GestionHumana $record): bool => !empty($record->users_id))
+                        ->disabled(fn(GestionHumana $record): bool => !empty($record->users_id))
+                        ->action(function (GestionHumana $record): void {
+                            $crear = true;
+                            $error = null;
+
+                            if (empty($record->email)) {
+                                $crear = false;
+                                $error = "Falta el correo del trabajador";
+                            }
+
+                            if (User::withTrashed()->where('email', $record->email)->exists()) {
+                                $crear = false;
+                                $error = "Ya existe un usuario con el correo del trabajador";
+                            }
+
+                            if ($crear) {
+                                $user = User::factory()->create([
+                                    'name' => strtok($record->nombre, " ") . ' ' . strtok($record->apellido, " "),
+                                    'email' => Str::lower($record->email),
+                                    'password' => Hash::make($record->cedula),
+                                    'phone' => $record->telefono,
+                                    'access_panel' => 1
+                                ]);
+
+                                if ($record->tipoPersonal->nombre == 'PROMOTORES') {
+                                    $user->assignRole('PARTICIPACION');
+                                }
+
+                                if ($record->tipoPersonal->nombre == 'COORDINADOR(A) ESTADAL') {
+                                    $user->assignRole('admin');
+                                }
+
+                                $record->users_id = $user->id;
+                                $record->save();
+
+                                Notification::make()
+                                    ->title('Usuario Creado')
+                                    ->success()
+                                    ->send();
+
+                            }else{
+                                Notification::make()
+                                    ->title('No se pudo crear el usuario')
+                                    ->danger()
+                                    ->body($error)
+                                    ->send();
+                            }
+
+                        }),
                     EditAction::make(),
                     DeleteAction::make(),
                 ])
