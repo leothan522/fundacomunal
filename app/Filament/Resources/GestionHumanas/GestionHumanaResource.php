@@ -25,6 +25,7 @@ class GestionHumanaResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserGroup;
     protected static string | UnitEnum | null $navigationGroup = 'Áreas Sustantivas';
+    protected static ?string $slug = 'gestion-humana';
     protected static ?string $modelLabel = 'Gestión Humana';
     protected static ?string $pluralModelLabel = 'Gestión Humana';
 
