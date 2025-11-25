@@ -157,7 +157,12 @@
                                             src="{{ asset('img/logo.png') }}" @if(Route::currentRouteName() != 'web.index') style="width: 200px !important;" @endif  alt="Fundacomunal Guárico">
                                     </a>
                                     <h6 class="mt-1 mb-4 pb-1 text_title">
-                                        <strong>&nbsp;</strong></h6>
+                                        @if(Route::currentRouteName() == 'descargar-app')
+                                            <strong>Descargar App</strong>
+                                        @else
+                                            <strong>&nbsp;</strong>
+                                        @endif
+                                    </h6>
                                 </div>
 
                                 @yield('content')

@@ -16,3 +16,22 @@ Route::middleware([
         //return view('dashboard');
     })->name('home');
 });
+
+Route::get('/descargar-app', function () {
+    $qrAndroid = qrCodeGenerate(\route('descargar-app.android'), null, null, 'qr-android-download');
+    $qrIos = qrCodeGenerate(\route('web.index'), null, null, 'qr-ios-download');
+    return view('descargar-app')
+        ->with('qrAndroid', $qrAndroid)
+        ->with('qrIos', $qrIos);
+})->name('descargar-app');
+
+Route::get('/apk', function (){
+    $path = 'descargas/Fundacomunal.apk';
+    if (Storage::disk('public')->exists($path)){
+        $fullPath = Storage::disk('public')->path($path);
+        return response()->download($fullPath, 'Fundacomunal.apk', [
+            'Content-Type' => 'application/vnd.android.package-archive',
+        ]);
+    }
+    return redirect()->route('web.index');
+})->name('descargar-app.android');

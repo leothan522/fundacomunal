@@ -12,6 +12,7 @@
             @if (Route::has('register'))
                 <a class="text-muted ms-3" href="{{ route('register') }}" @click="mostrarPreloader">{{ __('Register') }}</a>
             @endif
+            <a class="text-muted ms-3 text-nowrap" href="{{ route('descargar-app') }}" @click="mostrarPreloader">Descargar App</a>
         @endauth
     </div>
 @endsection
