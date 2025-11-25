@@ -24,7 +24,9 @@ class GestionHumanaForm
                             ->label('Cédula')
                             ->unique()
                             ->required()
-                            ->numeric(),
+                            ->numeric()
+                            ->minLength(6)
+                            ->maxLength(8),
                         TextInput::make('nombre')
                             ->required(),
                         TextInput::make('apellido')
@@ -39,7 +41,7 @@ class GestionHumanaForm
                             ->email()
                             ->unique(),
                         DatePicker::make('fecha_nacimiento')
-                        ->hidden(),
+                            ->hidden(),
                     ])
                     ->compact()
                     ->collapsible()

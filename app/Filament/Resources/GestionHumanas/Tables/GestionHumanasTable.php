@@ -130,61 +130,31 @@ class GestionHumanasTable
                         ->extraModalFooterActions(fn(Action $action): array => [
                             EditAction::make()
                         ]),
-                    Action::make('crearusuario')
+                    Action::make('crearUsuario')
                         ->label('Crear Usuario')
                         ->icon(Heroicon::OutlinedUserPlus)
                         ->color('info')
                         ->requiresConfirmation()
                         ->modalIcon(Heroicon::OutlinedUserPlus)
                         ->hidden(fn(GestionHumana $record): bool => !empty($record->users_id))
-                        ->disabled(fn(GestionHumana $record): bool => !empty($record->users_id))
                         ->action(function (GestionHumana $record): void {
-                            $crear = true;
-                            $error = null;
-
-                            if (empty($record->email)) {
-                                $crear = false;
-                                $error = "Falta el correo del trabajador";
+                            self::createUser($record);
+                        }),
+                    Action::make('resetUsuario')
+                        ->label('Actualizar Usuario')
+                        ->icon(Heroicon::OutlinedUserCircle)
+                        ->color('info')
+                        ->requiresConfirmation()
+                        ->modalIcon(Heroicon::OutlinedUserCircle)
+                        ->hidden(function (GestionHumana $record): bool {
+                            $response = true;
+                            if ($record->users_id && !$record->user->login_count){
+                                $response = false;
                             }
-
-                            if (User::withTrashed()->where('email', $record->email)->exists()) {
-                                $crear = false;
-                                $error = "Ya existe un usuario con el correo del trabajador";
-                            }
-
-                            if ($crear) {
-                                $user = User::factory()->create([
-                                    'name' => strtok($record->nombre, " ") . ' ' . strtok($record->apellido, " "),
-                                    'email' => Str::lower($record->email),
-                                    'password' => Hash::make($record->cedula),
-                                    'phone' => $record->telefono,
-                                    'access_panel' => 1
-                                ]);
-
-                                if ($record->tipoPersonal->nombre == 'PROMOTORES') {
-                                    $user->assignRole('PARTICIPACION');
-                                }
-
-                                if ($record->tipoPersonal->nombre == 'COORDINADOR(A) ESTADAL') {
-                                    $user->assignRole('admin');
-                                }
-
-                                $record->users_id = $user->id;
-                                $record->save();
-
-                                Notification::make()
-                                    ->title('Usuario Creado')
-                                    ->success()
-                                    ->send();
-
-                            }else{
-                                Notification::make()
-                                    ->title('No se pudo crear el usuario')
-                                    ->danger()
-                                    ->body($error)
-                                    ->send();
-                            }
-
+                            return $response;
+                        })
+                        ->action(function (GestionHumana $record): void {
+                            self::resetUser($record);
                         }),
                     EditAction::make(),
                     DeleteAction::make(),
@@ -221,5 +191,102 @@ class GestionHumanasTable
                     ->iconButton(),
             ])
             ->recordUrl(null);
+    }
+
+    public static function createUser($record): void
+    {
+        $crear = true;
+        $error = null;
+
+        if (empty($record->email)) {
+            $crear = false;
+            $error = "Falta el correo del trabajador";
+        }
+
+        if (User::withTrashed()->where('email', $record->email)->exists()) {
+            $crear = false;
+            $error = "Ya existe un usuario con el correo del trabajador";
+        }
+
+        if ($crear) {
+            $user = User::factory()->create([
+                'name' => strtok($record->nombre, " ") . ' ' . strtok($record->apellido, " "),
+                'email' => Str::lower($record->email),
+                'password' => Hash::make($record->cedula),
+                'phone' => $record->telefono,
+                'access_panel' => 1
+            ]);
+
+            if ($record->tipoPersonal->nombre == 'PROMOTORES') {
+                $user->assignRole('PARTICIPACION');
+            }
+
+            if ($record->tipoPersonal->nombre == 'COORDINADOR(A) ESTADAL') {
+                $user->assignRole('admin');
+            }
+
+            $record->users_id = $user->id;
+            $record->save();
+
+            Notification::make()
+                ->title('Usuario Creado')
+                ->success()
+                ->send();
+
+        } else {
+            Notification::make()
+                ->title('No se pudo crear el usuario')
+                ->danger()
+                ->body($error)
+                ->send();
+        }
+    }
+
+    public static function resetUser($record): void
+    {
+        $crear = true;
+        $error = null;
+
+        if (empty($record->email)) {
+            $crear = false;
+            $error = "Falta el correo del trabajador";
+        }
+
+        if (User::withTrashed()->where('email', $record->email)->where('id', '!=', $record->users_id)->exists()) {
+            $crear = false;
+            $error = "Ya existe un usuario con el correo del trabajador";
+        }
+
+        if ($crear) {
+            $user = User::find($record->users_id);
+            $user->name = strtok($record->nombre, " ").' '.strtok($record->apellido, " ");
+            $user->email = $record->email;
+            $user->password = Hash::make($record->cedula);
+            $user->phone = $record->telefono;
+            $user->is_active = 1;
+            $user->access_panel = 1;
+            $user->save();
+
+            if ($record->tipoPersonal->nombre == 'PROMOTORES') {
+                $user->assignRole('PARTICIPACION');
+            }
+
+            if ($record->tipoPersonal->nombre == 'COORDINADOR(A) ESTADAL') {
+                $user->assignRole('admin');
+            }
+
+            Notification::make()
+                ->title('Usuario Actualizado')
+                ->success()
+                ->send();
+
+        } else {
+            Notification::make()
+                ->title('No se pudo Actualizar el usuario')
+                ->danger()
+                ->body($error)
+                ->send();
+        }
+
     }
 }
