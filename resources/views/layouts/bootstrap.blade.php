@@ -9,11 +9,13 @@
     <title>@yield('title', 'Morros Devops') - {{ config('app.name', 'Laravel') }}</title>
 
     {{-- Favicon y PWA --}}
-    <meta name="description" content="Plataforma de planificación y organización de Fundacomunal para el estado Guárico">
+    <meta name="description"
+          content="Plataforma de planificación y organización de Fundacomunal para el estado Guárico">
     <meta name="theme-color" content="#0056b3">
 
     <meta property="og:title" content="Fundacomunal Guárico">
-    <meta property="og:description" content="Plataforma de planificación y organización de Fundacomunal para el estado Guárico">
+    <meta property="og:description"
+          content="Plataforma de planificación y organización de Fundacomunal para el estado Guárico">
     <meta property="og:image" content="{{ asset('favicons/appicon-128x128.png') }}">
 
     {{-- Favicon y PWA --}}
@@ -116,8 +118,8 @@
         .mpp_comunas {
             display: block;
             position: absolute;
-            width: 45%;   /* ocupa todo el ancho del contenedor padre */
-            height: auto;  /* mantiene proporción */
+            width: 45%; /* ocupa todo el ancho del contenedor padre */
+            height: auto; /* mantiene proporción */
             right: 3%;
             top: 3%;
         }
@@ -149,32 +151,38 @@
                         <div class="col-lg-6">
                             <div class="card-body p-md-5 mx-md-4 position-relative" id="card_body">
 
-                                <img class="gobernacion d-lg-none" src="{{ asset('img/logo_gobernacion_white.png') }}" alt="Logo Gobernación Guárico">
+                                <img class="gobernacion d-lg-none" src="{{ asset('img/logo_gobernacion_white.png') }}"
+                                     alt="Logo Gobernación Guárico">
 
-                                <div x-data class="text-center mt-4 @if(Route::currentRouteName() == 'web.index') pt-md-5 @endif">
-                                    <a href="{{ route('web.index') }}" @click="mostrarPreloader()">
-                                        <img class="img-fluid @if(Route::currentRouteName() == 'web.index') mt-5 @endif"
-                                            src="{{ asset('img/logo.png') }}" @if(Route::currentRouteName() != 'web.index') style="width: 200px !important;" @endif  alt="Fundacomunal Guárico">
-                                    </a>
-                                    <h6 class="mt-1 mb-4 pb-1 text_title">
-                                        @if(Route::currentRouteName() == 'descargar-app')
-                                            <strong>Descargar App</strong>
-                                        @else
+                                <div x-data
+                                     class="text-center mt-4 @if(Route::currentRouteName() == 'web.index') pt-md-5 @endif">
+                                    @if(Route::currentRouteName() != 'instalar-app')
+                                        <a href="{{ route('web.index') }}" @click="mostrarPreloader()">
+                                            <img
+                                                class="img-fluid @if(Route::currentRouteName() == 'web.index') mt-5 @endif"
+                                                src="{{ asset('img/logo.png') }}"
+                                                @if(Route::currentRouteName() != 'web.index') style="width: 200px !important;"
+                                                @endif  alt="Fundacomunal Guárico">
+                                        </a>
+                                        <h6 class="mt-1 mb-4 pb-1 text_title">
                                             <strong>&nbsp;</strong>
-                                        @endif
-                                    </h6>
+                                        </h6>
+                                    @endif
                                 </div>
 
                                 @yield('content')
 
                             </div>
                         </div>
-                        <div class="col-lg-6 d-none d-lg-flex align-items-center gradient-custom-2" style="min-height: 70vh">
+                        <div class="col-lg-6 d-none d-lg-flex align-items-center gradient-custom-2"
+                             style="min-height: 70vh">
 
-                            <img class="mpp_comunas" src="{{ asset('img/MPP_Comunas_Blanco-1.png') }}" alt="MPP COMUNAS">
+                            <img class="mpp_comunas" src="{{ asset('img/MPP_Comunas_Blanco-1.png') }}"
+                                 alt="MPP COMUNAS">
 
                             <div class="text-white px-3 py-4 p-md-5 mx-md-4 text-center">
-                                <img class="img-fluid rounded-2" src="{{ asset('img/logo_gobernacion_white.png') }}" alt="Logo Gobernación Estado Guárico">
+                                <img class="img-fluid rounded-2" src="{{ asset('img/logo_gobernacion_white.png') }}"
+                                     alt="Logo Gobernación Estado Guárico">
                             </div>
                         </div>
                     </div>

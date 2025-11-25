@@ -8,30 +8,37 @@
 
 @section('content')
 
-    <div class="row mb-2 mt-md-auto">
-        <div x-data="{ cargando: false }" class="col-6 text-center">
-            <span>Android</span>
-            <img class="img-fluid" src="{{ $qrAndroid }}" alt="Codigo QR" />
-            <a  @click="cargando = true; setTimeout(() => cargando = false, 3000);" class="text-decoration-none" href="{{ route('descargar-app.android') }}">
-                <i class="bi bi-cloud-arrow-down-fill"></i> Descargar
-            </a>
-            <div class="d-flex justify-content-center">
-                <div x-show="cargando"  class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-            </div>
-        </div>
+    <div class="row mb-2 justify-content-center text-center">
+
+        <h6 class="mt-5 mt-md-auto pb-1 text-center">
+            <strong>Instalar App</strong>
+        </h6>
+
         <div x-data class="col-6 text-center">
-            <span>IOS</span>
+            <a href="{{ route('web.index') }}" @click="mostrarPreloader">
+                <img class="img-fluid" src="{{ asset('img/logo.png') }}" alt="Codigo QR" />
+            </a>
+        </div>
+
+        <div x-data class="col-6 text-center">
             <img class="img-fluid" src="{{ $qrIos }}" alt="Codigo QR" />
             <a class="text-decoration-none" href="{{ route('web.index') }}" @click="mostrarPreloader">
                 <i class="bi bi-arrow-up-right-square"></i> Abrir
             </a>
         </div>
+
+        <div class="mt-4">
+            <p class="fs-6 d-flex" style="text-align: justify !important;">
+                <small class="text-muted">
+                    En <strong>Android</strong> abre el enlace del código QR en Google Chrome. Toca “Agregar a la pantalla principal” en la barra de direcciones o menú. Se instala la app y listo.
+                </small>
+            </p>
+        </div>
+
         <div class="mt-3">
             <p class="fs-6 d-flex" style="text-align: justify !important;">
                 <small class="text-muted">
-                    Instalación directa en <strong>iPhone</strong> desde Safari: Abre el enlace del código QR para <span class="color-active">IOS</span> en Safari. Toca “Compartir” → “Agregar a pantalla de inicio”. Se instala la app y listo.
+                    En <strong>iPhone</strong> desde Safari: Abre el enlace del código QR en Safari. Toca “Compartir” → “Agregar a pantalla de inicio”. Se instala la app y listo.
                 </small>
             </p>
         </div>
