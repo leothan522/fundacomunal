@@ -5,7 +5,7 @@ namespace App\Policies;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class Userpolicy
+class UserPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -36,7 +36,7 @@ class Userpolicy
      */
     public function update(User $user, User $model): bool
     {
-        return isAdmin() && $user->id != $model->id && !$model->is_root;
+        return isAdmin();
     }
 
     /**
@@ -44,7 +44,7 @@ class Userpolicy
      */
     public function delete(User $user, User $model): bool
     {
-        return isAdmin() && $user->id != $model->id && !$model->is_root;
+        return isAdmin();
     }
 
     /**
@@ -52,7 +52,7 @@ class Userpolicy
      */
     public function restore(User $user, User $model): bool
     {
-        return isAdmin() && $user->id != $model->id && !$model->is_root;
+        return isAdmin();
     }
 
     /**
@@ -60,6 +60,6 @@ class Userpolicy
      */
     public function forceDelete(User $user, User $model): bool
     {
-        return isAdmin() && $user->id != $model->id && !$model->is_root;
+        return isAdmin();
     }
 }
