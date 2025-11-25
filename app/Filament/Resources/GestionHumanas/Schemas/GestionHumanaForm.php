@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\GestionHumanas\Schemas;
 
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -31,11 +32,14 @@ class GestionHumanaForm
                         TextInput::make('telefono')
                             ->label('Teléfono')
                             ->tel()
+                            ->telRegex('/^[0-9]{4}-[0-9]{7}$/')
                             ->required(),
                         TextInput::make('email')
                             ->label(__('Email'))
                             ->email()
                             ->unique(),
+                        DatePicker::make('fecha_nacimiento')
+                        ->hidden(),
                     ])
                     ->compact()
                     ->collapsible()
@@ -59,6 +63,8 @@ class GestionHumanaForm
                             ->label('Órgano o Ente Adscrito')
                             ->default('FUNDACOMUNAL')
                             ->required(),
+                        DatePicker::make('fecha_ingreso')
+                            ->hidden(),
                         Textarea::make('observacion')
                             ->label('Observación')
                             ->columnSpanFull(),

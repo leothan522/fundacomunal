@@ -24,7 +24,8 @@ class GestionHumana extends Model
         'municipios_id',
         'parroquia',
         'observacion',
-        'fecha',
+        'fecha_nacimiento',
+        'fecha_ingreso',
         'users_id',
     ];
 

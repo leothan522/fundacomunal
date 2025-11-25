@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use pxlrbt\FilamentExcel\Actions\ExportAction;
 use pxlrbt\FilamentExcel\Actions\ExportBulkAction;
 use pxlrbt\FilamentExcel\Columns\Column;
 use pxlrbt\FilamentExcel\Exports\ExcelExport;
@@ -199,7 +200,7 @@ class GestionHumanasTable
                 ]),
                 ExportBulkAction::make()->exports([
                     ExcelExport::make()->withColumns([
-                        Column::make('updated_at')->heading('FECHA')->formatStateUsing(fn($state) => Carbon::parse($state)->format('d/m/Y')),
+                        Column::make('updated_at')->heading('FECHA')->formatStateUsing(fn($state) => Carbon::now()->format('d/m/Y')),
                         Column::make('redi.nombre')->heading('REDI'),
                         Column::make('estado.nombre')->heading('ESTADO'),
                         Column::make('municipio.nombre')->heading('MUNICIPIO'),

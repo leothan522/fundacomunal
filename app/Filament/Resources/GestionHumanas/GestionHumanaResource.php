@@ -10,6 +10,7 @@ use App\Filament\Resources\GestionHumanas\Schemas\GestionHumanaForm;
 use App\Filament\Resources\GestionHumanas\Tables\GestionHumanasTable;
 use App\Models\GestionHumana;
 use BackedEnum;
+use Carbon\Carbon;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Fieldset;
@@ -120,7 +121,21 @@ class GestionHumanaResource extends Resource
                             ->weight(FontWeight::Bold)
                             ->color('primary')
                             ->copyable()
-                            ->columnSpan(2)
+                            ->columnSpan(2),
+                        TextEntry::make('fecha_nacimiento')
+                            ->date()
+                            ->size(TextSize::Large)
+                            ->weight(FontWeight::Bold)
+                            ->color('primary')
+                            ->copyable()
+                            ->hidden(fn(GestionHumana $record): bool => empty($record->fecha_nacimiento)),
+                        TextEntry::make('edad')
+                            ->state(fn(GestionHumana $record): ?string => $record->fecha_nacimiento ? Carbon::parse($record->fecha_nacimiento)->age . ' años' : null)
+                            ->size(TextSize::Large)
+                            ->weight(FontWeight::Bold)
+                            ->color('primary')
+                            ->copyable()
+                            ->hidden(fn(GestionHumana $record): bool => empty($record->fecha_nacimiento)),
                     ])
                     ->columns(3)
                     ->columnSpanFull(),
@@ -149,6 +164,14 @@ class GestionHumanaResource extends Resource
                             ->weight(FontWeight::Bold)
                             ->color('primary')
                             ->copyable(),
+                        TextEntry::make('fecha_ingreso')
+                            ->date()
+                            ->inlineLabel()
+                            ->size(TextSize::Large)
+                            ->weight(FontWeight::Bold)
+                            ->color('primary')
+                            ->copyable()
+                            ->hidden(fn(GestionHumana $record): bool => empty($record->fecha_ingreso)),
                         TextEntry::make('observacion')
                             ->formatStateUsing(fn(string $state): string => Str::upper($state))
                             ->label('Observación')
