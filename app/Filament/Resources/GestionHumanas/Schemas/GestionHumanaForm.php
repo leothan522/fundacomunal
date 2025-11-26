@@ -40,8 +40,7 @@ class GestionHumanaForm
                             ->label(__('Email'))
                             ->email()
                             ->unique(),
-                        DatePicker::make('fecha_nacimiento')
-                            ->hidden(),
+                        DatePicker::make('fecha_nacimiento'),
                     ])
                     ->compact()
                     ->collapsible()
@@ -65,8 +64,7 @@ class GestionHumanaForm
                             ->label('Órgano o Ente Adscrito')
                             ->default('FUNDACOMUNAL')
                             ->required(),
-                        DatePicker::make('fecha_ingreso')
-                            ->hidden(),
+                        DatePicker::make('fecha_ingreso'),
                         Textarea::make('observacion')
                             ->label('Observación')
                             ->columnSpanFull(),
