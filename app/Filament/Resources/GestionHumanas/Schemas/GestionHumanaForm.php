@@ -50,7 +50,7 @@ class GestionHumanaForm
                 Section::make('Datos Laborales')
                     ->schema([
                         Select::make('tipos_personal_id')
-                            ->label('Tipo Personal')
+                            ->label('Labor que Ejerce')
                             ->relationship('tipoPersonal', 'nombre')
                             ->searchable()
                             ->preload()

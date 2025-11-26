@@ -73,7 +73,7 @@ class GestionHumanasTable
                     ->limit(20)
                     ->visibleFrom('md'),
                 TextColumn::make('tipoPersonal.nombre')
-                    ->label('Tipo Personal')
+                    ->label('Labor que Ejerce')
                     ->alignCenter()
                     ->visibleFrom('md'),
                 TextColumn::make('categoria.nombre')
@@ -83,7 +83,7 @@ class GestionHumanasTable
                     ->visibleFrom('md'),
             ])
             ->filters([
-                SelectFilter::make('Tipo Personal')
+                SelectFilter::make('Labor que Ejerce')
                     ->relationship('tipoPersonal', 'nombre')
                     ->searchable()
                     ->preload(),
