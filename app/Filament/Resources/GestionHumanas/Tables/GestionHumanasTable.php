@@ -184,6 +184,8 @@ class GestionHumanasTable
                         Column::make('email')->heading('CORREO')->formatStateUsing(fn($state) => Str::lower($state)),
                         Column::make('ente')->heading('ÓRGANO O ENTE ADSCRITO')->formatStateUsing(fn($state) => Str::upper($state)),
                         Column::make('observacion')->heading('OBSERVACIÓN')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('fecha_nacimiento')->heading('FECHA NACIMIENTO')->formatStateUsing(fn($state) => Carbon::parse($state)->format('d/m/Y')),
+                        Column::make('fecha_ingreso')->heading('FECHA INGRESO')->formatStateUsing(fn($state) => Carbon::parse($state)->format('d/m/Y')),
                     ])
                 ]),
                 Action::make('actualizar')
