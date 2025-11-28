@@ -29,7 +29,7 @@ class Redi extends Model
         return $this->hasMany(Comuna::class, 'redis_id', 'id');
     }
 
-    public function consejosComunales(): HasMany
+    public function consejos(): HasMany
     {
         return $this->hasMany(ConsejoComunal::class, 'redis_id', 'id');
     }

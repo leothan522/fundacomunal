@@ -45,6 +45,9 @@ class ComunasTable
                     ->numeric()
                     ->alignCenter()
                     ->grow(false),
+                TextColumn::make('consejos_count')->counts('consejos')
+                    ->label('Count')
+                    ->alignCenter(),
                 TextColumn::make('municipio.nombre')
                     ->wrap(),
             ])

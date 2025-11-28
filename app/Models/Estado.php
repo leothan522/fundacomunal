@@ -36,7 +36,7 @@ class Estado extends Model
         return $this->hasMany(Comuna::class, 'estados_id', 'id');
     }
 
-    public function consejosComunales(): HasMany
+    public function consejos(): HasMany
     {
         return $this->hasMany(ConsejoComunal::class, 'estados_id', 'id');
     }

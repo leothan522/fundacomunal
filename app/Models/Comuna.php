@@ -37,7 +37,7 @@ class Comuna extends Model
         return $this->belongsTo(Municipio::class, 'municipios_id', 'id');
     }
 
-    public function consejosComunales(): HasMany
+    public function consejos(): HasMany
     {
         return $this->hasMany(ConsejoComunal::class, 'comunas_id', 'id');
     }
