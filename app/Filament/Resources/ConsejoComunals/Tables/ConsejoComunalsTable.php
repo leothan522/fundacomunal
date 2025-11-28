@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Comunas\Tables;
+namespace App\Filament\Resources\ConsejoComunals\Tables;
 
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
@@ -18,7 +18,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
-class ComunasTable
+class ConsejoComunalsTable
 {
     public static function configure(Table $table): Table
     {
@@ -26,25 +26,19 @@ class ComunasTable
             ->columns([
                 TextColumn::make('nombre')
                     ->formatStateUsing(fn(string $state): string => Str::upper($state))
-                    ->searchable()
-                    ->wrap(),
-                TextColumn::make('cod_com')
+                    ->wrap()
+                    ->searchable(),
+                TextColumn::make('situr_viejo')
                     ->formatStateUsing(fn(string $state): string => Str::upper($state))
-                    ->label('COD. COM')
                     ->searchable()
-                    ->alignCenter()
-                    ->grow(false),
-                TextColumn::make('cod_situr')
+                    ->alignCenter(),
+                TextColumn::make('situr_nuevo')
                     ->formatStateUsing(fn(string $state): string => Str::upper($state))
-                    ->label('COD. SITUR')
                     ->searchable()
-                    ->alignCenter()
-                    ->grow(false),
-                TextColumn::make('cantidad_cc')
-                    ->label('Cantidad C.C.')
-                    ->numeric()
-                    ->alignCenter()
-                    ->grow(false),
+                    ->alignCenter(),
+                TextColumn::make('tipo')
+                    ->searchable()
+                    ->alignCenter(),
                 TextColumn::make('municipio.nombre')
                     ->wrap(),
             ])
@@ -55,6 +49,10 @@ class ComunasTable
                         'nombre',
                         fn(Builder $query) => $query->whereRelation('estado', 'nombre', 'GUÁRICO')
                     )
+                    ->searchable()
+                    ->preload(),
+                SelectFilter::make('Comuna')
+                    ->relationship('comuna', 'nombre')
                     ->searchable()
                     ->preload(),
                 TrashedFilter::make(),

@@ -4,18 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Comuna extends Model
+class ConsejoComunal extends Model
 {
     use SoftDeletes;
-    protected $table = 'comunas';
+    protected $table = 'consejos_comunales';
     protected $fillable = [
         'nombre',
-        'cod_com',
-        'cod_situr',
-        'cantidad_cc',
+        'situr_viejo',
+        'situr_nuevo',
+        'tipo',
+        'comunas_id',
         'redis_id',
         'estados_id',
         'municipios_id',
@@ -37,9 +37,9 @@ class Comuna extends Model
         return $this->belongsTo(Municipio::class, 'municipios_id', 'id');
     }
 
-    public function consejosComunales(): HasMany
+    public function comuna(): BelongsTo
     {
-        return $this->hasMany(ConsejoComunal::class, 'comunas_id', 'id');
+        return $this->belongsTo(Comuna::class, 'comunas_id', 'id');
     }
 
 }
