@@ -24,4 +24,9 @@ class Redi extends Model
         return $this->hasMany(GestionHumana::class, 'redis_id', 'id');
     }
 
+    public function comunas(): HasMany
+    {
+        return $this->hasMany(Comuna::class, 'redis_id', 'id');
+    }
+
 }

@@ -13,6 +13,8 @@ class Municipio extends Model
     protected $table = 'municipios';
     protected $fillable = [
         'nombre',
+        'nombre_real',
+        'nombre_cne',
         'estados_id',
     ];
 
@@ -24,6 +26,11 @@ class Municipio extends Model
     public function trabajadores(): HasMany
     {
         return $this->hasMany(GestionHumana::class, 'municipios_id', 'id');
+    }
+
+    public function comunas(): HasMany
+    {
+        return $this->hasMany(Comuna::class, 'municipios_id', 'id');
     }
 
 }

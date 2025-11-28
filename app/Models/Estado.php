@@ -31,4 +31,9 @@ class Estado extends Model
         return $this->hasMany(GestionHumana::class, 'estados_id', 'id');
     }
 
+    public function comunas(): HasMany
+    {
+        return $this->hasMany(Comuna::class, 'estados_id', 'id');
+    }
+
 }
