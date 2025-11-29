@@ -32,6 +32,7 @@ class ConsejoComunalResource extends Resource
     protected static ?int $navigationSort = 81;
     protected static ?string $modelLabel = 'Consejo Comunal';
     protected static ?string $pluralModelLabel = 'Consejos Comunales';
+    protected static ?string $slug = 'consejos-comunales';
 
     protected static ?string $recordTitleAttribute = 'nombre';
 

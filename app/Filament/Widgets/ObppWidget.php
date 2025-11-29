@@ -12,22 +12,22 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 class ObppWidget extends StatsOverviewWidget
 {
     protected static bool $isLazy = false;
+
     protected function getStats(): array
     {
         return [
             Stat::make('Circuitos o Comunas', $this->getComunas())
-                ->description($this->getVinculados().' C.C. vinculados')
-                //->chart([7, 2, 10, 3, 15, 4, 17])
-                ->color('success'),
+                ->description($this->getVinculados() . ' C.C. vinculados')
+                ->color('success')
+                ->url(route('filament.dashboard.resources.comunas.index')),
             Stat::make('Consejos Comunales', $this->getConsejosCOmunales())
-                ->description($this->getPorcentaje().'% en Circuitos o Comunas')
-                //->descriptionIcon('heroicon-m-arrow-trending-down')
-                //->chart([7, 2, 10, 3, 15, 4, 17])
-                ->color('info'),
+                ->description($this->getPorcentaje() . '% en Circuitos o Comunas')
+                ->color('info')
+                ->url(route('filament.dashboard.resources.consejos-comunales.index')),
             Stat::make('Trabajadores', $this->getTrabajadores())
                 ->description('56 promotores')
-                //->chart([7, 2, 10, 3, 15, 4, 17])
-                ->color('primary'),
+                ->color('primary')
+                ->url(route('filament.dashboard.resources.gestion-humana.index')),
         ];
     }
 
