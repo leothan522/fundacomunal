@@ -19,15 +19,18 @@ class ObppWidget extends StatsOverviewWidget
             Stat::make('Circuitos o Comunas', $this->getComunas())
                 ->description($this->getVinculados() . ' C.C. vinculados')
                 ->color('success')
-                ->url(route('filament.dashboard.resources.comunas.index')),
+                ->url(route('filament.dashboard.resources.comunas.index'))
+                ->extraAttributes(['onclick' => "Alpine.store('loader').show()"]),
             Stat::make('Consejos Comunales', $this->getConsejosCOmunales())
                 ->description($this->getPorcentaje() . '% en Circuitos o Comunas')
                 ->color('info')
-                ->url(route('filament.dashboard.resources.consejos-comunales.index')),
+                ->url(route('filament.dashboard.resources.consejos-comunales.index'))
+                ->extraAttributes(['onclick' => "Alpine.store('loader').show()"]),
             Stat::make('Trabajadores', $this->getTrabajadores())
                 ->description('56 promotores')
                 ->color('primary')
-                ->url(route('filament.dashboard.resources.gestion-humana.index')),
+                ->url(route('filament.dashboard.resources.gestion-humana.index'))
+                ->extraAttributes(['onclick' => "Alpine.store('loader').show()"]),
         ];
     }
 
