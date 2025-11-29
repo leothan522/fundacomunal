@@ -112,38 +112,7 @@ class DatosTrabajadorSchema
                         ->hidden(fn($state): bool => empty($state)),
                 ])
                 ->columns(1),
-            Fieldset::make('Ubicación Geográfica')
-                ->schema([
-                    TextEntry::make('redi.nombre')
-                        ->label('REDI')
-                        ->inlineLabel()
-                        ->size(TextSize::Medium)
-                        ->weight(FontWeight::Bold)
-                        ->color('primary')
-                        ->copyable(),
-                    TextEntry::make('estado.nombre')
-                        ->label('Estado')
-                        ->inlineLabel()
-                        ->size(TextSize::Medium)
-                        ->weight(FontWeight::Bold)
-                        ->color('primary')
-                        ->copyable(),
-                    TextEntry::make('municipio.nombre')
-                        ->label('Municipio')
-                        ->inlineLabel()
-                        ->size(TextSize::Medium)
-                        ->weight(FontWeight::Bold)
-                        ->color('primary')
-                        ->copyable(),
-                    TextEntry::make('parroquia')
-                        ->formatStateUsing(fn(string $state): string => Str::upper($state))
-                        ->inlineLabel()
-                        ->size(TextSize::Medium)
-                        ->weight(FontWeight::Bold)
-                        ->color('primary')
-                        ->copyable(),
-                ])
-                ->columns(1)
+            UbicacionGeograficaFieldset::schema(),
         ];
     }
 }

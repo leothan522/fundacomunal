@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Comunas\Tables;
 
+use App\Models\Comuna;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
@@ -10,6 +11,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
+use Filament\Actions\ViewAction;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -24,32 +26,44 @@ class ComunasTable
     {
         return $table
             ->columns([
+                TextColumn::make('comuna')
+                    ->label('Cirtuito o Comuna')
+                    ->default(fn(Comuna $record): string => Str::upper($record->nombre))
+                    ->description(fn(Comuna $record): string => Str::upper($record->municipio->nombre))
+                    ->wrap()
+                    ->hiddenFrom('md'),
                 TextColumn::make('nombre')
                     ->formatStateUsing(fn(string $state): string => Str::upper($state))
                     ->searchable()
-                    ->wrap(),
+                    ->wrap()
+                    ->visibleFrom('md'),
                 TextColumn::make('cod_com')
                     ->formatStateUsing(fn(string $state): string => Str::upper($state))
                     ->label('COD. COM')
                     ->searchable()
                     ->alignCenter()
-                    ->grow(false),
+                    ->grow(false)
+                    ->visibleFrom('md'),
                 TextColumn::make('cod_situr')
                     ->formatStateUsing(fn(string $state): string => Str::upper($state))
                     ->label('COD. SITUR')
                     ->searchable()
                     ->alignCenter()
-                    ->grow(false),
+                    ->grow(false)
+                    ->visibleFrom('md'),
                 TextColumn::make('cantidad_cc')
                     ->label('Cantidad C.C.')
                     ->numeric()
                     ->alignCenter()
-                    ->grow(false),
+                    ->grow(false)
+                    ->visibleFrom('md'),
                 TextColumn::make('consejos_count')->counts('consejos')
-                    ->label('Count')
-                    ->alignCenter(),
+                    ->label('C.C.')
+                    ->alignCenter()
+                    ->grow(false),
                 TextColumn::make('municipio.nombre')
-                    ->wrap(),
+                    ->wrap()
+                    ->visibleFrom('md'),
             ])
             ->filters([
                 SelectFilter::make('Municipio')
@@ -64,6 +78,7 @@ class ComunasTable
             ])
             ->recordActions([
                 ActionGroup::make([
+                    ViewAction::make(),
                     EditAction::make(),
                     DeleteAction::make(),
                 ])
@@ -77,6 +92,7 @@ class ComunasTable
                 Action::make('actualizar')
                     ->icon(Heroicon::ArrowPath)
                     ->iconButton()
-            ]);
+            ])
+            ->recordUrl(false);
     }
 }
