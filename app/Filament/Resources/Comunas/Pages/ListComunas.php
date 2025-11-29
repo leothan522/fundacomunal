@@ -18,7 +18,7 @@ class ListComunas extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Action::make('prueba')
+            /*Action::make('prueba')
                 ->action(function (){
                     $html = view('inicio')->render();
                     $path = storage_path('app/public/export-images/prueba.png');
@@ -26,7 +26,7 @@ class ListComunas extends ListRecords
                         ->windowSize(800, 800)
                         ->save($path);
                     return response()->download($path);
-                }),
+                }),*/
             ExcelImportAction::make()
                 ->use(ComunaImport::class)
                 ->hidden(fn(): bool => Comuna::exists()),
