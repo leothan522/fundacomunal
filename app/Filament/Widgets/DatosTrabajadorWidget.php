@@ -17,6 +17,7 @@ class DatosTrabajadorWidget extends Widget implements HasSchemas
     protected string $view = 'filament.widgets.datos-trabajador-widget';
     protected static bool $isLazy = false;
     protected static ?int $sort = 5;
+    protected int | string | array $columnSpan = 'full';
 
     public mixed $datosTrabajador;
 
