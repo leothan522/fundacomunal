@@ -7,14 +7,20 @@ use App\Filament\Resources\ConsejoComunals\Pages\EditConsejoComunal;
 use App\Filament\Resources\ConsejoComunals\Pages\ListConsejoComunals;
 use App\Filament\Resources\ConsejoComunals\Schemas\ConsejoComunalForm;
 use App\Filament\Resources\ConsejoComunals\Tables\ConsejoComunalsTable;
+use App\Filament\Schemas\UbicacionGeograficaFieldset;
 use App\Models\ConsejoComunal;
 use BackedEnum;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\FontWeight;
+use Filament\Support\Enums\TextSize;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 use UnitEnum;
 
 class ConsejoComunalResource extends Resource
@@ -22,7 +28,7 @@ class ConsejoComunalResource extends Resource
     protected static ?string $model = ConsejoComunal::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-    protected static string | UnitEnum | null $navigationGroup = 'OBPP';
+    protected static string|UnitEnum|null $navigationGroup = 'OBPP';
     protected static ?int $navigationSort = 81;
     protected static ?string $modelLabel = 'Consejo Comunal';
     protected static ?string $pluralModelLabel = 'Consejos Comunales';
@@ -67,4 +73,58 @@ class ConsejoComunalResource extends Resource
                 SoftDeletingScope::class,
             ]);
     }
+
+    public static function infolist(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                Fieldset::make('Datos Básicos')
+                    ->schema([
+                        TextEntry::make('nombre')
+                            ->formatStateUsing(fn(string $state): string => Str::upper($state))
+                            ->inlineLabel()
+                            ->size(TextSize::Medium)
+                            ->weight(FontWeight::Bold)
+                            ->color('primary')
+                            ->copyable(),
+                        TextEntry::make('situr_viejo')
+                            ->label('SITUR Viejo')
+                            ->formatStateUsing(fn(string $state): string => Str::upper($state))
+                            ->default('-')
+                            ->inlineLabel()
+                            ->size(TextSize::Medium)
+                            ->weight(FontWeight::Bold)
+                            ->color('primary')
+                            ->copyable(),
+                        TextEntry::make('situr_nuevo')
+                            ->label('SITUR Nuevo')
+                            ->formatStateUsing(fn(string $state): string => Str::upper($state))
+                            ->default('-')
+                            ->inlineLabel()
+                            ->size(TextSize::Medium)
+                            ->weight(FontWeight::Bold)
+                            ->color('primary')
+                            ->copyable(),
+                        TextEntry::make('tipo')
+                            ->formatStateUsing(fn(string $state): string => Str::upper($state))
+                            ->inlineLabel()
+                            ->size(TextSize::Medium)
+                            ->weight(FontWeight::Bold)
+                            ->color('primary')
+                            ->copyable(),
+                        TextEntry::make('comuna.nombre')
+                            ->label('Circuito o Comuna')
+                            ->formatStateUsing(fn(string $state): string => Str::upper($state))
+                            ->inlineLabel()
+                            ->size(TextSize::Medium)
+                            ->weight(FontWeight::Bold)
+                            ->color('primary')
+                            ->copyable()
+                            ->hidden(fn(?string $state): bool => empty($state)),
+                    ])
+                    ->columns(1),
+                UbicacionGeograficaFieldset::schema(),
+            ]);
+    }
+
 }

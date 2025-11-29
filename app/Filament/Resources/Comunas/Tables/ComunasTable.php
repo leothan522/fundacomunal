@@ -78,7 +78,10 @@ class ComunasTable
             ])
             ->recordActions([
                 ActionGroup::make([
-                    ViewAction::make(),
+                    ViewAction::make()
+                    ->extraModalFooterActions(fn(Action $action): array => [
+                        EditAction::make(),
+                    ]),
                     EditAction::make(),
                     DeleteAction::make(),
                 ])
