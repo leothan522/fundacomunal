@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Comunas;
 use App\Filament\Resources\Comunas\Pages\CreateComuna;
 use App\Filament\Resources\Comunas\Pages\EditComuna;
 use App\Filament\Resources\Comunas\Pages\ListComunas;
+use App\Filament\Resources\Comunas\RelationManagers\ConsejosRelationManager;
 use App\Filament\Resources\Comunas\Schemas\ComunaForm;
 use App\Filament\Resources\Comunas\Tables\ComunasTable;
 use App\Filament\Schemas\UbicacionGeograficaFieldset;
@@ -53,7 +54,7 @@ class ComunaResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ConsejosRelationManager::class
         ];
     }
 

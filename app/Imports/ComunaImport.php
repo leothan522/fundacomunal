@@ -31,14 +31,16 @@ class ComunaImport implements ToCollection, WithStartRow
                 $codSITUR = $fecha;
             }
 
+            $estados_id = Estado::where('nombre', 'GUARICO')->first()?->id;
+
             Comuna::create([
                 'nombre' => $nombre,
                 'cod_com' => $codCOM,
                 'cod_situr' => $codSITUR,
                 'cantidad_cc' => $cantidadCC,
                 'redis_id' => Redi::where('nombre', 'LLANOS')->first()?->id,
-                'estados_id' => Estado::where('nombre', 'GUARICO')->first()?->id,
-                'municipios_id' => Municipio::where('nombre_cne', $municipio)->first()?->id,
+                'estados_id' => $estados_id,
+                'municipios_id' => Municipio::where('estados_id', $estados_id)->where('nombre_cne', $municipio)->first()?->id,
                 'parroquia' => $parroquia
             ]);
 
