@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ExportsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -35,3 +36,5 @@ Route::get('/instalar-app', function () {
     }
     return redirect()->route('web.index');
 })->name('descargar-app.android');*/
+
+Route::get('descargar/data-obpp', [ExportsController::class, 'exportConsejosComunales'])->name('descargar.data-obpp');

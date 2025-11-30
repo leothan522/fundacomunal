@@ -15,6 +15,8 @@ class ConsejoComunal extends Model
         'situr_viejo',
         'situr_nuevo',
         'tipo',
+        'fecha_asamblea',
+        'fecha_vencimiento',
         'comunas_id',
         'redis_id',
         'estados_id',

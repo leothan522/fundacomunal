@@ -6,6 +6,7 @@ use App\Filament\Resources\ConsejoComunals\ConsejoComunalResource;
 use App\Imports\ConsejoComunalImport;
 use App\Models\ConsejoComunal;
 use EightyNine\ExcelImport\ExcelImportAction;
+use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
@@ -16,6 +17,8 @@ class ListConsejoComunals extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('export-obpp')
+                ->url(route('descargar.data-obpp')),
             ExcelImportAction::make()
                 ->use(ConsejoComunalImport::class)
                 ->hidden(fn(): bool => ConsejoComunal::exists()),

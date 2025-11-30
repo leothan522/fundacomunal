@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('situr_viejo')->nullable();
             $table->string('situr_nuevo')->nullable();
             $table->string('tipo');
+            $table->date('fecha_asamblea')->nullable();
+            $table->date('fecha_vencimiento')->nullable();
             $table->unsignedBigInteger('comunas_id')->nullable();
             $table->unsignedBigInteger('redis_id')->nullable();
             $table->unsignedBigInteger('estados_id')->nullable();

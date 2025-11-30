@@ -113,6 +113,22 @@ class ConsejoComunalResource extends Resource
                             ->weight(FontWeight::Bold)
                             ->color('primary')
                             ->copyable(),
+                        TextEntry::make('fecha_asamblea')
+                            ->date()
+                            ->inlineLabel()
+                            ->size(TextSize::Medium)
+                            ->weight(FontWeight::Bold)
+                            ->color('primary')
+                            ->copyable()
+                            ->hidden(fn($state): bool => empty($state)),
+                        TextEntry::make('fecha_vencimiento')
+                            ->date()
+                            ->inlineLabel()
+                            ->size(TextSize::Medium)
+                            ->weight(FontWeight::Bold)
+                            ->color('primary')
+                            ->copyable()
+                            ->hidden(fn($state): bool => empty($state)),
                         TextEntry::make('comuna.nombre')
                             ->label('Circuito o Comuna')
                             ->formatStateUsing(fn(string $state): string => Str::upper($state))
