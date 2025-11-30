@@ -51,14 +51,18 @@ class ObppWidget extends StatsOverviewWidget
 
     public function getPorcentaje(): string
     {
+        $response = '0';
         $totalConsejosComunales = ConsejoComunal::count();
         $vinculadosComunas = ConsejoComunal::has('comuna')->count();
-        $porcentaje = ($vinculadosComunas / $totalConsejosComunales) * 100;
-        $response = round($porcentaje, 2);
+        if ($totalConsejosComunales > 0 && $vinculadosComunas > 0){
+            $porcentaje = ($vinculadosComunas / $totalConsejosComunales) * 100;
+            $response = round($porcentaje, 2);
+        }
+
         return formatoMillares($response);
     }
 
-    public function getTrabajadores()
+    public function getTrabajadores(): int
     {
         return GestionHumana::count();
     }

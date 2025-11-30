@@ -107,6 +107,7 @@ class ComunasTable
                         Column::make('nombre')->heading('CIRCUITO O COMUNA')->formatStateUsing(fn($state) => Str::upper($state)),
                         Column::make('cantidad_cc')->heading('CANDIDAD C.C.')->formatStateUsing(fn($record) => $record->consejos->count()),
                     ])
+                    ->withFilename('Circuitos_o_Comunas_'.date('d-m-Y'))
                 ]),
                 Action::make('actualizar')
                     ->icon(Heroicon::ArrowPath)

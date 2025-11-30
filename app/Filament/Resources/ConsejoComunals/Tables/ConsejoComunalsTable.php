@@ -111,6 +111,7 @@ class ConsejoComunalsTable
                         Column::make('fecha_asamblea')->heading('FECHA DE ASAMBLEA')->formatStateUsing(fn($state) => $state ? getFecha($state) : null),
                         Column::make('fecha_vencimiento')->heading('FECHA DE VENCIMIENTO')->formatStateUsing(fn($state) => $state ? getFecha($state) : null),
                     ])
+                        ->withFilename('Consejos_Comunales_'.date('d-m-Y'))
                 ]),
                 Action::make('actualizar')
                     ->icon(Heroicon::ArrowPath)
