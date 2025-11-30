@@ -38,3 +38,4 @@ Route::get('/instalar-app', function () {
 })->name('descargar-app.android');*/
 
 Route::get('descargar/data-obpp', [ExportsController::class, 'exportConsejosComunales'])->name('descargar.data-obpp');
+Route::get('descargar/gestion-humana', [ExportsController::class, 'exportGestionHumana'])->name('descargar.gestion-humana');
