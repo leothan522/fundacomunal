@@ -16,7 +16,7 @@
     </thead>
     <tbody>
 
-    @foreach($consejos as $data)
+    @foreach($rows as $data)
         <tr>
             <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->municipio->nombre) }}</td>
             <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->parroquia) }}</td>

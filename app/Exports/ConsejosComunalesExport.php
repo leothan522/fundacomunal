@@ -4,7 +4,6 @@ namespace App\Exports;
 
 use App\Models\ConsejoComunal;
 use Illuminate\Contracts\View\View;
-use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
@@ -17,7 +16,7 @@ class ConsejosComunalesExport implements FromView, WithTitle, ShouldAutoSize, Wi
     {
         $consejosComunales = ConsejoComunal::get();
         return \view('exports.consejos-comunales')
-            ->with('consejos', $consejosComunales);
+            ->with('rows', $consejosComunales);
     }
 
     public function title(): string

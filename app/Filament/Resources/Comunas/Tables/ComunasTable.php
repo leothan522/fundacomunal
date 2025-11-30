@@ -19,6 +19,9 @@ use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
+use pxlrbt\FilamentExcel\Actions\ExportBulkAction;
+use pxlrbt\FilamentExcel\Columns\Column;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
 
 class ComunasTable
 {
@@ -94,6 +97,16 @@ class ComunasTable
                         ->authorizeIndividualRecords('forceDelete'),
                     RestoreBulkAction::make()
                         ->authorizeIndividualRecords('restore'),
+                ]),
+                ExportBulkAction::make()->exports([
+                    ExcelExport::make()->withColumns([
+                        Column::make('municipio.nombre')->heading('MUNICIPIO')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('parroquia')->heading('PARROQUIA')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('cod_com')->heading('COD. COM')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('cod_situr')->heading('COD. SITUR')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('nombre')->heading('CIRCUITO O COMUNA')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('cantidad_cc')->heading('CANDIDAD C.C.')->formatStateUsing(fn($record) => $record->consejos->count()),
+                    ])
                 ]),
                 Action::make('actualizar')
                     ->icon(Heroicon::ArrowPath)

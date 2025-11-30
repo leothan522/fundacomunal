@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\ConsejosComunalesExport;
+use App\Exports\ObppExport;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\Exception;
@@ -15,6 +15,6 @@ class ExportsController extends Controller
      */
     public function exportConsejosComunales()
     {
-        return Excel::download(new ConsejosComunalesExport(), 'prueba.xlsx');
+        return Excel::download(new ObppExport(), 'DATA_OBPP_GUARICO.xlsx');
     }
 }

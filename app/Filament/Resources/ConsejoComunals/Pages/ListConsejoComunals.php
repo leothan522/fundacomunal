@@ -29,7 +29,8 @@ class ListConsejoComunals extends ListRecords
                     return Redirect::route('descargar.data-obpp');
                 })
                 ->modalIcon(Heroicon::OutlinedDocumentArrowDown)
-                ->modalDescription('El procedimiento tomará tiempo. No ejecute otras opciones hasta finalizar.'),
+                ->modalDescription('El procedimiento tomará tiempo. No ejecute otras opciones hasta finalizar.')
+                ->visible(isAdmin()),
             ExcelImportAction::make()
                 ->use(ConsejoComunalImport::class)
                 ->hidden(fn(): bool => ConsejoComunal::exists()),

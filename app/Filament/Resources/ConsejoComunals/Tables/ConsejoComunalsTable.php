@@ -19,6 +19,9 @@ use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
+use pxlrbt\FilamentExcel\Actions\ExportBulkAction;
+use pxlrbt\FilamentExcel\Columns\Column;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
 
 class ConsejoComunalsTable
 {
@@ -96,6 +99,18 @@ class ConsejoComunalsTable
                         ->authorizeIndividualRecords('forceDelete'),
                     RestoreBulkAction::make()
                         ->authorizeIndividualRecords('restore'),
+                ]),
+                ExportBulkAction::make()->exports([
+                    ExcelExport::make()->withColumns([
+                        Column::make('municipio.nombre')->heading('MUNICIPIO')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('parroquia')->heading('PARROQUIA')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('tipo')->heading('TIPO CONSEJO COMUNAL')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('situr_viejo')->heading('SITUR VIEJO')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('situr_nuevo')->heading('SITUR NUEVO OBPP')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('nombre')->heading('CONSEJOS COMUNALES')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('fecha_asamblea')->heading('FECHA DE ASAMBLEA')->formatStateUsing(fn($state) => $state ? getFecha($state) : null),
+                        Column::make('fecha_vencimiento')->heading('FECHA DE VENCIMIENTO')->formatStateUsing(fn($state) => $state ? getFecha($state) : null),
+                    ])
                 ]),
                 Action::make('actualizar')
                     ->icon(Heroicon::ArrowPath)
