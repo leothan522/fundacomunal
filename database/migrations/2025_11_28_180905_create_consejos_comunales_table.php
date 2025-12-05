@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('situr_viejo')->nullable();
             $table->string('situr_nuevo')->nullable();
-            $table->string('tipo');
+            $table->unsignedBigInteger('tipos_poblacion_id')->nullable();
             $table->date('fecha_asamblea')->nullable();
             $table->date('fecha_vencimiento')->nullable();
             $table->unsignedBigInteger('comunas_id')->nullable();
@@ -24,6 +24,7 @@ return new class extends Migration
             $table->unsignedBigInteger('estados_id')->nullable();
             $table->unsignedBigInteger('municipios_id')->nullable();
             $table->string('parroquia')->nullable();
+            $table->foreign('tipos_poblacion_id')->references('id')->on('tipos_poblacion')->nullOnDelete();
             $table->foreign('comunas_id')->references('id')->on('comunas')->nullOnDelete();
             $table->foreign('redis_id')->references('id')->on('redis')->nullOnDelete();
             $table->foreign('estados_id')->references('id')->on('estados')->nullOnDelete();

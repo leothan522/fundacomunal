@@ -22,13 +22,8 @@ class ConsejoComunalForm
                             ->unique(),
                         TextInput::make('situr_nuevo')
                             ->unique(),
-                        Select::make('tipo')
-                            ->options([
-                                'RURAL' => 'RURAL',
-                                'URBANO' => 'URBANO',
-                                'INDIGENA' => 'INDIGENA',
-                                'MIXTO' => 'MIXTO',
-                            ])
+                        Select::make('tipos_poblacion_id')
+                            ->relationship('tipo', 'nombre')
                             ->required(),
                         Select::make('comunas_id')
                             ->relationship('comuna', 'nombre')

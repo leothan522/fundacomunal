@@ -20,7 +20,7 @@
         <tr>
             <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->municipio->nombre) }}</td>
             <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->parroquia) }}</td>
-            <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->tipo) }}</td>
+            <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->tipo->nombre) }}</td>
             <td style="border: 1px solid #404040; text-align: center">{{ $data->comuna ? \Illuminate\Support\Str::upper($data->comuna->cod_com) : null }}</td>
             <td style="border: 1px solid #404040; text-align: center">{{ $data->comuna ? \Illuminate\Support\Str::upper($data->comuna->cod_situr) : null }}</td>
             <td style="border: 1px solid #404040; text-align: center">{{ $data->comuna ? \Illuminate\Support\Str::upper($data->comuna->nombre) : null }}</td>

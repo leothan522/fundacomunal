@@ -106,7 +106,7 @@ class ConsejoComunalResource extends Resource
                             ->weight(FontWeight::Bold)
                             ->color('primary')
                             ->copyable(),
-                        TextEntry::make('tipo')
+                        TextEntry::make('tipo.nombre')
                             ->formatStateUsing(fn(string $state): string => Str::upper($state))
                             ->inlineLabel()
                             ->size(TextSize::Medium)

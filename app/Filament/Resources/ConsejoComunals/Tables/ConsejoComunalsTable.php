@@ -49,7 +49,7 @@ class ConsejoComunalsTable
                     ->searchable()
                     ->alignCenter()
                     ->visibleFrom('md'),
-                TextColumn::make('tipo')
+                TextColumn::make('tipo.nombre')
                     ->alignCenter()
                     ->visibleFrom('md')
                     ->grow(false),
@@ -60,12 +60,7 @@ class ConsejoComunalsTable
             ])
             ->filters([
                 SelectFilter::make('tipo')
-                    ->options([
-                        'RURAL' => 'RURAL',
-                        'URBANO' => 'URBANO',
-                        'INDIGENA' => 'INDIGENA',
-                        'MIXTO' => 'MIXTO',
-                    ]),
+                    ->relationship('tipo', 'nombre'),
                 SelectFilter::make('Municipio')
                     ->relationship(
                         'municipio',
@@ -104,7 +99,7 @@ class ConsejoComunalsTable
                     ExcelExport::make()->withColumns([
                         Column::make('municipio.nombre')->heading('MUNICIPIO')->formatStateUsing(fn($state) => Str::upper($state)),
                         Column::make('parroquia')->heading('PARROQUIA')->formatStateUsing(fn($state) => Str::upper($state)),
-                        Column::make('tipo')->heading('TIPO CONSEJO COMUNAL')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('tipo.nombre')->heading('TIPO CONSEJO COMUNAL')->formatStateUsing(fn($state) => Str::upper($state)),
                         Column::make('situr_viejo')->heading('SITUR VIEJO')->formatStateUsing(fn($state) => Str::upper($state)),
                         Column::make('situr_nuevo')->heading('SITUR NUEVO OBPP')->formatStateUsing(fn($state) => Str::upper($state)),
                         Column::make('nombre')->heading('CONSEJOS COMUNALES')->formatStateUsing(fn($state) => Str::upper($state)),

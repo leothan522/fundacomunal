@@ -14,7 +14,7 @@ class ConsejoComunal extends Model
         'nombre',
         'situr_viejo',
         'situr_nuevo',
-        'tipo',
+        'tipos_poblacion_id',
         'fecha_asamblea',
         'fecha_vencimiento',
         'comunas_id',
@@ -42,6 +42,11 @@ class ConsejoComunal extends Model
     public function comuna(): BelongsTo
     {
         return $this->belongsTo(Comuna::class, 'comunas_id', 'id');
+    }
+
+    public function tipo(): BelongsTo
+    {
+        return $this->belongsTo(TipoPoblacion::class, 'tipos_poblacion_id', 'id');
     }
 
 }

@@ -7,6 +7,7 @@ use App\Models\ConsejoComunal;
 use App\Models\Estado;
 use App\Models\Municipio;
 use App\Models\Redi;
+use App\Models\TipoPoblacion;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithStartRow;
@@ -44,11 +45,15 @@ class ConsejoComunalImport implements ToCollection, WithStartRow
             $fecha_asamblea = $fecha1;
             $fecha_vencimiento = $fecha2;
 
+            $tipos_id = null;
+            $tipoPoblacion = TipoPoblacion::where('nombre', $tipo)->first();
+            $tipos_id = $tipoPoblacion?->id;
+
             ConsejoComunal::create([
                 'nombre' => $nombre,
                 'situr_viejo' => $siturViejo,
                 'situr_nuevo' => $siturNuevo,
-                'tipo' => $tipo,
+                'tipos_poblacion_id' => $tipos_id,
                 'fecha_asamblea' => $fecha_asamblea,
                 'fecha_vencimiento' => $fecha_vencimiento,
                 'comunas_id' => Comuna::where('cod_com', $codigoComuna)->first()?->id,
