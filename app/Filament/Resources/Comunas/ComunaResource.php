@@ -103,8 +103,9 @@ class ComunaResource extends Resource
                             ->weight(FontWeight::Bold)
                             ->color('primary')
                             ->copyable(),
-                        TextEntry::make('cantidad_cc')
-                            ->formatStateUsing(fn(Comuna $record): int => $record->consejos->count())
+                        TextEntry::make('cc')
+                            ->label('Cantidad C.C.')
+                            ->default(fn(Comuna $record): int => $record->consejos->count())
                             ->numeric()
                             ->inlineLabel()
                             ->size(TextSize::Medium)

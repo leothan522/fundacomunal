@@ -55,13 +55,14 @@ class ComunasTable
                     ->grow(false)
                     ->visibleFrom('md'),
                 TextColumn::make('cantidad_cc')
-                    ->label('Cantidad C.C.')
+                    ->label('Excel')
                     ->numeric()
                     ->alignCenter()
                     ->grow(false)
-                    ->visibleFrom('md'),
+                    ->visibleFrom('md')
+                    ->hidden(fn(): bool => !auth()->user()->is_root),
                 TextColumn::make('consejos_count')->counts('consejos')
-                    ->label('C.C.')
+                    ->label('Cantidad C.C.')
                     ->alignCenter()
                     ->grow(false),
                 TextColumn::make('municipio.nombre')
@@ -107,7 +108,7 @@ class ComunasTable
                         Column::make('nombre')->heading('CIRCUITO O COMUNA')->formatStateUsing(fn($state) => Str::upper($state)),
                         Column::make('cantidad_cc')->heading('CANDIDAD C.C.')->formatStateUsing(fn($record) => $record->consejos->count()),
                     ])
-                    ->withFilename('Circuitos_o_Comunas_'.date('d-m-Y'))
+                        ->withFilename('Circuitos_o_Comunas_' . date('d-m-Y'))
                 ]),
                 Action::make('actualizar')
                     ->icon(Heroicon::ArrowPath)
