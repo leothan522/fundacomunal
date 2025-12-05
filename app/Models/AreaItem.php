@@ -26,4 +26,9 @@ class AreaItem extends Model
         return $this->hasMany(AreaProceso::class, 'items_id', 'id');
     }
 
+    public function participacion(): HasMany
+    {
+        return $this->hasMany(Participacion::class, 'areas_items_id', 'id');
+    }
+
 }

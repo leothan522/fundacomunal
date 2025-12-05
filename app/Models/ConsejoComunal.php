@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ConsejoComunal extends Model
@@ -47,6 +48,11 @@ class ConsejoComunal extends Model
     public function tipo(): BelongsTo
     {
         return $this->belongsTo(TipoPoblacion::class, 'tipos_poblacion_id', 'id');
+    }
+
+    public function participacion(): HasMany
+    {
+        return $this->hasMany(Participacion::class, 'consejos_comunales_id', 'id');
     }
 
 }

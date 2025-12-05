@@ -19,4 +19,9 @@ class TipoPoblacion extends Model
         return $this->hasMany(ConsejoComunal::class, 'tipos_poblacion_id', 'id');
     }
 
+    public function participacion(): HasMany
+    {
+        return $this->hasMany(Participacion::class, 'tipos_poblacion_id', 'id');
+    }
+
 }

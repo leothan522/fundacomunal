@@ -38,4 +38,9 @@ class Municipio extends Model
         return $this->hasMany(ConsejoComunal::class, 'municipios_id', 'id');
     }
 
+    public function participacion(): HasMany
+    {
+        return $this->hasMany(Participacion::class, 'municipios_id', 'id');
+    }
+
 }

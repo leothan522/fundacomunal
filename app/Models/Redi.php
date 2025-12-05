@@ -34,4 +34,9 @@ class Redi extends Model
         return $this->hasMany(ConsejoComunal::class, 'redis_id', 'id');
     }
 
+    public function participacion(): HasMany
+    {
+        return $this->hasMany(Participacion::class, 'redis_id', 'id');
+    }
+
 }

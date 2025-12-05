@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TipoObpp extends Model
@@ -13,4 +14,10 @@ class TipoObpp extends Model
         'nombre',
         'fortalecimiento'
     ];
+
+    public function participacion(): HasMany
+    {
+        return $this->hasMany(Participacion::class, 'tipos_obpp_id', 'id');
+    }
+
 }
