@@ -32,8 +32,10 @@ return new class extends Migration
             $table->string('vocero_telefono')->nullable();
             $table->unsignedBigInteger('gestion_humana_id');
             $table->text('observacion')->nullable();
+
             $table->unsignedBigInteger('comunas_id')->nullable();
             $table->unsignedBigInteger('consejos_comunales_id')->nullable();
+            $table->unsignedBigInteger('users_id')->nullable();
 
             $table->foreign('redis_id')->references('id')->on('redis')->cascadeOnDelete();
             $table->foreign('estados_id')->references('id')->on('estados')->cascadeOnDelete();
@@ -45,6 +47,7 @@ return new class extends Migration
             $table->foreign('gestion_humana_id')->references('id')->on('gestion_humana')->cascadeOnDelete();
             $table->foreign('comunas_id')->references('id')->on('comunas')->nullOnDelete();
             $table->foreign('consejos_comunales_id')->references('id')->on('consejos_comunales')->nullOnDelete();
+            $table->foreign('users_id')->references('id')->on('users')->nullOnDelete();
 
             $table->timestamps();
             $table->softDeletes();

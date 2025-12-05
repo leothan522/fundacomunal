@@ -32,6 +32,7 @@ class Participacion extends Model
         'observacion',
         'comunas_id',
         'consejos_comunales_id',
+        'users_id',
     ];
 
     public function redi(): BelongsTo
@@ -82,6 +83,11 @@ class Participacion extends Model
     public function consejo(): BelongsTo
     {
         return $this->belongsTo(ConsejoComunal::class, 'consejos_comunales_id', 'id');
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'users_id', 'id');
     }
 
 }

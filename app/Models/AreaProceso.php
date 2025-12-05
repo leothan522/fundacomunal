@@ -14,7 +14,7 @@ class AreaProceso extends Model
         'items_id',
     ];
 
-    public function Item(): BelongsTo
+    public function item(): BelongsTo
     {
         return $this->belongsTo(AreaItem::class, 'items_id', 'id');
     }

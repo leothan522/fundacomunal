@@ -87,4 +87,9 @@ class User extends Authenticatable implements MustVerifyEmail, HasAvatar
         return $this->hasMany(GestionHumana::class, 'users_id', 'id');
     }
 
+    public function participacion(): HasMany
+    {
+        return $this->hasMany(Participacion::class, 'users_id', 'id');
+    }
+
 }
