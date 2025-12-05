@@ -33,6 +33,7 @@ class Participacion extends Model
         'comunas_id',
         'consejos_comunales_id',
         'users_id',
+        'estatus',
     ];
 
     public function redi(): BelongsTo

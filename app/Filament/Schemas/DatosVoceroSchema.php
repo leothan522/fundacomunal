@@ -31,7 +31,7 @@ class DatosVoceroSchema
                     ->relationship(
                         'promotor',
                         'nombre',
-                        fn(Builder $query) => $query->whereRelation('tipoPersonal', 'nombre', 'PROMOTORES')
+                        fn(Builder $query) => $query->whereRelation('tipoPersonal', 'nombre', 'PROMOTORES')->orderBy('nombre')
                     )
                     ->searchable(['nombre', 'apellido'])
                     ->preload()
@@ -45,7 +45,7 @@ class DatosVoceroSchema
                         return $response;
                     })
                     ->afterStateUpdated(function (Set $set, Get $get): void {
-                        if (isAdmin()){
+                        if (isAdmin()) {
                             $gestionHumana = GestionHumana::find($get('gestion_humana_id'));
                             if ($gestionHumana) {
                                 $set('redis_id', $gestionHumana->redis_id);

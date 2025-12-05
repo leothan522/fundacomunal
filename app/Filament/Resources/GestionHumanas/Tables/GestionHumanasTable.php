@@ -85,8 +85,8 @@ class GestionHumanasTable
             ->filters([
                 SelectFilter::make('Labor que Ejerce')
                     ->relationship('tipoPersonal', 'nombre')
-                    ->searchable()
-                    ->preload(),
+                    /*->searchable()
+                    ->preload()*/,
                 SelectFilter::make('Municipio')
                     ->relationship(
                         'municipio',
@@ -97,8 +97,8 @@ class GestionHumanasTable
                     ->preload(),
                 SelectFilter::make('Categoria')
                     ->relationship('categoria', 'nombre')
-                    ->searchable()
-                    ->preload(),
+                    /*->searchable()
+                    ->preload()*/,
                 TrashedFilter::make(),
             ])
             ->recordActions([

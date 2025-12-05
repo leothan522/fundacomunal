@@ -36,6 +36,7 @@ return new class extends Migration
             $table->unsignedBigInteger('comunas_id')->nullable();
             $table->unsignedBigInteger('consejos_comunales_id')->nullable();
             $table->unsignedBigInteger('users_id')->nullable();
+            $table->boolean('estatus')->nullable();
 
             $table->foreign('redis_id')->references('id')->on('redis')->cascadeOnDelete();
             $table->foreign('estados_id')->references('id')->on('estados')->cascadeOnDelete();

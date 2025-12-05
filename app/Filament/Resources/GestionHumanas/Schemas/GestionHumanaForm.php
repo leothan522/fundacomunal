@@ -52,14 +52,10 @@ class GestionHumanaForm
                         Select::make('tipos_personal_id')
                             ->label('Labor que Ejerce')
                             ->relationship('tipoPersonal', 'nombre')
-                            ->searchable()
-                            ->preload()
                             ->required(),
                         Select::make('categorias_id')
                             ->label('Categoria')
                             ->relationship('categoria', 'nombre')
-                            ->searchable()
-                            ->preload()
                             ->required(),
                         TextInput::make('ente')
                             ->label('Órgano o Ente Adscrito')
