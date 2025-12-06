@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Filament\Auth\Http\Responses\Contracts\LogoutResponse;
 use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Support\Facades\Blade;
@@ -16,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(LogoutResponse::class, \App\Http\Responses\LogoutResponse::class);
     }
 
     /**
