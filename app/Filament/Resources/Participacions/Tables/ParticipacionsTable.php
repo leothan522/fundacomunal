@@ -15,11 +15,13 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
@@ -94,6 +96,64 @@ class ParticipacionsTable
                     ->grow(false),
             ])
             ->filters([
+                Filter::make('fecha')
+                    ->schema([
+                        Select::make('tipo_reporte')
+                            ->label('Reporte')
+                            ->options([
+                                'semana-actual' => 'Semana Actual',
+                                'semana-anterior' => 'Semana Anterior',
+                                'semana-proxima' => 'Semana Próxima',
+                                'mes-actual' => 'Mes Actual',
+                                'mes-anterior' => 'Mes Anterior',
+                            ])
+                    ])
+                    ->indicateUsing(function (array $data): ?string{
+                        if (!$data['tipo_reporte']) {
+                            return null;
+                        }
+                        return 'Reporte: '.Str::upper($data['tipo_reporte']);
+                    })
+                    ->query(function (Builder $query, array $data): Builder {
+
+                        if (!$data['tipo_reporte']) {
+                            return $query;
+                        }
+
+                        $hoy = Carbon::today();
+                        $inicio = null;
+                        $fin = null;
+
+                        switch ($data['tipo_reporte']) {
+                            case 'semana-actual':
+                                $inicio = $hoy->copy()->startOfWeek();
+                                $fin = $hoy->copy()->endOfWeek();
+                                break;
+
+                            case 'semana-anterior':
+                                $inicio = $hoy->copy()->subWeek()->startOfWeek();
+                                $fin = $hoy->copy()->subWeek()->endOfWeek();
+                                break;
+
+                            case 'semana-proxima':
+                                $inicio = $hoy->copy()->addWeek()->startOfWeek();
+                                $fin = $hoy->copy()->addWeek()->endOfWeek();
+                                break;
+
+                            case 'mes-actual':
+                                $inicio = $hoy->copy()->startOfMonth();
+                                $fin = $hoy->copy()->endOfMonth();
+                                break;
+
+                            case 'mes-anterior':
+                                $inicio = $hoy->copy()->subMonth()->startOfMonth();
+                                $fin = $hoy->copy()->subMonth()->endOfMonth();
+                                break;
+                        }
+
+                        return $query->whereBetween('fecha', [$inicio, $fin]);
+
+                    }),
                 SelectFilter::make('municipio')
                     ->relationship(
                         'municipio',
@@ -155,7 +215,7 @@ class ParticipacionsTable
                         })
                         ->modalIcon(Heroicon::OutlinedCheckCircle)
                         ->modalWidth(Width::Small)
-                        ->modalDescription(fn(Participacion $record) => getFecha($record->fecha).' - '.Str::upper($record->nombre_obpp))
+                        ->modalDescription(fn(Participacion $record) => getFecha($record->fecha) . ' - ' . Str::upper($record->nombre_obpp))
                         ->hidden(fn(Participacion $record): bool => !is_null($record->estatus)),
                     Action::make('no_realizada')
                         ->label('Suspendida')
@@ -167,7 +227,7 @@ class ParticipacionsTable
                             $record->save();
                         })
                         ->modalIcon(Heroicon::OutlinedBackspace)
-                        ->modalDescription(fn(Participacion $record) => getFecha($record->fecha).' - '.Str::upper($record->nombre_obpp))
+                        ->modalDescription(fn(Participacion $record) => getFecha($record->fecha) . ' - ' . Str::upper($record->nombre_obpp))
                         ->hidden(fn(Participacion $record): bool => !is_null($record->estatus)),
                     Action::make('reset_actividad')
                         ->label('Reset Actividad')
