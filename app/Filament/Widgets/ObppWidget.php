@@ -36,7 +36,7 @@ class ObppWidget extends StatsOverviewWidget
                 ->visible(fn(): bool => isAdmin() || auth()->user()->hasRole('GESTION HUMANA'))
                 ->extraAttributes(['onclick' => "Alpine.store('loader').show()"]),
             Stat::make('Planificación Semanal', 'Participación')
-                ->description($this->getActividadesParticipacion().' actividades')
+                ->description(fn(): string => $this->getActividadesParticipacion() > 1 ? $this->getActividadesParticipacion().' actividades' : $this->getActividadesParticipacion().' actividad')
                 ->color('primary')
                 ->url(route('filament.dashboard.resources.participacion.index'))
                 ->visible(fn(): bool => isAdmin() || auth()->user()->hasRole('PARTICIPACION'))
