@@ -27,9 +27,22 @@ class ObppWidget extends StatsOverviewWidget
                 ->url(route('filament.dashboard.resources.consejos-comunales.index'))
                 ->extraAttributes(['onclick' => "Alpine.store('loader').show()"]),
             Stat::make('Trabajadores', $this->getTrabajadores())
-                ->description('56 promotores')
+                ->description($this->getPromotores().' promotores')
                 ->color('primary')
                 ->url(route('filament.dashboard.resources.gestion-humana.index'))
+                ->visible(fn(): bool => isAdmin() || auth()->user()->hasRole('GESTION HUMANA'))
+                ->extraAttributes(['onclick' => "Alpine.store('loader').show()"]),
+            Stat::make('Planificación Semanal', 'Participación')
+                ->description('45 actividades')
+                ->color('primary')
+                ->url(route('filament.dashboard.resources.participacion.index'))
+                ->visible(fn(): bool => isAdmin() || auth()->user()->hasRole('PARTICIPACION'))
+                ->extraAttributes(['onclick' => "Alpine.store('loader').show()"]),
+            Stat::make('Planificación Semanal', 'Participacion')
+                ->description('45 actividades')
+                ->color('primary')
+                ->url(route('filament.dashboard.resources.participacion.index'))
+                ->hidden()
                 ->extraAttributes(['onclick' => "Alpine.store('loader').show()"]),
         ];
     }
@@ -65,6 +78,11 @@ class ObppWidget extends StatsOverviewWidget
     public function getTrabajadores(): int
     {
         return GestionHumana::count();
+    }
+
+    public function getPromotores(): int
+    {
+        return GestionHumana::whereRelation('tipoPersonal', 'nombre', 'PROMOTORES')->count();
     }
 
 }
