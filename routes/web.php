@@ -39,3 +39,4 @@ Route::get('/instalar-app', function () {
 
 Route::get('descargar/data-obpp', [ExportsController::class, 'exportConsejosComunales'])->name('descargar.data-obpp');
 Route::get('descargar/gestion-humana', [ExportsController::class, 'exportGestionHumana'])->name('descargar.gestion-humana');
+Route::get('descargar/participacion/{tipoReporte}', [ExportsController::class, 'exportParticipacion'])->name('descargar.participacion');

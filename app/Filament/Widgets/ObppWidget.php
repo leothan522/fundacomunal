@@ -5,9 +5,12 @@ namespace App\Filament\Widgets;
 use App\Models\Comuna;
 use App\Models\ConsejoComunal;
 use App\Models\GestionHumana;
+use App\Models\Participacion;
+use Carbon\Carbon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
+use Illuminate\Database\Eloquent\Builder;
 
 class ObppWidget extends StatsOverviewWidget
 {
@@ -27,13 +30,13 @@ class ObppWidget extends StatsOverviewWidget
                 ->url(route('filament.dashboard.resources.consejos-comunales.index'))
                 ->extraAttributes(['onclick' => "Alpine.store('loader').show()"]),
             Stat::make('Trabajadores', $this->getTrabajadores())
-                ->description($this->getPromotores().' promotores')
+                ->description($this->getPromotores() . ' promotores')
                 ->color('primary')
                 ->url(route('filament.dashboard.resources.gestion-humana.index'))
                 ->visible(fn(): bool => isAdmin() || auth()->user()->hasRole('GESTION HUMANA'))
                 ->extraAttributes(['onclick' => "Alpine.store('loader').show()"]),
             Stat::make('Planificación Semanal', 'Participación')
-                ->description('45 actividades')
+                ->description($this->getActividadesParticipacion().' actividades')
                 ->color('primary')
                 ->url(route('filament.dashboard.resources.participacion.index'))
                 ->visible(fn(): bool => isAdmin() || auth()->user()->hasRole('PARTICIPACION'))
@@ -67,7 +70,7 @@ class ObppWidget extends StatsOverviewWidget
         $response = '0';
         $totalConsejosComunales = ConsejoComunal::count();
         $vinculadosComunas = ConsejoComunal::has('comuna')->count();
-        if ($totalConsejosComunales > 0 && $vinculadosComunas > 0){
+        if ($totalConsejosComunales > 0 && $vinculadosComunas > 0) {
             $porcentaje = ($vinculadosComunas / $totalConsejosComunales) * 100;
             $response = round($porcentaje, 2);
         }
@@ -83,6 +86,21 @@ class ObppWidget extends StatsOverviewWidget
     public function getPromotores(): int
     {
         return GestionHumana::whereRelation('tipoPersonal', 'nombre', 'PROMOTORES')->count();
+    }
+
+    public function getActividadesParticipacion(): int
+    {
+        $inicio = Carbon::now()->startOfWeek();
+        $fin = Carbon::now()->endOfWeek();
+        $query = Participacion::query();
+        if (!isAdmin()) {
+            $query->where(function (Builder $subQuery) {
+                $subQuery->whereRelation('promotor', 'users_id', auth()->id())
+                    ->orWhere('users_id', auth()->id());
+            });
+
+        }
+        return $query->whereBetween('fecha', [$inicio, $fin])->count();
     }
 
 }
