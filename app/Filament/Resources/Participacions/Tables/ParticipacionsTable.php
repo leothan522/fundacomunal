@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Participacions\Tables;
 use App\Models\AreaItem;
 use App\Models\GestionHumana;
 use App\Models\Participacion;
+use Carbon\Carbon;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
@@ -24,6 +25,9 @@ use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
+use pxlrbt\FilamentExcel\Actions\ExportBulkAction;
+use pxlrbt\FilamentExcel\Columns\Column;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
 
 class ParticipacionsTable
 {
@@ -190,6 +194,34 @@ class ParticipacionsTable
                         ->authorizeIndividualRecords('forceDelete'),
                     RestoreBulkAction::make()
                         ->authorizeIndividualRecords('restore'),
+                ]),
+                ExportBulkAction::make()->exports([
+                    ExcelExport::make()->withColumns([
+                        Column::make('fecha')->heading('FECHA')->formatStateUsing(fn($state) => Carbon::parse($state)->format('d/m/Y')),
+                        Column::make('redi.nombre')->heading('REDI'),
+                        Column::make('estado.nombre')->heading('ESTADO'),
+                        Column::make('municipio.nombre')->heading('MUNICIPIO'),
+                        Column::make('parroquia')->heading('PARROQUIA')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('localidad')->heading('LOCALIDAD')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('cantidad_cc')->heading('CANTIDAD DE CC PARTICIPANTES EN ACTIVIDAD MUNICIPAL/ESTADAL'),
+                        Column::make('obpp.nombre')->heading('TIPO DE OBPP')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('situr_obpp')->heading('CÓDIGO SITUR DE LA OBPP')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('nombre_obpp')->heading('NOMBRE DE LA OBPP')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('poblacion.nombre')->heading('TIPO DE CONSEJO COMUNAL/COMUNA')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('area.nombre')->heading('ACOMPAÑAMIENTO')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('proceso.nombre')->heading('PROCESO')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('cantidad_familias')->heading('CANTIDAD DE FAMILIAS BENEFICIADAS '),
+                        Column::make('cantidad_asistentes')->heading('CANTIDAD DE PERSONAS ASISTENTES A LA ACTIVIDAD'),
+                        Column::make('vocero_nombre')->heading('NOMBRE Y APELLIDO')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('vocero_telefono')->heading('TELÉFONO'),
+                        Column::make('promotor.nombre')->heading('NOMBRE')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('promotor.apellido')->heading('APELLIDO')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('promotor.cedula')->heading('CÉDULA'),
+                        Column::make('promotor.telefono')->heading('TELÉFONO'),
+                        Column::make('promotor.email')->heading('CORREO')->formatStateUsing(fn($state) => Str::lower($state)),
+                        Column::make('promotor.ente')->heading('ÓRGANO O ENTE ADSCRITO')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('observacion')->heading('OBSERVACIÓN')->formatStateUsing(fn($state) => Str::upper($state)),
+                    ])
                 ]),
                 Action::make('actualizar')
                     ->icon(Heroicon::ArrowPath)
