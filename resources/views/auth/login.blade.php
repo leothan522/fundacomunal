@@ -2,6 +2,10 @@
 
 @section('title', __('Log in'))
 
+@push('css')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+@endpush
+
 @section('content')
     <form class="needs-validation" method="POST" action="{{ route('login') }}" novalidate>
         @csrf
@@ -35,13 +39,28 @@
             </div>
         </div>
 
-        <div class="form-floating mb-3 has-validation">
+        {{--<div class="form-floating mb-3 has-validation">
             <input id="password" type="password" class="form-control" name="password" placeholder="Password" required>
             <label for="password">{{ __('Password') }}</label>
             <div class="invalid-feedback">
                 Por favor ingrese su {{ __('Password') }}.
             </div>
+        </div>--}}
+
+        <div class="form-floating mb-3 has-validation position-relative">
+            <input id="password" type="password" class="form-control" name="password" placeholder="Password" required>
+            <label for="password">{{ __('Password') }}</label>
+            <div class="invalid-feedback">
+                Por favor ingrese su {{ __('Password') }}.
+            </div>
+
+            <!-- Botón para mostrar/ocultar -->
+            <button type="button" class="btn btn-sm btn-outline-secondary position-absolute top-50 end-0 translate-middle-y me-2"
+                    onclick="togglePassword()">
+                <i id="toggleIcon" class="bi bi-eye"></i>
+            </button>
         </div>
+
 
         <div class="mb-3 ms-1 has-validation">
             <label for="remember_me" class="flex items-center">
@@ -68,3 +87,21 @@
 
     </form>
 @endsection
+
+@push('js')
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('toggleIcon');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('bi-eye');
+                toggleIcon.classList.add('bi-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('bi-eye-slash');
+                toggleIcon.classList.add('bi-eye');
+            }
+        }
+    </script>
+@endpush
