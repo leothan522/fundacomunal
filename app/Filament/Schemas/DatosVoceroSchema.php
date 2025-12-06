@@ -17,7 +17,7 @@ class DatosVoceroSchema
         return Section::make('Datos del Vocero')
             ->schema([
                 TextInput::make('vocero_nombre')
-                    ->label('Nombre y Apllido')
+                    ->label('Nombre y Apellido')
                     ->required(),
                 TextInput::make('vocero_telefono')
                     ->label('Teléfono')

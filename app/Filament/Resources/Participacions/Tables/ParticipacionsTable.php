@@ -151,9 +151,10 @@ class ParticipacionsTable
                         })
                         ->modalIcon(Heroicon::OutlinedCheckCircle)
                         ->modalWidth(Width::Small)
+                        ->modalDescription(fn(Participacion $record) => getFecha($record->fecha).' - '.Str::upper($record->nombre_obpp))
                         ->hidden(fn(Participacion $record): bool => !is_null($record->estatus)),
                     Action::make('no_realizada')
-                        ->label('No Realizada')
+                        ->label('Suspendida')
                         ->icon(Heroicon::OutlinedBackspace)
                         ->requiresConfirmation()
                         ->color('info')
@@ -162,6 +163,7 @@ class ParticipacionsTable
                             $record->save();
                         })
                         ->modalIcon(Heroicon::OutlinedBackspace)
+                        ->modalDescription(fn(Participacion $record) => getFecha($record->fecha).' - '.Str::upper($record->nombre_obpp))
                         ->hidden(fn(Participacion $record): bool => !is_null($record->estatus)),
                     Action::make('reset_actividad')
                         ->label('Reset Actividad')

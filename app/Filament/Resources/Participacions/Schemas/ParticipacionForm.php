@@ -76,6 +76,7 @@ class ParticipacionForm
                             )
                             ->disabled(fn(Get $get): bool => empty($get('areas_items_id'))),
                         Textarea::make('observacion')
+                            ->label('Observación')
                             ->columnSpanFull(),
                     ])
                     ->columns(4)
