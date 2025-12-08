@@ -5,6 +5,8 @@ namespace App\Filament\Resources\Participacions\Schemas;
 use App\Filament\Schemas\DatosVoceroSchema;
 use App\Filament\Schemas\UbicacionGeograficaSchema;
 use App\Models\AreaItem;
+use App\Models\Comuna;
+use App\Models\ConsejoComunal;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -38,13 +40,60 @@ class ParticipacionForm
                             ->label('Tipo de OBPP')
                             ->relationship('obpp', 'nombre')
                             ->required(),
-                        TextInput::make('situr_obpp')
+                        /*TextInput::make('situr_obpp')
                             ->label('Código SITUR de la OBPP')
-                            ->required(),
-                        TextInput::make('nombre_obpp')
+                            ->required(),*/
+                        /*TextInput::make('nombre_obpp')
                             ->label('Nombre de la OBPP')
                             ->required()
-                            ->columnSpan(2),
+                            ->columnSpan(2),*/
+                        Select::make('situr_obpp')
+                            ->label('Código SITUR de la OBPP')
+                            ->required()
+                            ->searchable()
+                            ->getSearchResultsUsing(function (string $search) {
+                                $options['Consejos Comunales'] = array_merge(
+                                    ConsejoComunal::query()
+                                        ->where('situr_nuevo', 'like', "%{$search}%")
+                                        ->limit(30)
+                                        ->pluck('situr_nuevo', 'situr_nuevo')
+                                        ->toArray(),
+                                    ConsejoComunal::query()
+                                        ->where('situr_viejo', 'like', "%{$search}%")
+                                        ->limit(30)
+                                        ->pluck('situr_viejo', 'situr_viejo')
+                                        ->toArray()
+                                );
+
+                                $options['Circuitos o Comunas'] = Comuna::query()
+                                    ->where('cod_situr', 'like', "%{$search}%")
+                                    ->limit(50)
+                                    ->pluck('cod_situr', 'cod_situr')
+                                    ->toArray();
+                                $options['Otro'] = [$search => $search];
+                                return $options;
+                            })
+                            ->getOptionLabelUsing(fn($value): ?string => ConsejoComunal::find($value)?->nombre ?? $value),
+                        Select::make('nombre_obpp')
+                            ->label('Nombre de la OBPP')
+                            ->required()
+                            ->columnSpan(2)
+                            ->searchable()
+                            ->getSearchResultsUsing(function (string $search) {
+                                $options['Consejos Comunales'] = ConsejoComunal::query()
+                                    ->where('nombre', 'like', "%{$search}%")
+                                    ->limit(50)
+                                    ->pluck('nombre', 'nombre')
+                                    ->toArray();
+                                $options['Circuitos o Comunas'] = Comuna::query()
+                                    ->where('nombre', 'like', "%{$search}%")
+                                    ->limit(50)
+                                    ->pluck('nombre', 'nombre')
+                                    ->toArray();
+                                $options['Otro'] = [$search => $search];
+                                return $options;
+                            })
+                            ->getOptionLabelUsing(fn($value): ?string => ConsejoComunal::find($value)?->nombre ?? $value),
                         Select::make('tipos_poblacion_id')
                             ->label('Tipo de C.C./Comuna')
                             ->relationship('poblacion', 'nombre')
@@ -59,8 +108,6 @@ class ParticipacionForm
                                 'nombre',
                                 fn(Builder $query) => $query->whereRelation('area', 'nombre', 'PARTICIPACION')
                             )
-                            /*->searchable()
-                            ->preload()*/
                             ->afterStateUpdated(function (Set $set): void {
                                 $set('areas_procesos_id', null);
                             })
