@@ -5,26 +5,19 @@ namespace App\Filament\Resources\GestionHumanas;
 use App\Filament\Resources\GestionHumanas\Pages\CreateGestionHumana;
 use App\Filament\Resources\GestionHumanas\Pages\EditGestionHumana;
 use App\Filament\Resources\GestionHumanas\Pages\ListGestionHumanas;
-use App\Filament\Resources\GestionHumanas\Pages\ViewGestionHumana;
 use App\Filament\Resources\GestionHumanas\Schemas\GestionHumanaForm;
+use App\Filament\Resources\GestionHumanas\Schemas\GestionHumanaInfoList;
 use App\Filament\Resources\GestionHumanas\Tables\GestionHumanasTable;
-use App\Filament\Schemas\DatosTrabajadorSchema;
 use App\Models\GestionHumana;
 use BackedEnum;
-use Carbon\Carbon;
-use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
-use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Schema;
-use Filament\Support\Enums\FontWeight;
-use Filament\Support\Enums\TextSize;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Str;
 use UnitEnum;
 
 class GestionHumanaResource extends Resource
@@ -85,9 +78,7 @@ class GestionHumanaResource extends Resource
 
     public static function infolist(Schema $schema): Schema
     {
-        return $schema
-            ->dense()
-            ->components(DatosTrabajadorSchema::schema());
+        return GestionHumanaInfoList::configure($schema);
     }
 
 }

@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\Comunas\Schemas;
 
-use App\Filament\Schemas\UbicacionGeograficaSchema;
+use App\Filament\Schemas\UbicacionGeograficaForm;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
@@ -40,7 +40,7 @@ class ComunaForm
                     ])
                     ->compact()
                     ->collapsible(),
-                UbicacionGeograficaSchema::schema(),
+                UbicacionGeograficaForm::schema(),
             ]);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\GestionHumanas\Schemas;
 
-use App\Filament\Schemas\UbicacionGeograficaSchema;
+use App\Filament\Schemas\UbicacionGeograficaForm;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -68,7 +68,7 @@ class GestionHumanaForm
                     ])
                     ->compact()
                     ->collapsible(),
-                UbicacionGeograficaSchema::schema(),
+                UbicacionGeograficaForm::schema(),
             ]);
     }
 }

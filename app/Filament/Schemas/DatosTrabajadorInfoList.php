@@ -10,7 +10,7 @@ use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\TextSize;
 use Illuminate\Support\Str;
 
-class DatosTrabajadorSchema
+class DatosTrabajadorInfoList
 {
     public static function schema(): array
     {
@@ -112,7 +112,7 @@ class DatosTrabajadorSchema
                         ->hidden(fn($state): bool => empty($state)),
                 ])
                 ->columns(1),
-            UbicacionGeograficaFieldset::schema(),
+            UbicacionGeograficaInfoList::schema(),
         ];
     }
 }

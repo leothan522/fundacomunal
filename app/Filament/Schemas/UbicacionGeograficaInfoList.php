@@ -8,7 +8,7 @@ use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\TextSize;
 use Illuminate\Support\Str;
 
-class UbicacionGeograficaFieldset
+class UbicacionGeograficaInfoList
 {
     public static function schema()
     {

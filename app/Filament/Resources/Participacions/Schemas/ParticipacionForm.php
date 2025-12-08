@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\Participacions\Schemas;
 
-use App\Filament\Schemas\DatosVoceroSchema;
-use App\Filament\Schemas\UbicacionGeograficaSchema;
+use App\Filament\Schemas\DatosVoceroForm;
+use App\Filament\Schemas\UbicacionGeograficaForm;
 use App\Models\AreaItem;
 use App\Models\Comuna;
 use App\Models\ConsejoComunal;
@@ -130,8 +130,8 @@ class ParticipacionForm
                     ->compact()
                     ->collapsible()
                     ->columnSpanFull(),
-                DatosVoceroSchema::schema(),
-                UbicacionGeograficaSchema::schema(true),
+                DatosVoceroForm::schema(),
+                UbicacionGeograficaForm::schema(true),
             ]);
     }
 }

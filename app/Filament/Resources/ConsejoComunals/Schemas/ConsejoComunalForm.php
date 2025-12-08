@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\ConsejoComunals\Schemas;
 
-use App\Filament\Schemas\UbicacionGeograficaSchema;
+use App\Filament\Schemas\UbicacionGeograficaForm;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
@@ -32,7 +32,7 @@ class ConsejoComunalForm
                     ])
                     ->compact()
                     ->collapsible(),
-                UbicacionGeograficaSchema::schema(),
+                UbicacionGeograficaForm::schema(),
             ]);
     }
 }

@@ -10,7 +10,7 @@ use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Illuminate\Database\Eloquent\Builder;
 
-class UbicacionGeograficaSchema
+class UbicacionGeograficaForm
 {
     public static function schema(bool $default = false)
     {

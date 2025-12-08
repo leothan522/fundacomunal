@@ -2,7 +2,7 @@
 
 namespace App\Filament\Widgets;
 
-use App\Filament\Schemas\DatosTrabajadorSchema;
+use App\Filament\Schemas\DatosTrabajadorInfoList;
 use App\Models\GestionHumana;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Concerns\InteractsWithSchemas;
@@ -40,7 +40,7 @@ class DatosTrabajadorWidget extends Widget implements HasSchemas
                     ->dense()
                     ->gap(false)
                     ->description('Datos cargados en Gestión Humana')
-                    ->schema(DatosTrabajadorSchema::schema())
+                    ->schema(DatosTrabajadorInfoList::schema())
                     ->compact()
                     ->collapsible()
                     ->collapsed()
