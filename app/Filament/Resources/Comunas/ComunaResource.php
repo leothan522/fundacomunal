@@ -10,6 +10,7 @@ use App\Filament\Resources\Comunas\Schemas\ComunaForm;
 use App\Filament\Resources\Comunas\Schemas\ComunaInfoList;
 use App\Filament\Resources\Comunas\Tables\ComunasTable;
 use App\Models\Comuna;
+use App\Traits\ValidarRecord;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -21,6 +22,8 @@ use UnitEnum;
 
 class ComunaResource extends Resource
 {
+    use ValidarRecord;
+
     protected static ?string $model = Comuna::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;

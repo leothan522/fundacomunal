@@ -9,6 +9,7 @@ use App\Filament\Resources\ConsejoComunals\Schemas\ConsejoComunalForm;
 use App\Filament\Resources\ConsejoComunals\Schemas\ConsejoComunalInfoList;
 use App\Filament\Resources\ConsejoComunals\Tables\ConsejoComunalsTable;
 use App\Models\ConsejoComunal;
+use App\Traits\ValidarRecord;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -20,6 +21,8 @@ use UnitEnum;
 
 class ConsejoComunalResource extends Resource
 {
+    use ValidarRecord;
+
     protected static ?string $model = ConsejoComunal::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
