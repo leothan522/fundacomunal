@@ -255,5 +255,14 @@ function formatearTelefonoParaView($number)
     return $number; // Retorna sin formato si no coincide
 }
 
+function noDisponibleNotification(): void
+{
+    \Filament\Notifications\Notification::make()
+        ->title('Registro no disponible')
+        ->body('Este registro ha sido eliminado por otro usuario y ya no está disponible.')
+        ->warning()
+        ->send();
+}
+
 
 

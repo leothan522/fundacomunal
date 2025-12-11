@@ -207,44 +207,56 @@ class ParticipacionsTable
                                 ->minValue(1)
                                 ->required(),
                         ])
-                        ->action(function (array $data, Participacion $record): void {
-                            $record->cantidad_familias = $data['cantidad_familias'];
-                            $record->cantidad_asistentes = $data['cantidad_asistentes'];
-                            $record->estatus = 1;
-                            $record->save();
+                        ->action(function (array $data, ?Participacion $record): void {
+                            if (!$record){
+                                noDisponibleNotification();
+                            }else{
+                                $record->cantidad_familias = $data['cantidad_familias'];
+                                $record->cantidad_asistentes = $data['cantidad_asistentes'];
+                                $record->estatus = 1;
+                                $record->save();
+                            }
                         })
                         ->modalIcon(Heroicon::OutlinedCheckCircle)
                         ->modalWidth(Width::Small)
-                        ->modalDescription(fn(Participacion $record) => getFecha($record->fecha) . ' - ' . Str::upper($record->nombre_obpp))
-                        ->hidden(fn(Participacion $record): bool => !is_null($record->estatus)),
+                        ->modalDescription(fn(?Participacion $record) => $record ? getFecha($record->fecha) . ' - ' . Str::upper($record->nombre_obpp) : null)
+                        ->hidden(fn(?Participacion $record): bool => $record && !is_null($record->estatus)),
                     Action::make('no_realizada')
                         ->label('Suspendida')
                         ->icon(Heroicon::OutlinedBackspace)
                         ->requiresConfirmation()
                         ->color('info')
-                        ->action(function (Participacion $record): void {
-                            $record->estatus = 0;
-                            $record->save();
+                        ->action(function (? Participacion $record): void {
+                            if (!$record){
+                                noDisponibleNotification();
+                            }else{
+                                $record->estatus = 0;
+                                $record->save();
+                            }
                         })
                         ->modalIcon(Heroicon::OutlinedBackspace)
-                        ->modalDescription(fn(Participacion $record) => getFecha($record->fecha) . ' - ' . Str::upper($record->nombre_obpp))
-                        ->hidden(fn(Participacion $record): bool => !is_null($record->estatus)),
+                        ->modalDescription(fn(?Participacion $record) => $record ? getFecha($record->fecha) . ' - ' . Str::upper($record->nombre_obpp) : null)
+                        ->hidden(fn(? Participacion $record): bool => $record && !is_null($record->estatus)),
                     Action::make('reset_actividad')
                         ->label('Reset Actividad')
                         ->requiresConfirmation()
                         ->icon(Heroicon::OutlinedClock)
-                        ->action(function (Participacion $record): void {
-                            $record->cantidad_familias = null;
-                            $record->cantidad_asistentes = null;
-                            $record->estatus = null;
-                            $record->save();
+                        ->action(function (?Participacion $record): void {
+                            if (!$record){
+                                noDisponibleNotification();
+                            }else{
+                                $record->cantidad_familias = null;
+                                $record->cantidad_asistentes = null;
+                                $record->estatus = null;
+                                $record->save();
+                            }
                         })
                         ->modalIcon(Heroicon::OutlinedClock)
-                        ->hidden(fn(Participacion $record): bool => is_null($record->estatus) || !isAdmin()),
+                        ->hidden(fn(?Participacion $record): bool => ($record && is_null($record->estatus)) || !isAdmin()),
                     EditAction::make()
                         ->disabled(fn(Participacion $record): bool => !is_null($record->estatus)),
                     DeleteAction::make()
-                        ->disabled(fn(Participacion $record): bool => !is_null($record->estatus)),
+                        ->disabled(fn(?Participacion $record): bool => $record && !is_null($record->estatus)),
                 ])
             ])
             ->toolbarActions([

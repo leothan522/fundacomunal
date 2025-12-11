@@ -10,11 +10,15 @@ use App\Filament\Resources\Participacions\Schemas\ParticipacionInfoList;
 use App\Filament\Resources\Participacions\Tables\ParticipacionsTable;
 use App\Models\Participacion;
 use BackedEnum;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Authorization\DenyResponse;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use UnitEnum;
 
@@ -68,4 +72,14 @@ class ParticipacionResource extends Resource
     {
         return ParticipacionInfoList::configure($schema);
     }
+
+    public static function getViewAuthorizationResponse(?Model $record): Response
+    {
+        if (!$record){
+            noDisponibleNotification();
+            return DenyResponse::deny('El registro no existe o fue eliminado.');
+        }
+        return parent::getViewAuthorizationResponse($record);
+    }
+
 }
