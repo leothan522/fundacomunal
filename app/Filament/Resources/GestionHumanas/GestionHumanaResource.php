@@ -9,6 +9,7 @@ use App\Filament\Resources\GestionHumanas\Schemas\GestionHumanaForm;
 use App\Filament\Resources\GestionHumanas\Schemas\GestionHumanaInfoList;
 use App\Filament\Resources\GestionHumanas\Tables\GestionHumanasTable;
 use App\Models\GestionHumana;
+use App\Traits\ValidarRecord;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -22,6 +23,8 @@ use UnitEnum;
 
 class GestionHumanaResource extends Resource
 {
+    use ValidarRecord;
+
     protected static ?string $model = GestionHumana::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserGroup;

@@ -9,7 +9,6 @@ use Carbon\Carbon;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
@@ -26,8 +25,6 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
-use pxlrbt\FilamentExcel\Actions\ExportAction;
 use pxlrbt\FilamentExcel\Actions\ExportBulkAction;
 use pxlrbt\FilamentExcel\Columns\Column;
 use pxlrbt\FilamentExcel\Exports\ExcelExport;
@@ -84,9 +81,7 @@ class GestionHumanasTable
             ])
             ->filters([
                 SelectFilter::make('Labor que Ejerce')
-                    ->relationship('tipoPersonal', 'nombre')
-                    /*->searchable()
-                    ->preload()*/,
+                    ->relationship('tipoPersonal', 'nombre'),
                 SelectFilter::make('Municipio')
                     ->relationship(
                         'municipio',
@@ -96,9 +91,7 @@ class GestionHumanasTable
                     ->searchable()
                     ->preload(),
                 SelectFilter::make('Categoria')
-                    ->relationship('categoria', 'nombre')
-                    /*->searchable()
-                    ->preload()*/,
+                    ->relationship('categoria', 'nombre'),
                 TrashedFilter::make(),
             ])
             ->recordActions([
@@ -106,8 +99,8 @@ class GestionHumanasTable
                     Action::make('editCategoria')
                         ->label('Categoria')
                         ->icon(Heroicon::OutlinedChevronUpDown)
-                        ->fillForm(fn(GestionHumana $record): array => [
-                            'categorias_id' => $record->categorias_id
+                        ->fillForm(fn(?GestionHumana $record): array => [
+                            'categorias_id' => $record->categorias_id ?? null
                         ])
                         ->schema([
                             Select::make('categorias_id')
@@ -116,15 +109,19 @@ class GestionHumanasTable
                                 ->searchable()
                                 ->required()
                         ])
-                        ->action(function (array $data, GestionHumana $record): void {
-                            $record->categorias_id = $data['categorias_id'];
-                            $record->save();
-                            Notification::make()
-                                ->title('Categoria Actualizada')
-                                ->success()
-                                ->send();
+                        ->action(function (array $data, ?GestionHumana $record): void {
+                            if (!$record){
+                                noDisponibleNotification();
+                            }else{
+                                $record->categorias_id = $data['categorias_id'];
+                                $record->save();
+                                Notification::make()
+                                    ->title('Categoria Actualizada')
+                                    ->success()
+                                    ->send();
+                            }
                         })
-                        ->modalHeading(fn(GestionHumana $record): string => $record->nombre . ' ' . $record->apellido)
+                        ->modalHeading(fn(?GestionHumana $record): string => $record ? $record->nombre . ' ' . $record->apellido : '')
                         ->modalWidth(Width::Small),
                     ViewAction::make()
                         ->extraModalFooterActions(fn(Action $action): array => [
@@ -136,9 +133,13 @@ class GestionHumanasTable
                         ->color('info')
                         ->requiresConfirmation()
                         ->modalIcon(Heroicon::OutlinedUserPlus)
-                        ->hidden(fn(GestionHumana $record): bool => !empty($record->users_id))
-                        ->action(function (GestionHumana $record): void {
-                            self::createUser($record);
+                        ->hidden(fn(?GestionHumana $record): bool => $record && !empty($record->users_id))
+                        ->action(function (?GestionHumana $record): void {
+                            if (!$record){
+                                noDisponibleNotification();
+                            }else{
+                                self::createUser($record);
+                            }
                         }),
                     Action::make('resetUsuario')
                         ->label('Actualizar Usuario')
@@ -146,18 +147,42 @@ class GestionHumanasTable
                         ->color('info')
                         ->requiresConfirmation()
                         ->modalIcon(Heroicon::OutlinedUserCircle)
-                        ->hidden(function (GestionHumana $record): bool {
+                        ->hidden(function (?GestionHumana $record): bool {
                             $response = true;
-                            if ($record->users_id && !$record->user->login_count){
+                            if ($record && $record->users_id && !$record->user->login_count){
                                 $response = false;
                             }
                             return $response;
                         })
-                        ->action(function (GestionHumana $record): void {
-                            self::resetUser($record);
+                        ->action(function (?GestionHumana $record): void {
+                            if (!$record){
+                                noDisponibleNotification();
+                            }else{
+                                self::resetUser($record);
+                            }
                         }),
                     EditAction::make(),
-                    DeleteAction::make(),
+                    Action::make('eliminar')
+                        ->label('Borrar')
+                        ->icon(Heroicon::Trash)
+                        ->color('danger')
+                        ->requiresConfirmation()
+                        ->modalIcon(Heroicon::OutlinedTrash)
+                        ->modalHeading(fn(?GestionHumana $record) => $record ? 'Borrar ' . Str::upper($record->cedula) : 'Borrar')
+                        ->modalDescription('¿Está segura/o de hacer esto?')
+                        ->modalSubmitActionLabel('Borrar')
+                        ->action(function (?GestionHumana $record): void {
+                            if (!$record) {
+                                noDisponibleNotification();
+                            } else {
+                                $record->delete();
+                                Notification::make()
+                                    ->title('Borrado')
+                                    ->success()
+                                    ->send();
+                            }
+                        })
+                        ->hidden(fn(?GestionHumana $record): bool => $record && !is_null($record->deleted_at)),
                 ])
             ])
             ->toolbarActions([
