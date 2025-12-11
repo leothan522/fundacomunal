@@ -17,6 +17,7 @@ use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
@@ -108,11 +109,11 @@ class ParticipacionsTable
                                 'mes-anterior' => 'Mes Anterior',
                             ])
                     ])
-                    ->indicateUsing(function (array $data): ?string{
+                    ->indicateUsing(function (array $data): ?string {
                         if (!$data['tipo_reporte']) {
                             return null;
                         }
-                        return 'Reporte: '.Str::upper($data['tipo_reporte']);
+                        return 'Reporte: ' . Str::upper($data['tipo_reporte']);
                     })
                     ->query(function (Builder $query, array $data): Builder {
 
@@ -208,9 +209,9 @@ class ParticipacionsTable
                                 ->required(),
                         ])
                         ->action(function (array $data, ?Participacion $record): void {
-                            if (!$record){
+                            if (!$record) {
                                 noDisponibleNotification();
-                            }else{
+                            } else {
                                 $record->cantidad_familias = $data['cantidad_familias'];
                                 $record->cantidad_asistentes = $data['cantidad_asistentes'];
                                 $record->estatus = 1;
@@ -226,25 +227,25 @@ class ParticipacionsTable
                         ->icon(Heroicon::OutlinedBackspace)
                         ->requiresConfirmation()
                         ->color('info')
-                        ->action(function (? Participacion $record): void {
-                            if (!$record){
+                        ->action(function (?Participacion $record): void {
+                            if (!$record) {
                                 noDisponibleNotification();
-                            }else{
+                            } else {
                                 $record->estatus = 0;
                                 $record->save();
                             }
                         })
                         ->modalIcon(Heroicon::OutlinedBackspace)
                         ->modalDescription(fn(?Participacion $record) => $record ? getFecha($record->fecha) . ' - ' . Str::upper($record->nombre_obpp) : null)
-                        ->hidden(fn(? Participacion $record): bool => $record && !is_null($record->estatus)),
+                        ->hidden(fn(?Participacion $record): bool => $record && !is_null($record->estatus)),
                     Action::make('reset_actividad')
                         ->label('Reset Actividad')
                         ->requiresConfirmation()
                         ->icon(Heroicon::OutlinedClock)
                         ->action(function (?Participacion $record): void {
-                            if (!$record){
+                            if (!$record) {
                                 noDisponibleNotification();
-                            }else{
+                            } else {
                                 $record->cantidad_familias = null;
                                 $record->cantidad_asistentes = null;
                                 $record->estatus = null;
@@ -255,7 +256,27 @@ class ParticipacionsTable
                         ->hidden(fn(?Participacion $record): bool => ($record && is_null($record->estatus)) || !isAdmin()),
                     EditAction::make()
                         ->disabled(fn(Participacion $record): bool => !is_null($record->estatus)),
-                    DeleteAction::make()
+                    Action::make('eliminar')
+                        ->label('Borrar')
+                        ->icon(Heroicon::Trash)
+                        ->color('danger')
+                        ->requiresConfirmation()
+                        ->modalIcon(Heroicon::OutlinedTrash)
+                        ->modalHeading(fn(?Participacion $record) => $record ? 'Borrar ' . Str::upper($record->nombre_obpp) : 'Borrar')
+                        ->modalDescription('¿Está segura/o de hacer esto?')
+                        ->modalSubmitActionLabel('Borrar')
+                        ->action(function (?Participacion $record): void {
+                            if (!$record) {
+                                noDisponibleNotification();
+                            } else {
+                                $record->delete();
+                                Notification::make()
+                                    ->title('Borrado')
+                                    ->success()
+                                    ->send();
+                            }
+                        })
+                        ->hidden(fn(?Participacion $record): bool => $record && !is_null($record->deleted_at))
                         ->disabled(fn(?Participacion $record): bool => $record && !is_null($record->estatus)),
                 ])
             ])
