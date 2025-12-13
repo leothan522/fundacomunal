@@ -13,7 +13,7 @@ class ParticipacionPolicy
      */
     public function viewAny(User $user): bool
     {
-        return isAdmin() || $user->hasRole('PARTICIPACION');
+        return isAdmin() || $user->hasRole('PARTICIPACION') || $user->hasRole('GESTION HUMANA');
     }
 
     /**
@@ -21,7 +21,7 @@ class ParticipacionPolicy
      */
     public function view(User $user, Participacion $participacion): bool
     {
-        return isAdmin() || $user->hasRole('PARTICIPACION');
+        return isAdmin() || $user->hasRole('PARTICIPACION') || $user->hasRole('GESTION HUMANA');
     }
 
     /**

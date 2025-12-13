@@ -38,7 +38,7 @@ class ParticipacionsTable
     {
         return $table
             ->modifyQueryUsing(function (Builder $query) {
-                if (!isAdmin()) {
+                if (!isAdmin() && !auth()->user()->hasRole('GESTION HUMANA')) {
                     $query->where(function (Builder $subQuery) {
                         $subQuery->whereRelation('promotor', 'users_id', auth()->id())
                             ->orWhere('users_id', auth()->id());
@@ -196,6 +196,7 @@ class ParticipacionsTable
                         ->label('Reporte de Actividad')
                         ->icon(Heroicon::OutlinedCheckCircle)
                         ->color('success')
+                        ->authorize('update')
                         ->schema([
                             TextInput::make('cantidad_familias')
                                 ->label('Cantidad de familias beneficiadas')
@@ -227,6 +228,7 @@ class ParticipacionsTable
                         ->icon(Heroicon::OutlinedBackspace)
                         ->requiresConfirmation()
                         ->color('info')
+                        ->authorize('update')
                         ->action(function (?Participacion $record): void {
                             if (!$record) {
                                 noDisponibleNotification();
@@ -260,6 +262,7 @@ class ParticipacionsTable
                         ->label('Borrar')
                         ->icon(Heroicon::Trash)
                         ->color('danger')
+                        ->authorize('delete')
                         ->requiresConfirmation()
                         ->modalIcon(Heroicon::OutlinedTrash)
                         ->modalHeading(fn(?Participacion $record) => $record ? 'Borrar ' . Str::upper($record->nombre_obpp) : 'Borrar')
@@ -282,7 +285,8 @@ class ParticipacionsTable
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->authorizeIndividualRecords('delete'),
                     ForceDeleteBulkAction::make()
                         ->authorizeIndividualRecords('forceDelete'),
                     RestoreBulkAction::make()

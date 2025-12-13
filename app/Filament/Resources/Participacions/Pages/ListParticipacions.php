@@ -22,6 +22,7 @@ class ListParticipacions extends ListRecords
                 ->label('Exportar DATA')
                 ->color('success')
                 ->icon(Heroicon::OutlinedDocumentArrowDown)
+                ->visible(isAdmin())
                 ->schema([
                     Select::make('tipo_reporte')
                         ->label('Reporte')
