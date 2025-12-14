@@ -1,30 +1,29 @@
 <?php
 
-namespace App\Filament\Resources\Participacions\Tables;
+namespace App\Filament\Resources\Fortalecimientos\Tables;
 
 use App\Filament\Schemas\FechaFilter;
 use App\Models\AreaItem;
+use App\Models\Fortalecimiento;
 use App\Models\GestionHumana;
 use App\Models\MedioVerificacion;
-use App\Models\Participacion;
 use Carbon\Carbon;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
@@ -34,7 +33,7 @@ use pxlrbt\FilamentExcel\Actions\ExportBulkAction;
 use pxlrbt\FilamentExcel\Columns\Column;
 use pxlrbt\FilamentExcel\Exports\ExcelExport;
 
-class ParticipacionsTable
+class FortalecimientosTable
 {
     public static function configure(Table $table): Table
     {
@@ -52,8 +51,8 @@ class ParticipacionsTable
             ->columns([
                 TextColumn::make('fecha_movil')
                     ->label('Fecha')
-                    ->default(fn(Participacion $record) => $record->fecha)
-                    ->description(fn(Participacion $query) => Str::upper($query->nombre_obpp))
+                    ->default(fn(Fortalecimiento $record) => $record->fecha)
+                    ->description(fn(Fortalecimiento $query) => Str::upper($query->nombre_obpp))
                     ->date()
                     ->wrap()
                     ->hiddenFrom('md'),
@@ -61,17 +60,11 @@ class ParticipacionsTable
                     ->date()
                     ->searchable()
                     ->visibleFrom('md'),
-                TextColumn::make('obpp.nombre')
-                    ->label('Tipo OBPP')
+                TextColumn::make('nombre_osp')
+                    ->label('Nombre de la OSP')
+                    ->searchable()
                     ->formatStateUsing(fn($state) => Str::upper($state))
                     ->wrap()
-                    ->visibleFrom('md'),
-                TextColumn::make('situr_obpp')
-                    ->label('Código SITUR')
-                    ->formatStateUsing(fn($state) => Str::upper($state))
-                    ->searchable()
-                    ->alignCenter()
-                    ->grow(false)
                     ->visibleFrom('md'),
                 TextColumn::make('nombre_obpp')
                     ->label('Nombre de la OBPP')
@@ -80,7 +73,7 @@ class ParticipacionsTable
                     ->wrap()
                     ->visibleFrom('md'),
                 TextColumn::make('promotor.nombre')
-                    ->formatStateUsing(fn(Participacion $record) => strtok($record->promotor->nombre, " ") . " " . strtok($record->promotor->apellido, " "))
+                    ->formatStateUsing(fn(Fortalecimiento $record) => strtok($record->promotor->nombre, " ") . " " . strtok($record->promotor->apellido, " "))
                     ->wrap()
                     ->visibleFrom('md'),
                 IconColumn::make('estatus')
@@ -118,20 +111,15 @@ class ParticipacionsTable
                     ->searchable(['nombre', 'apellido'])
                     ->preload(),
                 SelectFilter::make('obpp')
-                    ->label('Tipo OBPP')
+                    ->label('Tipo OSP')
                     ->relationship(
                         'obpp',
                         'nombre',
-                        fn(Builder $query) => $query->where('fortalecimiento', 0)
+                        fn(Builder $query) => $query->where('fortalecimiento', 1)
                     ),
-                SelectFilter::make('area')
-                    ->label('Acompañamiento')
-                    ->relationship(
-                        'area',
-                        'nombre',
-                        fn(Builder $query) => $query->whereRelation('area', 'nombre', 'PARTICIPACION')
-                    )
-                    ->getOptionLabelFromRecordUsing(fn(AreaItem $record) => Str::replace('_', ' ', $record->nombre)),
+                SelectFilter::make('etapa')
+                    ->label('Etapa del Proyecto')
+                    ->relationship('etapa', 'nombre'),
                 TrashedFilter::make(),
             ])
             ->recordActions([
@@ -139,7 +127,7 @@ class ParticipacionsTable
                     ViewAction::make()
                         ->extraModalFooterActions(fn(): array => [
                             EditAction::make()
-                                ->disabled(fn(Participacion $record): bool => !is_null($record->estatus))
+                                ->disabled(fn(Fortalecimiento $record): bool => !is_null($record->estatus))
                         ]),
                     Action::make('reportar')
                         ->label('Reporte de Actividad')
@@ -152,38 +140,41 @@ class ParticipacionsTable
                                 ->numeric()
                                 ->minValue(1)
                                 ->required(),
-                            TextInput::make('cantidad_asistentes')
-                                ->label('Cantidad de personas asistentes ')
+                            TextInput::make('cantidad_personas')
+                                ->label('Cantidad de personas asistentes')
                                 ->numeric()
                                 ->minValue(1)
                                 ->required(),
                             Select::make('medios_verificacion_id')
                                 ->label('Medio de Verificación')
                                 ->options(MedioVerificacion::pluck('nombre', 'id'))
-                                ->required()
+                                ->required(),
+                            Textarea::make('observacion')
+                                ->label('Observación'),
                         ])
-                        ->action(function (array $data, ?Participacion $record): void {
+                        ->action(function (array $data, ?Fortalecimiento $record): void {
                             if (!$record) {
                                 noDisponibleNotification();
                             } else {
                                 $record->cantidad_familias = $data['cantidad_familias'];
-                                $record->cantidad_asistentes = $data['cantidad_asistentes'];
+                                $record->cantidad_personas = $data['cantidad_personas'];
                                 $record->medios_verificacion_id = $data['medios_verificacion_id'];
+                                $record->observacion = $data['observacion'];
                                 $record->estatus = 1;
                                 $record->save();
                             }
                         })
                         ->modalIcon(Heroicon::OutlinedCheckCircle)
                         ->modalWidth(Width::Small)
-                        ->modalDescription(fn(?Participacion $record) => $record ? getFecha($record->fecha) . ' - ' . Str::upper($record->nombre_obpp) : null)
-                        ->hidden(fn(?Participacion $record): bool => $record && !is_null($record->estatus)),
+                        ->modalDescription(fn(?Fortalecimiento $record) => $record ? getFecha($record->fecha) . ' - ' . Str::upper($record->nombre_obpp) : null)
+                        ->hidden(fn(?Fortalecimiento $record): bool => $record && !is_null($record->estatus)),
                     Action::make('no_realizada')
                         ->label('Suspendida')
                         ->icon(Heroicon::OutlinedBackspace)
                         ->requiresConfirmation()
                         ->color('info')
                         ->authorize('update')
-                        ->action(function (?Participacion $record): void {
+                        ->action(function (?Fortalecimiento $record): void {
                             if (!$record) {
                                 noDisponibleNotification();
                             } else {
@@ -192,27 +183,28 @@ class ParticipacionsTable
                             }
                         })
                         ->modalIcon(Heroicon::OutlinedBackspace)
-                        ->modalDescription(fn(?Participacion $record) => $record ? getFecha($record->fecha) . ' - ' . Str::upper($record->nombre_obpp) : null)
-                        ->hidden(fn(?Participacion $record): bool => $record && !is_null($record->estatus)),
+                        ->modalDescription(fn(?Fortalecimiento $record) => $record ? getFecha($record->fecha) . ' - ' . Str::upper($record->nombre_obpp) : null)
+                        ->hidden(fn(?Fortalecimiento $record): bool => $record && !is_null($record->estatus)),
                     Action::make('reset_actividad')
                         ->label('Reset Actividad')
                         ->requiresConfirmation()
                         ->icon(Heroicon::OutlinedClock)
-                        ->action(function (?Participacion $record): void {
+                        ->action(function (?Fortalecimiento $record): void {
                             if (!$record) {
                                 noDisponibleNotification();
                             } else {
                                 $record->cantidad_familias = null;
-                                $record->cantidad_asistentes = null;
+                                $record->cantidad_personas = null;
                                 $record->medios_verificacion_id = null;
+                                $record->observacion = null;
                                 $record->estatus = null;
                                 $record->save();
                             }
                         })
                         ->modalIcon(Heroicon::OutlinedClock)
-                        ->hidden(fn(?Participacion $record): bool => ($record && is_null($record->estatus)) || !isAdmin()),
+                        ->hidden(fn(?Fortalecimiento $record): bool => ($record && is_null($record->estatus)) || !isAdmin()),
                     EditAction::make()
-                        ->disabled(fn(Participacion $record): bool => !is_null($record->estatus)),
+                        ->disabled(fn(Fortalecimiento $record): bool => !is_null($record->estatus)),
                     Action::make('eliminar')
                         ->label('Borrar')
                         ->icon(Heroicon::Trash)
@@ -220,10 +212,10 @@ class ParticipacionsTable
                         ->authorize('delete')
                         ->requiresConfirmation()
                         ->modalIcon(Heroicon::OutlinedTrash)
-                        ->modalHeading(fn(?Participacion $record) => $record ? 'Borrar ' . Str::upper($record->nombre_obpp) : 'Borrar')
+                        ->modalHeading(fn(?Fortalecimiento $record) => $record ? 'Borrar ' . Str::upper($record->nombre_obpp) : 'Borrar')
                         ->modalDescription('¿Está segura/o de hacer esto?')
                         ->modalSubmitActionLabel('Borrar')
-                        ->action(function (?Participacion $record): void {
+                        ->action(function (?Fortalecimiento $record): void {
                             if (!$record) {
                                 noDisponibleNotification();
                             } else {
@@ -234,8 +226,8 @@ class ParticipacionsTable
                                     ->send();
                             }
                         })
-                        ->hidden(fn(?Participacion $record): bool => $record && !is_null($record->deleted_at))
-                        ->disabled(fn(?Participacion $record): bool => $record && !is_null($record->estatus)),
+                        ->hidden(fn(?Fortalecimiento $record): bool => $record && !is_null($record->deleted_at))
+                        ->disabled(fn(?Fortalecimiento $record): bool => $record && !is_null($record->estatus)),
                 ])
             ])
             ->toolbarActions([
@@ -255,15 +247,18 @@ class ParticipacionsTable
                         Column::make('municipio.nombre')->heading('MUNICIPIO'),
                         Column::make('parroquia')->heading('PARROQUIA')->formatStateUsing(fn($state) => Str::upper($state)),
                         Column::make('localidad')->heading('LOCALIDAD')->formatStateUsing(fn($state) => Str::upper($state)),
-                        Column::make('cantidad_cc')->heading('CANTIDAD DE CC PARTICIPANTES EN ACTIVIDAD MUNICIPAL/ESTADAL'),
-                        Column::make('obpp.nombre')->heading('TIPO DE OBPP')->formatStateUsing(fn($state) => Str::upper($state)),
-                        Column::make('situr_obpp')->heading('CÓDIGO SITUR DE LA OBPP')->formatStateUsing(fn($state) => Str::upper($state)),
-                        Column::make('nombre_obpp')->heading('NOMBRE DE LA OBPP')->formatStateUsing(fn($state) => Str::upper($state)),
-                        Column::make('poblacion.nombre')->heading('TIPO DE CONSEJO COMUNAL/COMUNA')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('nombre_osp')->heading('NOMBRE DE LA ORGANIZACIÓN SOCIO PRODUCTIVA')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('rif_osp')->heading('RIF')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('situr_obpp')->heading('CÓDIGO SITUR DE LA OBPP VINCULADA')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('nombre_obpp')->heading('NOMBRE DE LA OBPP VINCULADA')->formatStateUsing(fn($state) => Str::upper($state)),
                         Column::make('area.nombre')->heading('ACOMPAÑAMIENTO')->formatStateUsing(fn($state) => Str::upper($state)),
                         Column::make('proceso.nombre')->heading('PROCESO')->formatStateUsing(fn($state) => Str::upper($state)),
-                        Column::make('cantidad_familias')->heading('CANTIDAD DE FAMILIAS BENEFICIADAS '),
-                        Column::make('cantidad_asistentes')->heading('CANTIDAD DE PERSONAS ASISTENTES A LA ACTIVIDAD'),
+                        Column::make('obpp.nombre')->heading('TIPO DE ORGANIZACIÓN SOCIO PRODUCTIVA (OSP)')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('economica.nombre')->heading('TIPO DE ACTIVIDAD ECONOMICA')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('cantidad_personas')->heading('CANTIDAD DE PERSONAS ASISTENTES A LA ACTIVIDAD'),
+                        Column::make('cantidad_familias')->heading('CANTIDAD DE FAMILIAS BENEFICIADAS POR EL PROYECTO'),
+                        Column::make('descripcion_proyecto')->heading('DESCRIPCIÓN DEL PROYECTO')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('etapa.nombre')->heading('ETAPA DEL PROYECTO')->formatStateUsing(fn($state) => Str::upper($state)),
                         Column::make('vocero_nombre')->heading('NOMBRE Y APELLIDO')->formatStateUsing(fn($state) => Str::upper($state)),
                         Column::make('vocero_telefono')->heading('TELÉFONO'),
                         Column::make('promotor.nombre')->heading('NOMBRE')->formatStateUsing(fn($state) => Str::upper($state)),

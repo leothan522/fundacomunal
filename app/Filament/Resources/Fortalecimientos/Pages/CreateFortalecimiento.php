@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Filament\Resources\Formacions\Pages;
+namespace App\Filament\Resources\Fortalecimientos\Pages;
 
-use App\Filament\Resources\Formacions\FormacionResource;
+use App\Filament\Resources\Fortalecimientos\FortalecimientoResource;
 use Filament\Resources\Pages\CreateRecord;
 
-class CreateFormacion extends CreateRecord
+class CreateFortalecimiento extends CreateRecord
 {
-    protected static string $resource = FormacionResource::class;
+    protected static string $resource = FortalecimientoResource::class;
     protected static ?string $title = 'Crear Actividad';
 
     protected function mutateFormDataBeforeCreate(array $data): array

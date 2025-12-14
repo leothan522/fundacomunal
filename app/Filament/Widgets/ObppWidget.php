@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use App\Models\Comuna;
 use App\Models\ConsejoComunal;
 use App\Models\Formacion;
+use App\Models\Fortalecimiento;
 use App\Models\GestionHumana;
 use App\Models\Participacion;
 use Carbon\Carbon;
@@ -47,6 +48,12 @@ class ObppWidget extends StatsOverviewWidget
                 ->color('primary')
                 ->url(route('filament.dashboard.resources.formacion.index'))
                 ->visible(fn(): bool => isAdmin() || auth()->user()->hasRole('FORMACION'))
+                ->extraAttributes(['onclick' => "Alpine.store('loader').show()"]),
+            Stat::make('Planificación Semanal', 'Fortalecimiento')
+                ->description(fn(): string => $this->getActividadesFortalecimiento() > 1 ? $this->getActividadesFortalecimiento().' actividades' : $this->getActividadesFortalecimiento().' actividad')
+                ->color('primary')
+                ->url(route('filament.dashboard.resources.fortalecimiento.index'))
+                ->visible(fn(): bool => isAdmin() || auth()->user()->hasRole('FORTALECIMIENTO'))
                 ->extraAttributes(['onclick' => "Alpine.store('loader').show()"]),
         ];
     }
@@ -109,6 +116,21 @@ class ObppWidget extends StatsOverviewWidget
         $inicio = Carbon::now()->startOfWeek();
         $fin = Carbon::now()->endOfWeek();
         $query = Formacion::query();
+        if (!isAdmin()) {
+            $query->where(function (Builder $subQuery) {
+                $subQuery->whereRelation('promotor', 'users_id', auth()->id())
+                    ->orWhere('users_id', auth()->id());
+            });
+
+        }
+        return $query->whereBetween('fecha', [$inicio, $fin])->count();
+    }
+
+    public function getActividadesFortalecimiento(): int
+    {
+        $inicio = Carbon::now()->startOfWeek();
+        $fin = Carbon::now()->endOfWeek();
+        $query = Fortalecimiento::query();
         if (!isAdmin()) {
             $query->where(function (Builder $subQuery) {
                 $subQuery->whereRelation('promotor', 'users_id', auth()->id())

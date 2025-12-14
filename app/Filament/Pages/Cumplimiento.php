@@ -34,7 +34,7 @@ class Cumplimiento extends Page implements HasActions, HasSchemas, HasTable
 
     protected string $view = 'filament.pages.cumplimiento';
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentCheck;
-    protected static string|UnitEnum|null $navigationGroup = 'Áreas Sustantivas';
+    protected static string|UnitEnum|null $navigationGroup = 'Planificación Semanal';
     protected static ?int $navigationSort = 70;
 
     public function table(Table $table): Table
