@@ -31,7 +31,7 @@ return new class extends Migration
             $table->unsignedBigInteger('modalidades_formacion_id');
             $table->integer('cantidad_mujeres')->nullable();
             $table->integer('cantidad_hombres')->nullable();
-            $table->unsignedBigInteger('medios_verificacion_id');
+            $table->unsignedBigInteger('medios_verificacion_id')->nullable();
 
             $table->string('vocero_nombre')->nullable();
             $table->string('vocero_telefono')->nullable();
@@ -53,7 +53,7 @@ return new class extends Migration
 
             $table->foreign('estrategias_formacion_id')->references('id')->on('estrategias_formacion')->cascadeOnDelete();
             $table->foreign('modalidades_formacion_id')->references('id')->on('modalidades_formacion')->cascadeOnDelete();
-            $table->foreign('medios_verificacion_id')->references('id')->on('medios_verificacion')->cascadeOnDelete();
+            $table->foreign('medios_verificacion_id')->references('id')->on('medios_verificacion')->nullOnDelete();
 
 
             $table->foreign('gestion_humana_id')->references('id')->on('gestion_humana')->cascadeOnDelete();

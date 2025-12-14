@@ -26,6 +26,7 @@ class Participacion extends Model
         'areas_procesos_id',
         'cantidad_familias',
         'cantidad_asistentes',
+        'medios_verificacion_id',
         'vocero_nombre',
         'vocero_telefono',
         'gestion_humana_id',
@@ -89,6 +90,11 @@ class Participacion extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'users_id', 'id');
+    }
+
+    public function medio(): BelongsTo
+    {
+        return $this->belongsTo(MedioVerificacion::class, 'medios_verificacion_id', 'id');
     }
 
 }

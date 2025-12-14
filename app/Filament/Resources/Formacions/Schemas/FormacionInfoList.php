@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Resources\Participacions\Schemas;
+namespace App\Filament\Resources\Formacions\Schemas;
 
 use App\Filament\Schemas\UbicacionGeograficaInfoList;
-use App\Models\Participacion;
+use App\Models\Formacion;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Text;
@@ -12,7 +12,7 @@ use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\TextSize;
 use Illuminate\Support\Str;
 
-class ParticipacionInfoList
+class FormacionInfoList
 {
     public static function configure(Schema $schema): Schema
     {
@@ -65,7 +65,7 @@ class ParticipacionInfoList
                             ->color('primary')
                             ->copyable(),
                         TextEntry::make('area.nombre')
-                            ->label('Acompañamiento')
+                            ->label('Tipo de proceso formativo (Territorial)')
                             ->formatStateUsing(fn(string $state): string => Str::replace('_', ' ', $state))
                             ->size(TextSize::Small)
                             ->weight(FontWeight::Bold)
@@ -74,12 +74,28 @@ class ParticipacionInfoList
                             ->columnSpanFull()
                             ->inlineLabel(),
                         TextEntry::make('proceso.nombre')
-                            ->label('Proceso')
+                            ->label('Temática formativa')
                             ->size(TextSize::Small)
                             ->weight(FontWeight::Bold)
                             ->color('primary')
                             ->copyable()
                             ->columnSpanFull()
+                            ->inlineLabel(),
+                        TextEntry::make('estrategia.nombre')
+                            ->label('Estrategia')
+                            ->size(TextSize::Medium)
+                            ->weight(FontWeight::Bold)
+                            ->color('primary')
+                            ->copyable()
+                            ->columnSpan(2)
+                            ->inlineLabel(),
+                        TextEntry::make('modalidad.nombre')
+                            ->label('Modalidad')
+                            ->size(TextSize::Medium)
+                            ->weight(FontWeight::Bold)
+                            ->color('primary')
+                            ->copyable()
+                            ->columnSpan(2)
                             ->inlineLabel(),
                         TextEntry::make('observacion')
                             ->label('Observación')
@@ -113,7 +129,7 @@ class ParticipacionInfoList
                             ->inlineLabel(),
                         TextEntry::make('promotor.nombre')
                             ->label('Promotor')
-                            ->formatStateUsing(fn(Participacion $record) => Str::upper(strtok($record->promotor->nombre, ' ') . ' ' . strtok($record->promotor->apellido, ' ')))
+                            ->formatStateUsing(fn(Formacion $record) => Str::upper(strtok($record->promotor->nombre, ' ') . ' ' . strtok($record->promotor->apellido, ' ')))
                             ->size(TextSize::Medium)
                             ->weight(FontWeight::Bold)
                             ->color('primary')
@@ -121,7 +137,7 @@ class ParticipacionInfoList
                             ->inlineLabel(),
                         TextEntry::make('telefono')
                             ->label('Teléfono')
-                            ->default(fn(Participacion $record) => $record->promotor->telefono)
+                            ->default(fn(Formacion $record) => $record->promotor->telefono)
                             ->size(TextSize::Medium)
                             ->weight(FontWeight::Bold)
                             ->color('primary')
@@ -132,16 +148,16 @@ class ParticipacionInfoList
                 UbicacionGeograficaInfoList::schema(),
                 Fieldset::make('Reporte de Actividad')
                     ->schema([
-                        TextEntry::make('cantidad_familias')
-                            ->label('Familias Beneficiadas')
+                        TextEntry::make('cantidad_mujeres')
+                            ->label('Cantidad de Mujeres')
                             ->numeric()
                             ->size(TextSize::Medium)
                             ->weight(FontWeight::Bold)
                             ->color('primary')
                             ->copyable()
                             ->hidden(fn($state) => empty($state)),
-                        TextEntry::make('cantidad_asistentes')
-                            ->label('Personas Asistentes')
+                        TextEntry::make('cantidad_hombres')
+                            ->label('Cantidad de Hombres')
                             ->numeric()
                             ->size(TextSize::Medium)
                             ->weight(FontWeight::Bold)
@@ -160,11 +176,11 @@ class ParticipacionInfoList
                             ->weight(FontWeight::Bold)
                             ->color('info')
                             ->badge()
-                            ->visible(fn(Participacion $record): bool => !$record->estatus)
+                            ->visible(fn(Formacion $record): bool => !$record->estatus)
                     ])
                     ->columns(3)
                     ->columnSpanFull()
-                    ->visible(fn(Participacion $record): bool => !is_null($record->estatus))
+                    ->visible(fn(Formacion $record): bool => !is_null($record->estatus))
             ]);
     }
 }

@@ -246,6 +246,7 @@ class GestionHumanasTable
 
             if ($record->tipoPersonal->nombre == 'PROMOTORES') {
                 $user->assignRole('PARTICIPACION');
+                $user->assignRole('FORMACION');
             }
 
             if ($record->tipoPersonal->nombre == 'COORDINADOR(A) ESTADAL') {
@@ -296,6 +297,7 @@ class GestionHumanasTable
 
             if ($record->tipoPersonal->nombre == 'PROMOTORES') {
                 $user->assignRole('PARTICIPACION');
+                $user->assignRole('FORMACION');
             }
 
             if ($record->tipoPersonal->nombre == 'COORDINADOR(A) ESTADAL') {

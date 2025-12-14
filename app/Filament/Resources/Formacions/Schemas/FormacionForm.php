@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Participacions\Schemas;
+namespace App\Filament\Resources\Formacions\Schemas;
 
 use App\Filament\Schemas\DatosObppForm;
 use App\Filament\Schemas\DatosVoceroForm;
@@ -19,7 +19,7 @@ use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
-class ParticipacionForm
+class FormacionForm
 {
     public static function configure(Schema $schema): Schema
     {
@@ -48,21 +48,21 @@ class ParticipacionForm
                             ->relationship('poblacion', 'nombre')
                             ->required(),
                         Select::make('areas_items_id')
-                            ->label('Acompañamiento')
+                            ->label('Tipo de proceso formativo (Territorial)')
                             ->live()
                             ->required()
                             ->columnSpan(2)
                             ->relationship(
                                 'area',
                                 'nombre',
-                                fn(Builder $query) => $query->whereRelation('area', 'nombre', 'PARTICIPACION')
+                                fn(Builder $query) => $query->whereRelation('area', 'nombre', 'FORMACION')
                             )
                             ->afterStateUpdated(function (Set $set): void {
                                 $set('areas_procesos_id', null);
                             })
                             ->getOptionLabelFromRecordUsing(fn(AreaItem $record) => Str::replace('_', ' ', $record->nombre)),
                         Select::make('areas_procesos_id')
-                            ->label('Proceso')
+                            ->label('Temática formativa')
                             ->required()
                             ->columnSpan(2)
                             ->relationship(
@@ -71,6 +71,16 @@ class ParticipacionForm
                                 fn(Builder $query, Get $get) => $query->where('items_id', $get('areas_items_id'))
                             )
                             ->disabled(fn(Get $get): bool => empty($get('areas_items_id'))),
+                        Select::make('estrategias_formacion_id')
+                            ->label('Estrategia de Fomación')
+                            ->relationship('estrategia', 'nombre')
+                            ->required()
+                            ->columnSpan(2),
+                        Select::make('modalidades_formacion_id')
+                            ->label('Modalidad')
+                            ->relationship('modalidad', 'nombre')
+                            ->required()
+                            ->columnSpan(2),
                         Textarea::make('observacion')
                             ->label('Observación')
                             ->columnSpanFull(),
