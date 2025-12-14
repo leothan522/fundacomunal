@@ -23,4 +23,10 @@ class MedioVerificacion extends Model
     {
         return $this->hasMany(Formacion::class, 'medios_verificacion_id', 'id');
     }
+
+    public function fortalecimiento(): HasMany
+    {
+        return $this->hasMany(Fortalecimiento::class, 'medios_verificacion_id', 'id');
+    }
+
 }

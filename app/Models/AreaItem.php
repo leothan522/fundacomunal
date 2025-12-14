@@ -36,4 +36,9 @@ class AreaItem extends Model
         return $this->hasMany(Formacion::class, 'areas_items_id', 'id');
     }
 
+    public function fortalecimiento(): HasMany
+    {
+        return $this->hasMany(Fortalecimiento::class, 'areas_items_id', 'id');
+    }
+
 }

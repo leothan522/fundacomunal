@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Etapa extends Model
@@ -12,4 +13,10 @@ class Etapa extends Model
     protected $fillable = [
         'nombre',
     ];
+
+    public function fortalecimiento(): HasMany
+    {
+        return $this->hasMany(Fortalecimiento::class, 'etapas_id', 'id');
+    }
+
 }

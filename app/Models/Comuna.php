@@ -52,4 +52,9 @@ class Comuna extends Model
         return $this->hasMany(Formacion::class, 'comunas_id', 'id');
     }
 
+    public function fortalecimiento(): HasMany
+    {
+        return $this->hasMany(Fortalecimiento::class, 'comunas_id', 'id');
+    }
+
 }

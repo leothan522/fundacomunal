@@ -60,4 +60,9 @@ class ConsejoComunal extends Model
         return $this->hasMany(Formacion::class, 'consejos_comunales_id', 'id');
     }
 
+    public function fortalecimiento(): HasMany
+    {
+        return $this->hasMany(Fortalecimiento::class, 'consejos_comunales_id', 'id');
+    }
+
 }

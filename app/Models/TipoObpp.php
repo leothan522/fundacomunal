@@ -25,4 +25,9 @@ class TipoObpp extends Model
         return $this->hasMany(Formacion::class, 'tipos_obpp_id', 'id');
     }
 
+    public function fortalecimiento(): HasMany
+    {
+        return $this->hasMany(Fortalecimiento::class, 'tipos_obpp_id', 'id');
+    }
+
 }

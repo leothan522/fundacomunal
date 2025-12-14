@@ -70,4 +70,9 @@ class GestionHumana extends Model
         return $this->hasMany(Formacion::class, 'gestion_humana_id', 'id');
     }
 
+    public function fortalecimiento(): HasMany
+    {
+        return $this->hasMany(Fortalecimiento::class, 'gestion_humana_id', 'id');
+    }
+
 }

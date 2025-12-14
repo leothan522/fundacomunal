@@ -98,4 +98,9 @@ class User extends Authenticatable implements MustVerifyEmail, HasAvatar
         return $this->hasMany(Formacion::class, 'users_id', 'id');
     }
 
+    public function fortalecimiento(): HasMany
+    {
+        return $this->hasMany(Fortalecimiento::class, 'users_id', 'id');
+    }
+
 }
