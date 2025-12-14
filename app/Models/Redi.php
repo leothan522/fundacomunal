@@ -39,4 +39,9 @@ class Redi extends Model
         return $this->hasMany(Participacion::class, 'redis_id', 'id');
     }
 
+    public function formacion(): HasMany
+    {
+        return $this->hasMany(Formacion::class, 'redis_id', 'id');
+    }
+
 }

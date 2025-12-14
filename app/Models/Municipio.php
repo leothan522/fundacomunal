@@ -43,4 +43,9 @@ class Municipio extends Model
         return $this->hasMany(Participacion::class, 'municipios_id', 'id');
     }
 
+    public function formacion(): HasMany
+    {
+        return $this->hasMany(Formacion::class, 'municipios_id', 'id');
+    }
+
 }

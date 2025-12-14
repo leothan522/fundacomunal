@@ -46,4 +46,9 @@ class Estado extends Model
         return $this->hasMany(Participacion::class, 'estados_id', 'id');
     }
 
+    public function formacion(): HasMany
+    {
+        return $this->hasMany(Formacion::class, 'estados_id', 'id');
+    }
+
 }

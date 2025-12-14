@@ -24,4 +24,9 @@ class AreaProceso extends Model
         return $this->hasMany(Participacion::class, 'areas_procesos_id', 'id');
     }
 
+    public function formacion(): HasMany
+    {
+        return $this->hasMany(Formacion::class, 'areas_procesos_id', 'id');
+    }
+
 }

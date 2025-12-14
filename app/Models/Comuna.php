@@ -47,4 +47,9 @@ class Comuna extends Model
         return $this->hasMany(Participacion::class, 'comunas_id', 'id');
     }
 
+    public function formacion(): HasMany
+    {
+        return $this->hasMany(Formacion::class, 'comunas_id', 'id');
+    }
+
 }
