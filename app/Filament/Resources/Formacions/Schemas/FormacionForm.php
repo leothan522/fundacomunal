@@ -39,7 +39,11 @@ class FormacionForm
                             ->required(),
                         Select::make('tipos_obpp_id')
                             ->label('Tipo de OBPP')
-                            ->relationship('obpp', 'nombre')
+                            ->relationship(
+                                'obpp',
+                                'nombre',
+                                fn(Builder $query) => $query->where('fortalecimiento', 0)
+                            )
                             ->required(),
                         DatosObppForm::siturSelect(),
                         DatosObppForm::nombreSelect(),

@@ -4,6 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Models\Comuna;
 use App\Models\ConsejoComunal;
+use App\Models\Formacion;
 use App\Models\GestionHumana;
 use App\Models\Participacion;
 use Carbon\Carbon;
@@ -41,11 +42,11 @@ class ObppWidget extends StatsOverviewWidget
                 ->url(route('filament.dashboard.resources.participacion.index'))
                 ->visible(fn(): bool => isAdmin() || auth()->user()->hasRole('PARTICIPACION'))
                 ->extraAttributes(['onclick' => "Alpine.store('loader').show()"]),
-            Stat::make('Planificación Semanal', 'Participacion')
-                ->description('45 actividades')
+            Stat::make('Planificación Semanal', 'Formación')
+                ->description(fn(): string => $this->getActividadesFormacion() > 1 ? $this->getActividadesFormacion().' actividades' : $this->getActividadesFormacion().' actividad')
                 ->color('primary')
-                ->url(route('filament.dashboard.resources.participacion.index'))
-                ->hidden()
+                ->url(route('filament.dashboard.resources.formacion.index'))
+                ->visible(fn(): bool => isAdmin() || auth()->user()->hasRole('FORMACION'))
                 ->extraAttributes(['onclick' => "Alpine.store('loader').show()"]),
         ];
     }
@@ -93,6 +94,21 @@ class ObppWidget extends StatsOverviewWidget
         $inicio = Carbon::now()->startOfWeek();
         $fin = Carbon::now()->endOfWeek();
         $query = Participacion::query();
+        if (!isAdmin()) {
+            $query->where(function (Builder $subQuery) {
+                $subQuery->whereRelation('promotor', 'users_id', auth()->id())
+                    ->orWhere('users_id', auth()->id());
+            });
+
+        }
+        return $query->whereBetween('fecha', [$inicio, $fin])->count();
+    }
+
+    public function getActividadesFormacion(): int
+    {
+        $inicio = Carbon::now()->startOfWeek();
+        $fin = Carbon::now()->endOfWeek();
+        $query = Formacion::query();
         if (!isAdmin()) {
             $query->where(function (Builder $subQuery) {
                 $subQuery->whereRelation('promotor', 'users_id', auth()->id())
