@@ -18,7 +18,7 @@ class ListParticipacions extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Action::make('export-obpp')
+            Action::make('export-data')
                 ->label('Exportar DATA')
                 ->color('success')
                 ->icon(Heroicon::OutlinedDocumentArrowDown)

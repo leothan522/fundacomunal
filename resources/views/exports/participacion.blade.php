@@ -2,39 +2,39 @@
     <thead>
     <tr>
         <th colspan="2">&nbsp;</th>
-        <th colspan="5" style="background-color: #D9E1F2 ; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">{{ \Illuminate\Support\Str::upper('Ubicación Geográfica') }}</th>
+        <th colspan="5" style="background-color: #DDEBF7; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">{{ \Illuminate\Support\Str::upper('Ubicación Geográfica') }}</th>
         <th>&nbsp;</th>
-        <th colspan="4" style="background-color: #D9E1F2 ; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">DATOS DE LA OBPP</th>
+        <th colspan="4" style="background-color: #DDEBF7; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">DATOS DE LA OBPP</th>
         <th colspan="4">&nbsp;</th>
-        <th colspan="2" style="background-color: #D9E1F2 ; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">DATOS DEL VOCERO</th>
-        <th colspan="5" style="background-color: #D9E1F2 ; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">DATOS DEL PROMOTOR</th>
+        <th colspan="2" style="background-color: #DDEBF7; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">DATOS DEL VOCERO</th>
+        <th colspan="5" style="background-color: #DDEBF7; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">DATOS DEL PROMOTOR</th>
     </tr>
     <tr>
-        <th style="background-color: #D9E1F2; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">NRO.</th>
-        <th style="background-color: #D9E1F2; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">FECHA</th>
-        <th style="background-color: #D9E1F2; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">REDI</th>
-        <th style="background-color: #D9E1F2; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">ESTADO</th>
-        <th style="background-color: #D9E1F2; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">MUNICIPIO</th>
-        <th style="background-color: #D9E1F2; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">PARROQUIA</th>
-        <th style="background-color: #D9E1F2; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">LOCALIDAD</th>
-        <th style="background-color: #D9E1F2; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">CANTIDAD DE CC PARTICIPANTES EN ACTIVIDAD MUNICIPAL/ESTADAL</th>
-        <th style="background-color: #D9E1F2; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">TIPO DE OBPP</th>
-        <th style="background-color: #D9E1F2; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">CÓDIGO SITUR DE LA OBPP</th>
-        <th style="background-color: #D9E1F2; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">NOMBRE DE LA OBPP</th>
-        <th style="background-color: #D9E1F2; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">TIPO DE CONSEJO COMUNAL/COMUNA</th>
-        <th style="background-color: #2F75B5; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">ACOMPAÑAMIENTO</th>
-        <th style="background-color: #2F75B5; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">PROCESO</th>
-        <th style="background-color: #2F75B5; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">CANTIDAD DE FAMILIAS BENEFICIADAS</th>
-        <th style="background-color: #2F75B5; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">CANTIDAD DE PERSONAS ASISTENTES A LA ACTIVIDAD</th>
-        <th style="background-color: #D9E1F2; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">NOMBRE Y APELLIDO</th>
-        <th style="background-color: #D9E1F2; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">TELÉFONO</th>
-        <th style="background-color: #D9E1F2; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">NOMBRE</th>
-        <th style="background-color: #D9E1F2; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">APELLIDO</th>
-        <th style="background-color: #D9E1F2; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">CÉDULA</th>
-        <th style="background-color: #D9E1F2; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">NUMERO TELEFÓNICO</th>
-        <th style="background-color: #D9E1F2; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">CORREO ELECTRÓNICO</th>
-        <th style="background-color: #D9E1F2; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">ÓRGANOS O ENTES ADSCRITOS</th>
-        <th style="background-color: #D9E1F2; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">OBSERVACIÓN</th>
+        <th style="background-color: #DDEBF7; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">NRO.</th>
+        <th style="background-color: #DDEBF7; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">FECHA</th>
+        <th style="background-color: #DDEBF7; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">REDI</th>
+        <th style="background-color: #DDEBF7; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">ESTADO</th>
+        <th style="background-color: #DDEBF7; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">MUNICIPIO</th>
+        <th style="background-color: #DDEBF7; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">PARROQUIA</th>
+        <th style="background-color: #DDEBF7; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">LOCALIDAD</th>
+        <th style="background-color: #DDEBF7; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">CANTIDAD DE CC PARTICIPANTES EN ACTIVIDAD MUNICIPAL/ESTADAL</th>
+        <th style="background-color: #DDEBF7; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">TIPO DE OBPP</th>
+        <th style="background-color: #DDEBF7; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">CÓDIGO SITUR DE LA OBPP</th>
+        <th style="background-color: #DDEBF7; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">NOMBRE DE LA OBPP</th>
+        <th style="background-color: #DDEBF7; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">TIPO DE CONSEJO COMUNAL/COMUNA</th>
+        <th style="background-color: #00B0F0; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">ACOMPAÑAMIENTO</th>
+        <th style="background-color: #00B0F0; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">PROCESO</th>
+        <th style="background-color: #00B0F0; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">CANTIDAD DE FAMILIAS BENEFICIADAS</th>
+        <th style="background-color: #00B0F0; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">CANTIDAD DE PERSONAS ASISTENTES A LA ACTIVIDAD</th>
+        <th style="background-color: #DDEBF7; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">NOMBRE Y APELLIDO</th>
+        <th style="background-color: #DDEBF7; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">TELÉFONO</th>
+        <th style="background-color: #DDEBF7; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">NOMBRE</th>
+        <th style="background-color: #DDEBF7; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">APELLIDO</th>
+        <th style="background-color: #DDEBF7; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">CÉDULA</th>
+        <th style="background-color: #DDEBF7; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">NUMERO TELEFÓNICO</th>
+        <th style="background-color: #DDEBF7; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">CORREO ELECTRÓNICO</th>
+        <th style="background-color: #DDEBF7; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">ÓRGANOS O ENTES ADSCRITOS</th>
+        <th style="background-color: #DDEBF7; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">OBSERVACIÓN</th>
     </tr>
     </thead>
     <tbody>

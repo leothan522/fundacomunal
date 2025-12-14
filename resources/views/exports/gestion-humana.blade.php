@@ -4,7 +4,7 @@
         <th colspan="2">&nbsp;</th>
         <th colspan="4" style="background-color: #F2F2F2; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">{{ \Illuminate\Support\Str::upper('Ubicación Geográfica') }}</th>
         <td colspan="2">&nbsp;</td>
-        <td colspan="5" style="background-color: #595959; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">DATOS DEL TRABAJADOR</td>
+        <td colspan="5" style="background-color: #757171; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">DATOS DEL TRABAJADOR</td>
         <td colspan="4">&nbsp;</td>
     </tr>
     <tr>
@@ -14,15 +14,15 @@
         <th style="background-color: #F2F2F2; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">ESTADO</th>
         <th style="background-color: #F2F2F2; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">MUNICIPIO</th>
         <th style="background-color: #F2F2F2; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">PARROQUIA</th>
-        <th style="background-color: #999999; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">LABOR QUE EJERCE</th>
-        <th style="background-color: #999999; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">CATEGORIA</th>
-        <th style="background-color: #595959; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">NOMBRE</th>
-        <th style="background-color: #595959; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">APELLIDO</th>
-        <th style="background-color: #595959; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">CÉDULA</th>
-        <th style="background-color: #595959; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">TELÉFONO</th>
-        <th style="background-color: #595959; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">CORREO</th>
-        <th style="background-color: #595959; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">ÓRGANO O ENTE ADSCRITO</th>
-        <th style="background-color: #595959; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">OBSERVACIÓN</th>
+        <th style="background-color: #AEAAAA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">LABOR QUE EJERCE</th>
+        <th style="background-color: #AEAAAA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">CATEGORIA</th>
+        <th style="background-color: #757171; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">NOMBRE</th>
+        <th style="background-color: #757171; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">APELLIDO</th>
+        <th style="background-color: #757171; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">CÉDULA</th>
+        <th style="background-color: #757171; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">TELÉFONO</th>
+        <th style="background-color: #757171; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">CORREO</th>
+        <th style="background-color: #757171; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">ÓRGANO O ENTE ADSCRITO</th>
+        <th style="background-color: #757171; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">OBSERVACIÓN</th>
         <th style="background-color: #C00000; color: #ffffff; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">FECHA DE NACIMIENTO</th>
         <th style="background-color: #C00000; color: #ffffff; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">FECHA DE INGRESO</th>
     </tr>
