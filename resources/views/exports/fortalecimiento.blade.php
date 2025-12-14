@@ -1,0 +1,79 @@
+<table>
+    <thead>
+    <tr>
+        <th colspan="2">&nbsp;</th>
+        <th colspan="5" style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">{{ \Illuminate\Support\Str::upper('Ubicación Geográfica') }}</th>
+        <th>&nbsp;</th>
+        <th colspan="4" style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">DATOS DE LA OBPP</th>
+        <th colspan="7">&nbsp;</th>
+        <th colspan="2" style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">DATOS DEL VOCERO</th>
+        <th colspan="5" style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">DATOS DEL PROMOTOR</th>
+    </tr>
+    <tr>
+        <th style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">NRO.</th>
+        <th style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">FECHA</th>
+        <th style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">REDI</th>
+        <th style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">ESTADO</th>
+        <th style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">MUNICIPIO</th>
+        <th style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">PARROQUIA</th>
+        <th style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">LOCALIDAD</th>
+        <th style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">NOMBRE DE LA ORGANIZACIÓN SOCIO PRODUCTIVA</th>
+        <th style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">RIF</th>
+        <th style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">CÓDIGO SITUR DE LA OBPP VINCULADA</th>
+        <th style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">NOMBRE DE LA OBPP VINCULADA</th>
+        <th style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">ACOMPAÑAMIENTO</th>
+        <th style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">PROCESO</th>
+        <th style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">TIPO DE ORGANIZACION SOCIO PRODUCTIVA (OSP)</th>
+        <th style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">TIPO DE ACTIVIDAD ECONOMICA</th>
+        <th style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">CANTIDAD DE PERSONAS ASISTENTES A LA ACTIVIDAD</th>
+        <th style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">CANTIDAD DE FAMILIAS BENEFICIADAS POR EL PROYECTO</th>
+        <th style="background-color: #A9D08E; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">DESCRIPCIÓN DEL PROYECTO</th>
+        <th style="background-color: #A9D08E; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">ETAPA DEL PROYECTO</th>
+        <th style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">NOMBRE Y APELLIDO</th>
+        <th style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">TELÉFONO</th>
+        <th style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">NOMBRE</th>
+        <th style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">APELLIDO</th>
+        <th style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">CÉDULA</th>
+        <th style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">NUMERO TELEFÓNICO</th>
+        <th style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">CORREO ELECTRÓNICO</th>
+        <th style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">ÓRGANOS O ENTES ADSCRITOS</th>
+        <th style="background-color: #E2EFDA; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 10pt">OBSERVACIÓN</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    @foreach($rows as $data)
+        <tr>
+            <td style="border: 1px solid #404040; text-align: center">{{ ++$i }}</td>
+            <td style="border: 1px solid #404040; text-align: center">{{ \PhpOffice\PhpSpreadsheet\Shared\Date::dateTimeToExcel(\Carbon\Carbon::parse($data->fecha)) }}</td>
+            <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->redi->nombre) }}</td>
+            <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->estado->nombre) }}</td>
+            <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->municipio->nombre) }}</td>
+            <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->parroquia) }}</td>
+            <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->localidad) }}</td>
+            <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->nombre_osp) }}</td>
+            <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->rif_osp) }}</td>
+            <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->situr_obpp) }}</td>
+            <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->nombre_obpp) }}</td>
+            <td style="border: 1px solid #404040;">{{ \Illuminate\Support\Str::upper($data->area->nombre) }}</td>
+            <td style="border: 1px solid #404040;">{{ \Illuminate\Support\Str::upper($data->proceso->nombre) }}</td>
+            <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->obpp->nombre) }}</td>
+            <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->economica->nombre) }}</td>
+            <td style="border: 1px solid #404040; text-align: center">{{ $data->cantidad_personas }}</td>
+            <td style="border: 1px solid #404040; text-align: center">{{ $data->cantidad_familias }}</td>
+            <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->descripcion_proyecto) }}</td>
+            <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->etapa->nombre) }}</td>
+            <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->vocero_nombre) }}</td>
+            <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->vocero_telefono) }}</td>
+            <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->promotor->nombre) }}</td>
+            <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->promotor->apellido) }}</td>
+            <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->promotor->cedula) }}</td>
+            <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->promotor->telefono) }}</td>
+            <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::lower($data->promotor->email) }}</td>
+            <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->promotor->ente) }}</td>
+            <td style="border: 1px solid #404040;">{{ \Illuminate\Support\Str::upper($data->observacion) }}</td>
+        </tr>
+    @endforeach
+
+    </tbody>
+</table>

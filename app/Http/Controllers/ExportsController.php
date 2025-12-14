@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\FormacionExport;
+use App\Exports\FortalecimientoExport;
 use App\Exports\GestionHumanaExport;
 use App\Exports\ObppExport;
 use App\Exports\ParticipacionExport;
@@ -55,6 +56,17 @@ class ExportsController extends Controller
         $this->getFechas($tipoReporte);
         $nombre = Str::upper($tipoReporte);
         return Excel::download(new FormacionExport($this->inicio, $this->fin), "FORMACION_$nombre.xlsx");
+    }
+
+    /**
+     * @throws Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     */
+    public function exportFortalecimiento($tipoReporte)
+    {
+        $this->getFechas($tipoReporte);
+        $nombre = Str::upper($tipoReporte);
+        return Excel::download(new FortalecimientoExport($this->inicio, $this->fin), "FORTALECIMIENTO_$nombre.xlsx");
     }
 
     /**

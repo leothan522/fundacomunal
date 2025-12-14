@@ -41,3 +41,4 @@ Route::get('descargar/data-obpp', [ExportsController::class, 'exportConsejosComu
 Route::get('descargar/gestion-humana', [ExportsController::class, 'exportGestionHumana'])->name('descargar.gestion-humana');
 Route::get('descargar/participacion/{tipoReporte}', [ExportsController::class, 'exportParticipacion'])->name('descargar.participacion');
 Route::get('descargar/formacion/{tipoReporte}', [ExportsController::class, 'exportFormacion'])->name('descargar.formacion');
+Route::get('descargar/fortalecimiento/{tipoReporte}', [ExportsController::class, 'exportFortalecimiento'])->name('descargar.fortalecimienton');
