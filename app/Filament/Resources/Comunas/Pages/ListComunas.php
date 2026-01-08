@@ -20,6 +20,16 @@ class ListComunas extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('prueba')
+                ->label('Prueba Browsershot')
+                ->action(function (){
+                    $html = view('welcome')->render();
+                    $path = storage_path('app/public/export-images/prueba.png');
+                    Browsershot::html($html)
+                        ->windowSize(800, 800)
+                        ->save($path);
+                    return response()->download($path);
+                }),
             Action::make('export-obpp')
                 ->label('Exportar DATA')
                 ->color('success')
