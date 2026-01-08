@@ -25,10 +25,16 @@ class ListComunas extends ListRecords
                 ->action(function () {
                     $html = view('welcome')->render();
                     $path = storage_path('app/public/export-images/prueba.png');
-                    Browsershot::html($html)
-                        ->setChromePath('/usr/bin/chromium') // 🔑 ruta exacta del binario
-                        ->windowSize(800, 800)
-                        ->save($path);
+                    $browsershot = Browsershot::html($html)
+                        ->windowSize(1024, 768);
+
+                    // ✅ Condiciona la variable de entorno
+                    if (config('app.chrome_path')) {
+                        $browsershot->setChromePath(config('app.chrome_path'));
+                    }
+
+                    $browsershot->save($path);
+
                     return response()->download($path);
                 })
                 ->visible(fn() => auth()->user()->is_root),
