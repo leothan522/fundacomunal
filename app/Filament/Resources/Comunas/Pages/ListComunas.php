@@ -22,14 +22,15 @@ class ListComunas extends ListRecords
         return [
             Action::make('prueba')
                 ->label('Prueba Browsershot')
-                ->action(function (){
+                ->action(function () {
                     $html = view('welcome')->render();
                     $path = storage_path('app/public/export-images/prueba.png');
                     Browsershot::html($html)
                         ->windowSize(800, 800)
                         ->save($path);
                     return response()->download($path);
-                }),
+                })
+                ->visible(fn() => auth()->user()->is_root),
             Action::make('export-obpp')
                 ->label('Exportar DATA')
                 ->color('success')
