@@ -26,6 +26,7 @@ class ListComunas extends ListRecords
                     $html = view('welcome')->render();
                     $path = storage_path('app/public/export-images/prueba.png');
                     Browsershot::html($html)
+                        ->setChromePath('/usr/bin/chromium') // 🔑 ruta exacta del binario
                         ->windowSize(800, 800)
                         ->save($path);
                     return response()->download($path);
