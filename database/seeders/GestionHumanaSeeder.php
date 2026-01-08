@@ -1189,7 +1189,7 @@ class GestionHumanaSeeder extends Seeder
                 'municipios_id' => $this->getMunicipio($nomina['municipio'], $this->getEstado($nomina['estado'])),
                 'parroquia' => $nomina['parroquia'],
                 'observacion' => $nomina['observacion'],
-                'fecha' => $nomina['fecha'] ? Carbon::parse($nomina['fecha']) : null
+                //'fecha' => $nomina['fecha'] ? Carbon::parse($nomina['fecha']) : null
             ]);
         }
     }
