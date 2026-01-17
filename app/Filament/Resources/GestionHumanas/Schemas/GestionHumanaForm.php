@@ -34,6 +34,9 @@ class GestionHumanaForm
                             ->required(),
                         TextInput::make('telefono')
                             ->label('Teléfono')
+                            ->trim()
+                            ->placeholder('Ejemplo: 0424-1456236')
+                            ->belowContent('Ingrese el número en el formato 0414-1523698 (solo dígitos, un guion y sin espacios).')
                             ->tel()
                             ->telRegex('/^[0-9]{4}-[0-9]{7}$/')
                             ->required(),
