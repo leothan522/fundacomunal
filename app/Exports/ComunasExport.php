@@ -19,6 +19,6 @@ class ComunasExport implements FromView, WithTitle, ShouldAutoSize
 
     public function title(): string
     {
-        return 'CIRCUITOS Y COMUNAS';
+        return 'COMUNAS Y CIRCUITOS';
     }
 }
