@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('cod_com');
             $table->string('cod_situr');
-            $table->integer('cantidad_cc');
+            $table->integer('cantidad_cc')->default(0);
+            $table->string('tipo_obpp')->nullable();
             $table->unsignedBigInteger('redis_id')->nullable();
             $table->unsignedBigInteger('estados_id')->nullable();
             $table->unsignedBigInteger('municipios_id')->nullable();

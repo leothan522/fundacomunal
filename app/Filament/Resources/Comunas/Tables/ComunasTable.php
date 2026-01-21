@@ -30,7 +30,7 @@ class ComunasTable
         return $table
             ->columns([
                 TextColumn::make('comuna')
-                    ->label('Cirtuito o Comuna')
+                    ->label('Comuna o Cirtuito')
                     ->default(fn(Comuna $record): string => Str::upper($record->nombre))
                     ->description(fn(Comuna $record): string => Str::upper($record->municipio->nombre))
                     ->wrap()
@@ -54,13 +54,6 @@ class ComunasTable
                     ->alignCenter()
                     ->grow(false)
                     ->visibleFrom('md'),
-                TextColumn::make('cantidad_cc')
-                    ->label('Excel')
-                    ->numeric()
-                    ->alignCenter()
-                    ->grow(false)
-                    ->visibleFrom('md')
-                    ->hidden(fn(): bool => !auth()->user()->is_root),
                 TextColumn::make('consejos_count')->counts('consejos')
                     ->label('Cantidad C.C.')
                     ->alignCenter()
@@ -70,6 +63,12 @@ class ComunasTable
                     ->visibleFrom('md'),
             ])
             ->filters([
+                SelectFilter::make('tipo_obpp')
+                ->label('Tipo OBPP')
+                ->options([
+                    'COMUNA' => 'Comunas',
+                    'CIRCUITO' => 'Circuitos'
+                ]),
                 SelectFilter::make('Municipio')
                     ->relationship(
                         'municipio',

@@ -25,6 +25,7 @@ class ComunaImport implements ToCollection, WithStartRow
             $codSITUR = $row[3];
             $nombre = $row[4];
             $cantidadCC = intval($row[5]);
+            $tipoObpp = $row[6];
 
             if (is_numeric($codSITUR)){
                 $fecha = Date::excelToDateTimeObject($codSITUR)->format('d-m-Y');
@@ -38,6 +39,7 @@ class ComunaImport implements ToCollection, WithStartRow
                 'cod_com' => $codCOM,
                 'cod_situr' => $codSITUR,
                 'cantidad_cc' => $cantidadCC,
+                'tipo_obpp' => $tipoObpp,
                 'redis_id' => Redi::where('nombre', 'LLANOS')->first()?->id,
                 'estados_id' => $estados_id,
                 'municipios_id' => Municipio::where('estados_id', $estados_id)->where('nombre_cne', $municipio)->first()?->id,

@@ -70,7 +70,7 @@ class ConsejoComunalsTable
                     ->searchable()
                     ->preload(),
                 SelectFilter::make('Comuna')
-                    ->label('Circuito o Comuna')
+                    ->label('Comuna o Circuito')
                     ->relationship('comuna', 'nombre')
                     ->searchable()
                     ->preload(),

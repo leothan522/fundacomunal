@@ -33,10 +33,13 @@ class ComunaForm
                             ->unique()
                             ->maxLength(255)
                             ->required(),
-                        TextInput::make('cantidad_cc')
-                            ->label('Cantidad C.C.')
-                            ->required()
-                            ->numeric(),
+                        Select::make('tipo_obpp')
+                            ->label('Tipo OBPP')
+                            ->options([
+                                'COMUNA' => 'COMUNA',
+                                'CIRCUITO' => 'CIRCUITO',
+                            ])
+                            ->required(),
                     ])
                     ->compact()
                     ->collapsible(),

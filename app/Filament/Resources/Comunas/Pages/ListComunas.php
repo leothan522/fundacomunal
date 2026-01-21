@@ -37,7 +37,7 @@ class ListComunas extends ListRecords
 
                     return response()->download($path);
                 })
-                ->visible(fn() => auth()->user()->is_root),
+                ->visible(false),
             Action::make('export-obpp')
                 ->label('Exportar DATA')
                 ->color('success')

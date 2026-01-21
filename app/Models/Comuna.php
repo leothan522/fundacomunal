@@ -16,6 +16,7 @@ class Comuna extends Model
         'cod_com',
         'cod_situr',
         'cantidad_cc',
+        'tipo_obpp',
         'redis_id',
         'estados_id',
         'municipios_id',

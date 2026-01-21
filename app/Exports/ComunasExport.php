@@ -12,7 +12,7 @@ class ComunasExport implements FromView, WithTitle, ShouldAutoSize
 {
     public function view(): View
     {
-        $comunas = Comuna::get();
+        $comunas = Comuna::orderBy('municipios_id')->get();
         return view('exports.comunas')
             ->with('rows', $comunas);
     }

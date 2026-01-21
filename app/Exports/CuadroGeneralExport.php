@@ -19,6 +19,7 @@ class CuadroGeneralExport implements FromView, WithTitle, ShouldAutoSize, WithCo
             ->with('rows', $municipios)
             ->with('consejosComunales', 0)
             ->with('comunas', 0)
+            ->with('circuitos', 0)
             ->with('vinculados', 0);
     }
 
@@ -33,6 +34,7 @@ class CuadroGeneralExport implements FromView, WithTitle, ShouldAutoSize, WithCo
             'B' => NumberFormat::FORMAT_NUMBER,
             'C' => NumberFormat::FORMAT_NUMBER,
             'D' => NumberFormat::FORMAT_NUMBER,
+            'E' => NumberFormat::FORMAT_NUMBER,
         ];
     }
 }

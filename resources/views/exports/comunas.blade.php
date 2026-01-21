@@ -4,10 +4,11 @@
         <th style="background-color: #C00000; color: #ffffff; border: 1px solid #404040; font-weight: bold; text-align: center">MUNICIPIO</th>
         <th style="background-color: #C00000; color: #ffffff; border: 1px solid #404040; font-weight: bold; text-align: center">PARROQUIA</th>
         <th style="background-color: #C00000; color: #ffffff; border: 1px solid #404040; font-weight: bold; text-align: center">COD. COM</th>
-        <th style="background-color: #C00000; color: #ffffff; border: 1px solid #404040; font-weight: bold; text-align: center">COd. SITUR</th>
+        <th style="background-color: #C00000; color: #ffffff; border: 1px solid #404040; font-weight: bold; text-align: center">TIPO OBPP</th>
+        <th style="background-color: #C00000; color: #ffffff; border: 1px solid #404040; font-weight: bold; text-align: center">COD . SITUR</th>
         <th style="background-color: #C00000; color: #ffffff; border: 1px solid #404040; font-weight: bold; text-align: center">CIRCUITO O COMUNA</th>
         <th style="background-color: #C00000; color: #ffffff; border: 1px solid #404040; font-weight: bold; text-align: center">CANTIDAD C.C.</th>
-        <th style="background-color: #C00000; color: #ffffff; border: 1px solid #404040; font-weight: bold; text-align: center">TIPO</th>
+        <th style="background-color: #C00000; color: #ffffff; border: 1px solid #404040; font-weight: bold; text-align: center">TIPO POBLACION</th>
     </tr>
     </thead>
     <tbody>
@@ -17,6 +18,7 @@
             <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->municipio->nombre) }}</td>
             <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->parroquia) }}</td>
             <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->cod_com) }}</td>
+            <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->tipo_obpp) }}</td>
             <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->cod_situr) }}</td>
             <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->nombre) }}</td>
             <td style="border: 1px solid #404040; text-align: center">{{ $data->consejos->count() }}</td>
@@ -31,8 +33,6 @@
             <td style="border: 1px solid #404040; text-align: center">
                 {{ \Illuminate\Support\Str::upper($clasificacion) }}
             </td>
-
-
 
         </tr>
     @endforeach
