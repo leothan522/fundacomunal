@@ -149,7 +149,7 @@ class GestionHumanasTable
                         ->modalIcon(Heroicon::OutlinedUserCircle)
                         ->hidden(function (?GestionHumana $record): bool {
                             $response = true;
-                            if ($record && $record->users_id && !$record->user->login_count){
+                            if ($record && $record->users_id && ($record->user()->exists() && !$record->user->login_count)){
                                 $response = false;
                             }
                             return $response;

@@ -167,7 +167,8 @@ class FortalecimientosTable
                         ->modalIcon(Heroicon::OutlinedCheckCircle)
                         ->modalWidth(Width::Small)
                         ->modalDescription(fn(?Fortalecimiento $record) => $record ? getFecha($record->fecha) . ' - ' . Str::upper($record->nombre_obpp) : null)
-                        ->hidden(fn(?Fortalecimiento $record): bool => $record && !is_null($record->estatus)),
+                        ->hidden(fn(?Fortalecimiento $record): bool => $record && !is_null($record->estatus))
+                        ->disabled(fn(?Fortalecimiento $record): bool => $record && Carbon::parse($record->fecha)->gte(now())),
                     Action::make('no_realizada')
                         ->label('Suspendida')
                         ->icon(Heroicon::OutlinedBackspace)

@@ -176,7 +176,8 @@ class ParticipacionsTable
                         ->modalIcon(Heroicon::OutlinedCheckCircle)
                         ->modalWidth(Width::Small)
                         ->modalDescription(fn(?Participacion $record) => $record ? getFecha($record->fecha) . ' - ' . Str::upper($record->nombre_obpp) : null)
-                        ->hidden(fn(?Participacion $record): bool => $record && !is_null($record->estatus)),
+                        ->hidden(fn(?Participacion $record): bool => $record && !is_null($record->estatus))
+                        ->disabled(fn(?Participacion $record): bool => $record && Carbon::parse($record->fecha)->gte(now())),
                     Action::make('no_realizada')
                         ->label('Suspendida')
                         ->icon(Heroicon::OutlinedBackspace)

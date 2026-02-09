@@ -172,7 +172,8 @@ class FormacionsTable
                         ->modalIcon(Heroicon::OutlinedCheckCircle)
                         ->modalWidth(Width::Small)
                         ->modalDescription(fn(?Formacion $record) => $record ? getFecha($record->fecha) . ' - ' . Str::upper($record->nombre_obpp) : null)
-                        ->hidden(fn(?Formacion $record): bool => $record && !is_null($record->estatus)),
+                        ->hidden(fn(?Formacion $record): bool => $record && !is_null($record->estatus))
+                        ->disabled(fn(?Formacion $record): bool => $record && Carbon::parse($record->fecha)->gte(now())),
                     Action::make('no_realizada')
                         ->label('Suspendida')
                         ->icon(Heroicon::OutlinedBackspace)
