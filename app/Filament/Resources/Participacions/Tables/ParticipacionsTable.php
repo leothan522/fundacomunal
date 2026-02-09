@@ -40,7 +40,7 @@ class ParticipacionsTable
     {
         return $table
             ->modifyQueryUsing(function (Builder $query) {
-                if (!isAdmin() && !auth()->user()->hasRole('GESTION HUMANA')) {
+                if (!isAdmin() && !auth()->user()->hasRole('GESTION HUMANA') && !auth()->user()->hasPermissionTo('jefe_area')) {
                     $query->where(function (Builder $subQuery) {
                         $subQuery->whereRelation('promotor', 'users_id', auth()->id())
                             ->orWhere('users_id', auth()->id());

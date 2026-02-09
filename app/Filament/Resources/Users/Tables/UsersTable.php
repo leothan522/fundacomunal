@@ -125,6 +125,24 @@ class UsersTable
                         ->requiresConfirmation()
                         ->hidden(fn(User $record): bool => !is_null($record->email_verified_at))
                         ->disabled(fn(User $record): bool => (auth()->id() == $record->id) || !isAdmin() || $record->is_root),
+                    Action::make('add_responsable')
+                        ->label('Asignar Jefe de Area')
+                        ->icon(Heroicon::OutlinedUserPlus)
+                        ->color('success')
+                        ->requiresConfirmation()
+                        ->action(function (User $record): void {
+                            $record->givePermissionTo('jefe_area');
+                        })
+                        ->hidden(fn(User $record): bool => $record->can('jefe_area')),
+                    Action::make('remove_responsable')
+                        ->label('Revocar Jefe de Area')
+                        ->icon(Heroicon::OutlinedUserMinus)
+                        ->color('info')
+                        ->requiresConfirmation()
+                        ->action(function (User $record): void {
+                            $record->revokePermissionTo('jefe_area');
+                        })
+                        ->visible(fn(User $record): bool => $record->can('jefe_area')),
                     EditAction::make(),
                     DeleteAction::make(),
                 ])

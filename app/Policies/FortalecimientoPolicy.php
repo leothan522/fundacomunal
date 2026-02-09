@@ -37,7 +37,11 @@ class FortalecimientoPolicy
      */
     public function update(User $user, Fortalecimiento $fortalecimiento): bool
     {
-        return isAdmin() || $user->hasRole('FORTALECIMIENTO');
+        $propio = true;
+        if ($user->hasPermissionTo('jefe_area')){
+            $propio = $fortalecimiento->users_id == $user->id;
+        }
+        return (isAdmin() || $user->hasRole('FORTALECIMIENTO')) && $propio;
     }
 
     /**
@@ -45,7 +49,11 @@ class FortalecimientoPolicy
      */
     public function delete(User $user, Fortalecimiento $fortalecimiento): bool
     {
-        return isAdmin() || $user->hasRole('FORTALECIMIENTO');
+        $propio = true;
+        if ($user->hasPermissionTo('jefe_area')){
+            $propio = $fortalecimiento->users_id == $user->id;
+        }
+        return (isAdmin() || $user->hasRole('FORTALECIMIENTO')) && $propio;
     }
 
     /**

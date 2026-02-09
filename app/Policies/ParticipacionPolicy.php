@@ -37,7 +37,11 @@ class ParticipacionPolicy
      */
     public function update(User $user, Participacion $participacion): bool
     {
-        return isAdmin() || $user->hasRole('PARTICIPACION');
+        $propio = true;
+        if ($user->hasPermissionTo('jefe_area')){
+            $propio = $participacion->users_id == $user->id;
+        }
+        return (isAdmin() || $user->hasRole('PARTICIPACION')) && $propio;
     }
 
     /**
@@ -45,7 +49,11 @@ class ParticipacionPolicy
      */
     public function delete(User $user, Participacion $participacion): bool
     {
-        return isAdmin() || $user->hasRole('PARTICIPACION');
+        $propio = true;
+        if ($user->hasPermissionTo('jefe_area')){
+            $propio = $participacion->users_id == $user->id;
+        }
+        return (isAdmin() || $user->hasRole('PARTICIPACION')) && $propio;
     }
 
     /**

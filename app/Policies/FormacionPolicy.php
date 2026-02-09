@@ -37,7 +37,11 @@ class FormacionPolicy
      */
     public function update(User $user, Formacion $formacion): bool
     {
-        return isAdmin() || $user->hasRole('FORMACION');
+        $propio = true;
+        if ($user->hasPermissionTo('jefe_area')){
+            $propio = $formacion->users_id == $user->id;
+        }
+        return (isAdmin() || $user->hasRole('FORMACION')) && $propio;
     }
 
     /**
@@ -45,7 +49,11 @@ class FormacionPolicy
      */
     public function delete(User $user, Formacion $formacion): bool
     {
-        return isAdmin() || $user->hasRole('FORMACION');
+        $propio = true;
+        if ($user->hasPermissionTo('jefe_area')){
+            $propio = $formacion->users_id == $user->id;
+        }
+        return (isAdmin() || $user->hasRole('FORMACION')) && $propio;
     }
 
     /**
