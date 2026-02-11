@@ -51,7 +51,9 @@ class FormacionsTable
                 TextColumn::make('fecha_movil')
                     ->label('Fecha')
                     ->default(fn(Formacion $record) => $record->fecha)
-                    ->description(fn(Formacion $record) => Str::upper($record->estrategia->nombre.' - '.$record->nombre_obpp))
+                    ->description(fn(Formacion $record) => isAdmin() || auth()->user()->hasPermissionTo('jefe_area') ?
+                        Str::upper($record->estrategia->nombre.' - '.$record->nombre_obpp. ' (' . strtok($record->promotor->nombre, " ") . " " . strtok($record->promotor->apellido, " ") . ')') :
+                        Str::upper($record->estrategia->nombre.' - '.$record->nombre_obpp))
                     ->date()
                     ->wrap()
                     ->hiddenFrom('md'),
