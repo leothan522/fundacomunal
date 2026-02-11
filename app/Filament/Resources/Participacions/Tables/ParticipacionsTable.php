@@ -53,7 +53,9 @@ class ParticipacionsTable
                 TextColumn::make('fecha_movil')
                     ->label('Fecha')
                     ->default(fn(Participacion $record) => $record->fecha)
-                    ->description(fn(Participacion $query) => Str::upper($query->nombre_obpp))
+                    ->description(fn(Participacion $record) => isAdmin() || auth()->user()->hasPermissionTo('jefe_area') ?
+                        Str::upper($record->nombre_obpp . ' (' . strtok($record->promotor->nombre, " ") . " " . strtok($record->promotor->apellido, " ") . ')') :
+                        Str::upper($record->nombre_obpp))
                     ->date()
                     ->wrap()
                     ->hiddenFrom('md'),
