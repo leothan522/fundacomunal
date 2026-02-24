@@ -53,7 +53,7 @@ class FortalecimientosTable
                     ->label('Fecha')
                     ->default(fn(Fortalecimiento $record) => $record->fecha)
                     ->description(fn(Fortalecimiento $record) => isAdmin() || auth()->user()->hasPermissionTo('jefe_area') ?
-                        Str::upper($record->nombre_obpp. ' (' . strtok($record->promotor->nombre, " ") . " " . strtok($record->promotor->apellido, " ") . ')') :
+                        Str::upper($record->nombre_obpp. ' (' . strtok($record->promotor->nombre ?? "", " ") . " " . strtok($record->promotor->apellido ?? "", " ") . ')') :
                         Str::upper($record->nombre_obpp))
                     ->date()
                     ->wrap()

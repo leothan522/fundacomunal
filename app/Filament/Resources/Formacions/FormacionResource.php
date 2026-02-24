@@ -16,6 +16,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use UnitEnum;
 
@@ -33,6 +34,22 @@ class FormacionResource extends Resource
     protected static ?int $navigationSort = 50;
 
     protected static ?string $recordTitleAttribute = 'nombre_obpp';
+
+    protected static ?int $globalSearchSort = 3;
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['situr_obpp', 'nombre_obpp', 'promotor.nombre', 'promotor.apellido'];
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        return [
+            'OBPP' => $record->obpp->nombre,
+            'Proceso' => $record->proceso->nombre,
+            'Fecha' => getFecha($record->fecha),
+        ];
+    }
 
     public static function form(Schema $schema): Schema
     {

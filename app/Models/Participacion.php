@@ -74,7 +74,7 @@ class Participacion extends Model
 
     public function promotor(): BelongsTo
     {
-        return $this->belongsTo(GestionHumana::class, 'gestion_humana_id', 'id');
+        return $this->belongsTo(GestionHumana::class, 'gestion_humana_id', 'id')->withTrashed();
     }
 
     public function comuna(): BelongsTo
@@ -89,7 +89,7 @@ class Participacion extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'users_id', 'id');
+        return $this->belongsTo(User::class, 'users_id', 'id')->withTrashed();
     }
 
     public function medio(): BelongsTo

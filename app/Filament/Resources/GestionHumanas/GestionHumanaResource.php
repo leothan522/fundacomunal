@@ -35,6 +35,8 @@ class GestionHumanaResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'cedula';
 
+    protected static ?int $globalSearchSort = 1;
+
     public static function getGlobalSearchResultTitle(Model $record): string|Htmlable
     {
         return $record->nombre . ' ' . $record->apellido;
