@@ -23,10 +23,10 @@ class ListComunas extends ListRecords
             Action::make('prueba')
                 ->label('Prueba Browsershot')
                 ->action(function () {
-                    $html = view('welcome')->render();
+                    $html = view('exports.ficha-comuna')->render();
                     $path = storage_path('app/public/export-images/prueba.png');
                     $browsershot = Browsershot::html($html)
-                        ->windowSize(1024, 768);
+                        ->windowSize(375, 812);
 
                     // ✅ Condiciona la variable de entorno
                     if (config('app.chrome_path')) {
@@ -37,7 +37,7 @@ class ListComunas extends ListRecords
 
                     return response()->download($path);
                 })
-                ->visible(false),
+                ->visible(fn():bool => auth()->user()->is_root),
             Action::make('export-obpp')
                 ->label('Exportar DATA')
                 ->color('success')
