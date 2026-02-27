@@ -22,6 +22,7 @@ use Illuminate\Support\Str;
 use pxlrbt\FilamentExcel\Actions\ExportBulkAction;
 use pxlrbt\FilamentExcel\Columns\Column;
 use pxlrbt\FilamentExcel\Exports\ExcelExport;
+use Spatie\Browsershot\Browsershot;
 
 class ComunasTable
 {
@@ -64,11 +65,11 @@ class ComunasTable
             ])
             ->filters([
                 SelectFilter::make('tipo_obpp')
-                ->label('Tipo OBPP')
-                ->options([
-                    'COMUNA' => 'Comunas',
-                    'CIRCUITO' => 'Circuitos'
-                ]),
+                    ->label('Tipo OBPP')
+                    ->options([
+                        'COMUNA' => 'Comunas',
+                        'CIRCUITO' => 'Circuitos'
+                    ]),
                 SelectFilter::make('Municipio')
                     ->relationship(
                         'municipio',
@@ -84,6 +85,28 @@ class ComunasTable
                     ViewAction::make()
                         ->extraModalFooterActions(fn(Action $action): array => [
                             EditAction::make(),
+                            $action->makeModalAction('fichaResumen')
+                                ->label('Ficha')
+                                ->color('success')
+                                ->icon(Heroicon::OutlinedPhoto)
+                                ->action(function (Comuna $record) {
+                                    $html = view('exports.ficha-comuna')
+                                        ->with('record', $record)
+                                        ->render();
+                                    $nombre = Str::upper(Str::slug($record->nombre));
+                                    $path = storage_path("app/public/export-images/$nombre.png");
+                                    $browsershot = Browsershot::html($html)
+                                        ->windowSize(430, 932);
+
+                                    // ✅ Condiciona la variable de entorno
+                                    if (config('app.chrome_path')) {
+                                        $browsershot->setChromePath(config('app.chrome_path'));
+                                    }
+
+                                    $browsershot->save($path);
+
+                                    return response()->download($path);
+                                }),
                         ]),
                     EditAction::make(),
                     DeleteAction::make(),

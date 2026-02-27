@@ -20,24 +20,6 @@ class ListComunas extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Action::make('prueba')
-                ->label('Prueba Browsershot')
-                ->action(function () {
-                    $html = view('exports.ficha-comuna')->render();
-                    $path = storage_path('app/public/export-images/prueba.png');
-                    $browsershot = Browsershot::html($html)
-                        ->windowSize(375, 812);
-
-                    // ✅ Condiciona la variable de entorno
-                    if (config('app.chrome_path')) {
-                        $browsershot->setChromePath(config('app.chrome_path'));
-                    }
-
-                    $browsershot->save($path);
-
-                    return response()->download($path);
-                })
-                ->visible(fn():bool => auth()->user()->is_root),
             Action::make('export-obpp')
                 ->label('Exportar DATA')
                 ->color('success')

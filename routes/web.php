@@ -42,7 +42,3 @@ Route::get('descargar/gestion-humana', [ExportsController::class, 'exportGestion
 Route::get('descargar/participacion/{tipoReporte}', [ExportsController::class, 'exportParticipacion'])->name('descargar.participacion');
 Route::get('descargar/formacion/{tipoReporte}', [ExportsController::class, 'exportFormacion'])->name('descargar.formacion');
 Route::get('descargar/fortalecimiento/{tipoReporte}', [ExportsController::class, 'exportFortalecimiento'])->name('descargar.fortalecimienton');
-
-Route::get('/prueba', function () {
-    return view('exports.ficha-comuna');
-})->name('web.index');
