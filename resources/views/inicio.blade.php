@@ -3,7 +3,7 @@
 @section('title', 'Inicio')
 
 @section('content')
-    <div x-data class="text-center pt-1 mb-5 pb-1">
+    <div x-data class="text-center mb-5 mb-sm-auto">
         @auth
             <a class="text-muted" href="{{ route('profile.show') }}" @click="mostrarPreloader">{{ __('Profile') }}</a>
             <a class="text-muted ms-3" href="{{ url('/dashboard') }}" @click="mostrarPreloader">{{ __('Dashboard') }}</a>

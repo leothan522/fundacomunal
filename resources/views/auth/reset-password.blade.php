@@ -3,7 +3,7 @@
 @section('title', __('Reset Password'))
 
 @section('content')
-    <form class="needs-validation" method="POST" action="{{ route('password.update') }}" novalidate>
+    <form class="needs-validation mb-3 mb-sm-auto" method="POST" action="{{ route('password.update') }}" novalidate>
         @csrf
 
         <input type="hidden" name="token" value="{{ $request->route('token') }}">

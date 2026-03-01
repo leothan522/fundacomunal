@@ -71,9 +71,12 @@
             }
         }
 
-        @media (min-width: 768px) {
+        @media (max-height: 650px) {
             #scale {
-                transform: scale(0.8); /* Reduce el tamaño al 80% */
+                transform: scale(0.80); /* Reduce el tamaño al 80% */
+            }
+            #scale-2 {
+                margin-top: 60px;
             }
         }
 
@@ -148,25 +151,22 @@
             <div class="col-xl-10">
                 <div class="card rounded-3 text-black">
                     <div class="row g-0">
-                        <div class="col-lg-6">
-                            <div class="card-body p-md-5 mx-md-4 position-relative" id="card_body">
+                        <div class="col-lg-6 d-flex align-items-center">
+                            <div class="card-body p-md-5 mx-md-4" id="card_body">
 
-                                <img class="gobernacion d-lg-none" src="{{ asset('img/logo_gobernacion_white.png') }}"
-                                     alt="Logo Gobernación Guárico">
+                                <img class="gobernacion d-lg-none" src="{{ asset('img/logo_gobernacion_white.png') }}" alt="Logo Gobernación Guárico">
 
-                                <div x-data
-                                     class="text-center mt-4 @if(Route::currentRouteName() == 'web.index') pt-md-5 @endif">
+                                <div class="row d-sm-block d-md-none" style="min-height: 60px;">&nbsp;</div>
+
+                                <div x-data class="text-center mb-4">
                                     @if(Route::currentRouteName() != 'instalar-app')
                                         <a href="{{ route('web.index') }}" @click="mostrarPreloader()">
-                                            <img
-                                                class="img-fluid @if(Route::currentRouteName() == 'web.index') mt-5 @endif"
+                                            <img class="img-fluid"
                                                 src="{{ asset('img/logo.png') }}"
                                                 @if(Route::currentRouteName() != 'web.index') style="width: 200px !important;"
                                                 @endif  alt="Fundacomunal Guárico">
                                         </a>
-                                        <h6 class="mt-1 mb-4 pb-1 text_title">
-                                            <strong>&nbsp;</strong>
-                                        </h6>
+                                        {{--<h6 class="mt-1 mb-4 pb-1 text_title"><strong>&nbsp;</strong></h6>--}}
                                     @endif
                                 </div>
 
@@ -181,7 +181,7 @@
                                  alt="MPP COMUNAS">
 
                             <div class="text-white px-3 py-4 p-md-5 mx-md-4 text-center">
-                                <img class="img-fluid rounded-2" src="{{ asset('img/logo_gobernacion_white.png') }}"
+                                <img id="scale-2" class="img-fluid rounded-2" src="{{ asset('img/logo_gobernacion_white.png') }}"
                                      alt="Logo Gobernación Estado Guárico">
                             </div>
                         </div>

@@ -3,7 +3,7 @@
 @section('title', __('Forgot your password?'))
 
 @section('content')
-    <form class="needs-validation" method="POST" action="{{ route('password.email') }}" novalidate>
+    <form class="needs-validation mb-3 mb-sm-auto" method="POST" action="{{ route('password.email') }}" novalidate>
         @csrf
 
         <div class="mb-4">
@@ -43,6 +43,11 @@
 
         <div class="text-center pt-1 pb-1 d-grid gap-2">
             <button type="submit" class="btn shadow text-white btn-block  gradient-custom-2">{{ __('Email Password Reset Link') }}</button>
+        </div>
+
+        <div x-data class="d-flex align-items-center justify-content-center mt-4">
+            <p class="mb-0 me-2">O, regrese a</p>
+            <a href="{{ route('login') }}" class="text-muted" @click="mostrarPreloader()">{{ __('Log in') }}</a>
         </div>
 
     </form>

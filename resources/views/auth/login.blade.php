@@ -7,7 +7,7 @@
 @endpush
 
 @section('content')
-    <form class="needs-validation" method="POST" action="{{ route('login') }}" novalidate>
+    <form class="needs-validation mb-3 mb-sm-auto" method="POST" action="{{ route('login') }}" novalidate>
         @csrf
 
         @if ($errors->any())
@@ -39,14 +39,6 @@
             </div>
         </div>
 
-        {{--<div class="form-floating mb-3 has-validation">
-            <input id="password" type="password" class="form-control" name="password" placeholder="Password" required>
-            <label for="password">{{ __('Password') }}</label>
-            <div class="invalid-feedback">
-                Por favor ingrese su {{ __('Password') }}.
-            </div>
-        </div>--}}
-
         <div class="form-floating mb-3 has-validation position-relative">
             <input id="password" type="password" class="form-control" name="password" placeholder="Password" required>
             <label for="password">{{ __('Password') }}</label>
@@ -64,12 +56,12 @@
 
         <div class="mb-3 ms-1 has-validation">
             <label for="remember_me" class="flex items-center">
-                <x-checkbox id="remember_me" name="remember" />
+                <x-checkbox id="remember_me" name="remember" value="on" />
                 <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
             </label>
         </div>
 
-        <div x-data class="text-center pt-1 mb-3 pb-1 d-grid gap-2">
+        <div x-data class="text-center pt-1 pb-1 d-grid gap-2">
 
             <button type="submit" class="btn shadow text-white btn-block fa-lg gradient-custom-2 mb-3">{{ __('Log in') }}</button>
 
@@ -78,12 +70,12 @@
             @endif
         </div>
 
-        <div x-data class="d-flex align-items-center justify-content-center">
-            @if (Route::has('register'))
+        @if (Route::has('register'))
+            <div x-data class="d-flex mt-3 align-items-center justify-content-center">
                 <p class="mb-0 me-2">¿No tienes una cuenta?</p>
                 <a href="{{ route('register') }}" class="btn btn-outline-primary btn-sm" @click="mostrarPreloader()">{{ __('Register') }}</a>
-            @endif
-        </div>
+            </div>
+        @endif
 
     </form>
 @endsection
