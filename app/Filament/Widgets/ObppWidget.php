@@ -98,7 +98,7 @@ class ObppWidget extends StatsOverviewWidget
 
     public function getActividadesParticipacion(): int
     {
-        $inicio = Carbon::now()->startOfWeek();
+        $inicio = Carbon::now()->subWeek()->startOfWeek();
         $fin = Carbon::now()->endOfWeek();
         $query = Participacion::query();
         if (!isAdmin()) {
@@ -113,7 +113,7 @@ class ObppWidget extends StatsOverviewWidget
 
     public function getActividadesFormacion(): int
     {
-        $inicio = Carbon::now()->startOfWeek();
+        $inicio = Carbon::now()->subWeek()->startOfWeek();
         $fin = Carbon::now()->endOfWeek();
         $query = Formacion::query();
         if (!isAdmin()) {
@@ -128,7 +128,7 @@ class ObppWidget extends StatsOverviewWidget
 
     public function getActividadesFortalecimiento(): int
     {
-        $inicio = Carbon::now()->startOfWeek();
+        $inicio = Carbon::now()->subWeek()->startOfWeek();
         $fin = Carbon::now()->endOfWeek();
         $query = Fortalecimiento::query();
         if (!isAdmin()) {
