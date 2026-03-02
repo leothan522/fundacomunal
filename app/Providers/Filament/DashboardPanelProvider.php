@@ -66,7 +66,7 @@ class DashboardPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->favicon(asset('favicons/appicon-128x128.png'))
+            ->favicon(asset('favicons/favicon-128x128.png'))
             ->profile(isSimple: false)
             ->userMenuItems([
                 'profile' => fn(Action $action) => $action

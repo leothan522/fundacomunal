@@ -16,8 +16,8 @@
 
         {{-- Favicon y PWA --}}
         <link rel="manifest" href="{{ asset('manifest.json') }}">
-        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicons/appicon-32x32.png') }}">
-        <link rel="apple-touch-icon" href="{{ asset('favicons/appicon-128x128.png') }}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicons/favicon-32x32.png') }}">
+        <link rel="apple-touch-icon" href="{{ asset('favicons/favicon-128x128.png') }}">
 
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="default">
