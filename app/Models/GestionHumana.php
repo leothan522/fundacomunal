@@ -27,6 +27,8 @@ class GestionHumana extends Model
         'observacion',
         'fecha_nacimiento',
         'fecha_ingreso',
+        'image_path',
+        'image_fecha',
         'users_id',
     ];
 
