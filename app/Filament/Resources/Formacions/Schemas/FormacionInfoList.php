@@ -28,6 +28,7 @@ class FormacionInfoList
                             ->color('primary')
                             ->copyable(),
                         TextEntry::make('localidad')
+                            ->formatStateUsing(fn($state) => Str::upper($state))
                             ->size(TextSize::Medium)
                             ->weight(FontWeight::Bold)
                             ->color('primary')
@@ -53,6 +54,7 @@ class FormacionInfoList
                             ->copyable(),
                         TextEntry::make('nombre_obpp')
                             ->label('Nombre de la OBPP')
+                            ->formatStateUsing(fn($state) => Str::upper($state))
                             ->size(TextSize::Medium)
                             ->weight(FontWeight::Bold)
                             ->color('primary')

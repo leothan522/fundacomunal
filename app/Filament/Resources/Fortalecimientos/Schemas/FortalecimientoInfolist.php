@@ -28,6 +28,7 @@ class FortalecimientoInfolist
                             ->color('primary')
                             ->copyable(),
                         TextEntry::make('localidad')
+                            ->formatStateUsing(fn($state) => Str::upper($state))
                             ->size(TextSize::Medium)
                             ->weight(FontWeight::Bold)
                             ->color('primary')
@@ -41,6 +42,7 @@ class FortalecimientoInfolist
                             ->columnSpan(2),
                         TextEntry::make('nombre_osp')
                             ->label('Nombre de la OSP')
+                            ->formatStateUsing(fn($state) => Str::upper($state))
                             ->size(TextSize::Medium)
                             ->weight(FontWeight::Bold)
                             ->color('primary')
@@ -48,6 +50,7 @@ class FortalecimientoInfolist
                             ->columnSpan(2),
                         TextEntry::make('rif_osp')
                             ->label('RIF')
+                            ->formatStateUsing(fn($state) => Str::upper($state))
                             ->size(TextSize::Medium)
                             ->weight(FontWeight::Bold)
                             ->color('primary')
@@ -60,12 +63,14 @@ class FortalecimientoInfolist
                             ->copyable(),
                         TextEntry::make('situr_obpp')
                             ->label('Código SITUR')
+                            ->formatStateUsing(fn($state) => Str::upper($state))
                             ->size(TextSize::Medium)
                             ->weight(FontWeight::Bold)
                             ->color('primary')
                             ->copyable(),
                         TextEntry::make('nombre_obpp')
                             ->label('Nombre de la OBPP vinculada')
+                            ->formatStateUsing(fn($state) => Str::upper($state))
                             ->size(TextSize::Medium)
                             ->weight(FontWeight::Bold)
                             ->color('primary')

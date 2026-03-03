@@ -68,7 +68,7 @@ class UsersTable
                     ->label('Teléfono')
                     ->alignCenter()
                     ->searchable()
-                    ->visibleFrom('md'),
+                    ->visibleFrom('xl'),
                 IconColumn::make('email_verified_at')
                     ->label('Verificado')
                     ->default(false)

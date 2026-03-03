@@ -28,6 +28,7 @@ class ParticipacionInfoList
                             ->color('primary')
                             ->copyable(),
                         TextEntry::make('localidad')
+                            ->formatStateUsing(fn($state) => Str::upper($state))
                             ->size(TextSize::Medium)
                             ->weight(FontWeight::Bold)
                             ->color('primary')
@@ -52,6 +53,7 @@ class ParticipacionInfoList
                             ->color('primary')
                             ->copyable(),
                         TextEntry::make('nombre_obpp')
+                            ->formatStateUsing(fn($state) => Str::upper($state))
                             ->label('Nombre de la OBPP')
                             ->size(TextSize::Medium)
                             ->weight(FontWeight::Bold)

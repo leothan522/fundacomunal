@@ -71,7 +71,7 @@ class FormacionsTable
                     ->searchable()
                     ->alignCenter()
                     ->grow(false)
-                    ->visibleFrom('md'),
+                    ->visibleFrom('xl'),
                 TextColumn::make('nombre_obpp')
                     ->label('Nombre de la OBPP')
                     ->formatStateUsing(fn($state) => Str::upper($state))
