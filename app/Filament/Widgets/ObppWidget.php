@@ -18,6 +18,15 @@ class ObppWidget extends StatsOverviewWidget
 {
     protected static bool $isLazy = false;
 
+    public static function canView(): bool
+    {
+        return isAdmin() ||
+            auth()->user()->hasRole('GESTION HUMANA') ||
+            auth()->user()->hasRole('PARTICIPACION') ||
+            auth()->user()->hasRole('FORMACION') ||
+            auth()->user()->hasRole('FORTALECIMIENTO');
+    }
+
     protected function getStats(): array
     {
         return [

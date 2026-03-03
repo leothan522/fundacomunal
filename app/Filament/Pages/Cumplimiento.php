@@ -210,4 +210,13 @@ class Cumplimiento extends Page implements HasActions, HasSchemas, HasTable
         return $resultado;
     }
 
+    public static function canAccess(): bool
+    {
+        return isAdmin() ||
+            auth()->user()->hasRole('GESTION HUMANA') ||
+            auth()->user()->hasRole('PARTICIPACION') ||
+            auth()->user()->hasRole('FORMACION') ||
+            auth()->user()->hasRole('FORTALECIMIENTO');
+    }
+
 }
