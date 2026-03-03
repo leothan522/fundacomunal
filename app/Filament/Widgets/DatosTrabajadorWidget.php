@@ -4,6 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Filament\Schemas\DatosTrabajadorInfoList;
 use App\Models\GestionHumana;
+use Filament\Schemas\Components\Image;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Concerns\InteractsWithSchemas;
 use Filament\Schemas\Contracts\HasSchemas;
@@ -17,7 +18,7 @@ class DatosTrabajadorWidget extends Widget implements HasSchemas
     protected string $view = 'filament.widgets.datos-trabajador-widget';
     protected static bool $isLazy = false;
     protected static ?int $sort = 5;
-    protected int | string | array $columnSpan = 'full';
+    protected int|string|array $columnSpan = 'full';
 
     public mixed $datosTrabajador;
 
@@ -37,9 +38,20 @@ class DatosTrabajadorWidget extends Widget implements HasSchemas
             ->record($this->datosTrabajador)
             ->components([
                 Section::make('Tus Datos')
-                    ->dense()
-                    ->gap(false)
-                    ->description('Datos cargados en Gestión Humana')
+                    ->description('Gestión Humana')
+                    ->afterHeader(function (): array {
+                        $foto = null;
+                        if (auth()->user()->trabajador()->exists()) {
+                            $foto = auth()->user()->trabajador->image_path;
+                        }
+                        return [
+                            Image::make(
+                                url: verImagen($foto, true),
+                                alt: "Foto Trabajador"
+                            )
+                                ->imageSize('45px')
+                        ];
+                    })
                     ->schema(DatosTrabajadorInfoList::schema())
                     ->compact()
                     ->collapsible()
