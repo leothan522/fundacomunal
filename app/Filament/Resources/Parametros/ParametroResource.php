@@ -59,7 +59,7 @@ class ParametroResource extends Resource
                 TextColumn::make('valor_texto')
                     ->label('valor_texto')
                     ->searchable()
-                    ->limit(30)
+                    ->limit(50)
                     ->visibleFrom('md')
             ])
             ->filters([

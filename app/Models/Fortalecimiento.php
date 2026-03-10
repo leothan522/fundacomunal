@@ -62,12 +62,12 @@ class Fortalecimiento extends Model
 
     public function area(): BelongsTo
     {
-        return $this->belongsTo(AreaItem::class, 'areas_items_id', 'id');
+        return $this->belongsTo(AreaItem::class, 'areas_items_id', 'id')->withTrashed();
     }
 
     public function proceso(): BelongsTo
     {
-        return $this->belongsTo(AreaProceso::class, 'areas_procesos_id', 'id');
+        return $this->belongsTo(AreaProceso::class, 'areas_procesos_id', 'id')->withTrashed();
     }
 
     public function promotor(): BelongsTo

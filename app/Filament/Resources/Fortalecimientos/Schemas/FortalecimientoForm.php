@@ -66,7 +66,7 @@ class FortalecimientoForm
                             ->relationship(
                                 'area',
                                 'nombre',
-                                fn(Builder $query) => $query->whereRelation('area', 'nombre', 'FORTALECIMIENTO')
+                                fn(Builder $query) => $query->whereRelation('area', 'nombre', 'FORTALECIMIENTO')->withoutTrashed()
                             )
                             ->afterStateUpdated(function (Set $set): void {
                                 $set('areas_procesos_id', null);

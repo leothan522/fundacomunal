@@ -59,7 +59,7 @@ class ParticipacionForm
                             ->relationship(
                                 'area',
                                 'nombre',
-                                fn(Builder $query) => $query->whereRelation('area', 'nombre', 'PARTICIPACION')
+                                fn(Builder $query) => $query->whereRelation('area', 'nombre', 'PARTICIPACION')->withoutTrashed()
                             )
                             ->afterStateUpdated(function (Set $set): void {
                                 $set('areas_procesos_id', null);
