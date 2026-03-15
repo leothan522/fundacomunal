@@ -82,7 +82,7 @@ class Cumplimiento extends Page implements HasActions, HasSchemas, HasTable
                     ->getStateUsing(fn(GestionHumana $record): int => $this->getActCargadas($record))
                     ->numeric()
                     ->badge()
-                    ->color(fn(int $state): string => match (true){
+                    ->color(fn(int $state): string => match (true) {
                         $state > 1 => 'success',
                         default => 'danger'
                     })
@@ -92,7 +92,7 @@ class Cumplimiento extends Page implements HasActions, HasSchemas, HasTable
                     ->getStateUsing(fn(GestionHumana $record): int => $this->getReportadas($record))
                     ->numeric()
                     ->badge()
-                    ->color(fn(int $state): string => match (true){
+                    ->color(fn(int $state): string => match (true) {
                         $state > 0 => 'success',
                         default => 'danger'
                     })
@@ -102,7 +102,7 @@ class Cumplimiento extends Page implements HasActions, HasSchemas, HasTable
                     ->getStateUsing(fn(GestionHumana $record): int => $this->getSuspendidas($record))
                     ->numeric()
                     ->badge()
-                    ->color(fn(int $state): string => match (true){
+                    ->color(fn(int $state): string => match (true) {
                         $state > 0 => 'info',
                         default => 'gray'
                     })
@@ -112,19 +112,26 @@ class Cumplimiento extends Page implements HasActions, HasSchemas, HasTable
                     ->getStateUsing(fn(GestionHumana $record): int => $this->getPendientes($record))
                     ->numeric()
                     ->badge()
-                    ->color(fn(int $state): string => match (true){
+                    ->color(fn(int $state): string => match (true) {
                         $state > 0 => 'primary',
                         default => 'gray'
                     })
+                    ->alignCenter(),
+                TextColumn::make('planificacion_semanal')
+                    ->label('Planificación Semanal')
+                    ->getStateUsing(fn(GestionHumana $record): string => $this->getPlanificacionSemanal($record))
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
+                        'entregada' => 'ENTREGADA',
+                        'semana_proxima' => 'FALTA SEMANA PROXIMA',
+                        default => 'NO ENTREGADA'
+                    })
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'entregada' => 'success',
+                        'semana_proxima' => 'primary',
+                        default => 'danger'
+                    })
                     ->alignCenter()
-                /*Split::make([
-                    TextColumn::make('blank1'),
-                    TextColumn::make('blank2'),
-                    TextColumn::make('blank3'),
-                    $this->createIconColumn('anterior'),
-                    $this->createIconColumn('actual'),
-                    $this->createIconColumn('proxima'),
-                ])*/
             ])
             ->stackedOnMobile()
             ->filters([
@@ -201,109 +208,36 @@ class Cumplimiento extends Page implements HasActions, HasSchemas, HasTable
         return $participacion + $formacion + $fortalezomiento;
     }
 
-    protected function createIconColumn(string $semana)
+    protected function getPlanificacionSemanal(GestionHumana $record): string
     {
-        return IconColumn::make($semana)
-            ->default(fn(GestionHumana $record) => $this->getReporte($semana, $record))
-            ->icon(fn($state): Heroicon => match ($state) {
-                1 => Heroicon::OutlinedCheckCircle,
-                2 => Heroicon::OutlinedExclamationCircle,
-                default => Heroicon::OutlinedXCircle,
-            })
-            ->color(fn($state): string => match ($state) {
-                1 => 'success',
-                2 => 'warning',
-                default => 'danger'
-            })
-            ->alignCenter();
-    }
-
-    protected function getReporte(string $semana, GestionHumana $record): int
-    {
+        $response = 'no_entregada';
         $hoy = Carbon::today();
-        $inicio = null;
-        $fin = null;
+        $inicioSemanaActual = $hoy->copy()->startOfWeek();
+        $finSemanaActual = $hoy->copy()->endOfWeek();
+        $inicioSemanaProxima = $hoy->copy()->addWeek()->startOfWeek();
+        $finSemanaProxima = $hoy->copy()->addWeek()->endOfWeek();
 
-        switch ($semana) {
-            case 'actual':
-                $inicio = $hoy->copy()->startOfWeek();
-                $fin = $hoy->copy()->endOfWeek();
-                break;
+        $participacion = $record->participacion()->whereBetween('fecha', [$inicioSemanaActual, $finSemanaActual])->count();
+        $formacion = $record->formacion()->whereBetween('fecha', [$inicioSemanaActual, $finSemanaActual])->count();
+        $fortalecimiento = $record->fortalecimiento()->whereBetween('fecha', [$inicioSemanaActual, $finSemanaActual])->count();
 
-            case 'anterior':
-                $inicio = $hoy->copy()->subWeek()->startOfWeek();
-                $fin = $hoy->copy()->subWeek()->endOfWeek();
-                break;
+        $cumplimientoActual = $participacion + $formacion + $fortalecimiento;
 
-            case 'proxima':
-                $inicio = $hoy->copy()->addWeek()->startOfWeek();
-                $fin = $hoy->copy()->addWeek()->endOfWeek();
-                break;
-        }
+        $participacion = $record->participacion()->whereBetween('fecha', [$inicioSemanaProxima, $finSemanaProxima])->count();
+        $formacion = $record->formacion()->whereBetween('fecha', [$inicioSemanaProxima, $finSemanaProxima])->count();
+        $fortalecimiento = $record->fortalecimiento()->whereBetween('fecha', [$inicioSemanaProxima, $finSemanaProxima])->count();
 
-        $participacion = Participacion::query()
-            ->where('gestion_humana_id', $record->id)
-            ->whereBetween('fecha', [$inicio, $fin]);
+        $cumplimientoProxima = $participacion + $formacion + $fortalecimiento;
 
-        $planificadas = $participacion->count();
-
-        // regla de "a tiempo"
-        if ($semana === 'proxima') {
-            // lunes a miércoles de la semana actual
-            $lunesActual = $hoy->copy()->startOfWeek();
-            $miercolesActual = $lunesActual->copy()->addDays(2);
-
-            $aTiempo = $participacion
-                ->whereBetween('created_at', [$lunesActual, $miercolesActual])
-                ->count();
-        } elseif ($semana === 'actual') {
-            // lunes a miércoles de la semana pasada
-            $lunesPasada = $hoy->copy()->subWeek()->startOfWeek();
-            $miercolesPasada = $lunesPasada->copy()->addDays(2);
-
-            $aTiempo = $participacion
-                ->whereBetween('created_at', [$lunesPasada, $miercolesPasada])
-                ->count();
-        } elseif ($semana === 'anterior') {
-            // lunes a miércoles de la semana previa a la evaluada
-            $lunesPrevio = $inicio->copy()->subWeek()->startOfWeek();
-            $miercolesPrevio = $lunesPrevio->copy()->addDays(2);
-
-            $aTiempo = $participacion
-                ->whereBetween('created_at', [$lunesPrevio, $miercolesPrevio])
-                ->count();
-        } else {
-            $aTiempo = 0;
-        }
-
-        // regla de reportadas
-        if ($semana === 'actual') {
-            $reportadas = $participacion
-                ->whereNotNull('estatus')
-                ->where('fecha', '<=', $hoy)
-                ->count();
-        } elseif ($semana === 'proxima') {
-            $reportadas = null; // no se evalúan
-        } else {
-            $reportadas = $participacion->whereNotNull('estatus')->count();
-        }
-
-        // evaluación final
-        if ($planificadas === 0) {
-            $resultado = 0;
-        } elseif ($semana === 'proxima') {
-            $resultado = $aTiempo > 0 ? 1 : 2; // semana próxima depende solo de entregas a tiempo
-        } elseif ($aTiempo > 0) {
-            if ($reportadas !== null && $reportadas === $planificadas) {
-                $resultado = 1; // todas reportadas y al menos una a tiempo
+        if ($cumplimientoActual) {
+            if ($cumplimientoProxima) {
+                $response = 'entregada';
             } else {
-                $resultado = 2; // faltan reportes
+                $response = 'semana_proxima';
             }
-        } else {
-            $resultado = 2; // ninguna fue planificada a tiempo
         }
 
-        return $resultado;
+        return $response;
     }
 
 
