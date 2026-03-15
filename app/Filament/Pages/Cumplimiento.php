@@ -37,6 +37,15 @@ class Cumplimiento extends Page implements HasActions, HasSchemas, HasTable
     protected static string|UnitEnum|null $navigationGroup = 'Planificación Semanal';
     protected static ?int $navigationSort = 70;
 
+    public static function canAccess(): bool
+    {
+        return isAdmin() ||
+            auth()->user()->hasRole('GESTION HUMANA') ||
+            auth()->user()->hasRole('PARTICIPACION') ||
+            auth()->user()->hasRole('FORMACION') ||
+            auth()->user()->hasRole('FORTALECIMIENTO');
+    }
+
     public function table(Table $table): Table
     {
         return $table
@@ -71,13 +80,21 @@ class Cumplimiento extends Page implements HasActions, HasSchemas, HasTable
                     ->verticallyAlignCenter()
                     ->formatStateUsing(fn(GestionHumana $record): string => strtok($record->nombre, " ") . ' ' . strtok($record->apellido, " ")),
                 Split::make([
+                    TextColumn::make('reportes_promotor')
+                        ->badge()
+                        ->default(['anterior', 'actual', 'ahora']),
+                ]),
+                TextColumn::make('reportes_promotor')
+                    ->badge()
+                    ->default(['anterior', 'actual', 'ahora']),
+                /*Split::make([
                     TextColumn::make('blank1'),
                     TextColumn::make('blank2'),
                     TextColumn::make('blank3'),
                     $this->createIconColumn('anterior'),
                     $this->createIconColumn('actual'),
                     $this->createIconColumn('proxima'),
-                ])
+                ])*/
             ])
             ->filters([
                 SelectFilter::make('municipios')
@@ -210,13 +227,6 @@ class Cumplimiento extends Page implements HasActions, HasSchemas, HasTable
         return $resultado;
     }
 
-    public static function canAccess(): bool
-    {
-        return isAdmin() ||
-            auth()->user()->hasRole('GESTION HUMANA') ||
-            auth()->user()->hasRole('PARTICIPACION') ||
-            auth()->user()->hasRole('FORMACION') ||
-            auth()->user()->hasRole('FORTALECIMIENTO');
-    }
+
 
 }

@@ -43,7 +43,7 @@ class GestionHumanasTable
                 TextColumn::make('personal')
                     ->default(fn(GestionHumana $record): string => $record->cedula)
                     ->numeric()
-                    ->description(fn(GestionHumana $record): string => Str::upper($record->nombre . ' ' . $record->apellido))
+                    ->description(fn(GestionHumana $record): string => Str::upper($record->fullName))
                     ->wrap()
                     ->hiddenFrom('md'),
                 TextColumn::make('cedula')
@@ -405,7 +405,7 @@ class GestionHumanasTable
                     ->modalContent(fn(GestionHumana $record) => new HtmlString('
                                         <div class="flex justify-center p-4">
                                             <img src="' . Storage::url($record->image_path) . '"
-                                            class="rounded-lg shadow-md max-h-[70vh] object-contain" />
+                                            class="rounded-lg shadow-md max-h-[70vh] object-contain"  alt="Foto"/>
                                         </div>
                                     ')
                     )
