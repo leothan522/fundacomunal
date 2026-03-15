@@ -24,6 +24,7 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 use UnitEnum;
 
 class Cumplimiento extends Page implements HasActions, HasSchemas, HasTable
@@ -60,33 +61,62 @@ class Cumplimiento extends Page implements HasActions, HasSchemas, HasTable
             ->columns([
                 TextColumn::make('nombre')
                     ->label('Promotor')
+                    ->formatStateUsing(fn(GestionHumana $record): string => Str::upper($record->short_name))
                     ->searchable($this->showComponent())
-                    ->hiddenFrom('md')
                     ->icon(Heroicon::OutlinedUser)
-                    ->size(TextSize::Medium)
+                    ->size(TextSize::Large)
                     ->weight(FontWeight::Bold)
                     ->badge()
-                    ->color('info')
-                    ->formatStateUsing(fn(GestionHumana $record): string => strtok($record->nombre, " ") . ' ' . strtok($record->apellido, " ")),
-                TextColumn::make('apellido')
-                    ->label('Promotor')
-                    ->searchable($this->showComponent())
-                    ->visibleFrom('md')
-                    ->icon(Heroicon::OutlinedUser)
-                    ->size(TextSize::Medium)
-                    ->weight(FontWeight::Bold)
+                    ->color('info'),
+                TextColumn::make('user_estatus')
+                    ->label('Estatus')
+                    ->getStateUsing(fn(GestionHumana $record): string => $this->getUsuarioEstatus($record))
                     ->badge()
-                    ->color('info')
-                    ->verticallyAlignCenter()
-                    ->formatStateUsing(fn(GestionHumana $record): string => strtok($record->nombre, " ") . ' ' . strtok($record->apellido, " ")),
-                Split::make([
-                    TextColumn::make('reportes_promotor')
-                        ->badge()
-                        ->default(['anterior', 'actual', 'ahora']),
-                ]),
-                TextColumn::make('reportes_promotor')
+                    ->color(fn(string $state): string => match ($state) {
+                        'activo' => 'success',
+                        default => 'danger'
+                    })
+                    ->alignCenter(),
+                TextColumn::make('act_cargadas')
+                    ->label('Act. Cargadas')
+                    ->getStateUsing(fn(GestionHumana $record): int => $this->getActCargadas($record))
+                    ->numeric()
                     ->badge()
-                    ->default(['anterior', 'actual', 'ahora']),
+                    ->color(fn(int $state): string => match (true){
+                        $state > 1 => 'success',
+                        default => 'danger'
+                    })
+                    ->alignCenter(),
+                TextColumn::make('act_reportadas')
+                    ->label('Act. Reportadas')
+                    ->getStateUsing(fn(GestionHumana $record): int => $this->getReportadas($record))
+                    ->numeric()
+                    ->badge()
+                    ->color(fn(int $state): string => match (true){
+                        $state > 0 => 'success',
+                        default => 'danger'
+                    })
+                    ->alignCenter(),
+                TextColumn::make('act_suspendidas')
+                    ->label('Act. Suspendidas')
+                    ->getStateUsing(fn(GestionHumana $record): int => $this->getSuspendidas($record))
+                    ->numeric()
+                    ->badge()
+                    ->color(fn(int $state): string => match (true){
+                        $state > 0 => 'info',
+                        default => 'gray'
+                    })
+                    ->alignCenter(),
+                TextColumn::make('act_pendientes')
+                    ->label('Act. Pendientes')
+                    ->getStateUsing(fn(GestionHumana $record): int => $this->getPendientes($record))
+                    ->numeric()
+                    ->badge()
+                    ->color(fn(int $state): string => match (true){
+                        $state > 0 => 'primary',
+                        default => 'gray'
+                    })
+                    ->alignCenter()
                 /*Split::make([
                     TextColumn::make('blank1'),
                     TextColumn::make('blank2'),
@@ -96,6 +126,7 @@ class Cumplimiento extends Page implements HasActions, HasSchemas, HasTable
                     $this->createIconColumn('proxima'),
                 ])*/
             ])
+            ->stackedOnMobile()
             ->filters([
                 SelectFilter::make('municipios')
                     ->relationship(
@@ -120,6 +151,54 @@ class Cumplimiento extends Page implements HasActions, HasSchemas, HasTable
     protected function showComponent(): bool
     {
         return isAdmin() || auth()->user()->hasRole('GESTION HUMANA');
+    }
+
+    protected function getUsuarioEstatus(GestionHumana $record): string
+    {
+        $response = 'inactivo';
+        if ($record->user()->exists()) {
+            if ($record->user->email_verified_at) {
+                if ($record->participacion()->count() || $record->formacion()->count() || $record->fortalecimiento()->count()) {
+                    $response = 'activo';
+                }
+            } else {
+                $response = 'no_verified_email';
+            }
+        }
+
+        return $response;
+    }
+
+    protected function getActCargadas(GestionHumana $record): int
+    {
+        $participacion = $record->participacion()->count();
+        $formacion = $record->formacion()->count();
+        $fortalezomiento = $record->fortalecimiento()->count();
+        return $participacion + $formacion + $fortalezomiento;
+    }
+
+    protected function getReportadas(GestionHumana $record): int
+    {
+        $participacion = $record->participacion()->where('estatus', 1)->count();
+        $formacion = $record->formacion()->where('estatus', 1)->count();
+        $fortalezomiento = $record->fortalecimiento()->where('estatus', 1)->count();
+        return $participacion + $formacion + $fortalezomiento;
+    }
+
+    protected function getSuspendidas(GestionHumana $record): int
+    {
+        $participacion = $record->participacion()->where('estatus', 0)->count();
+        $formacion = $record->formacion()->where('estatus', 0)->count();
+        $fortalezomiento = $record->fortalecimiento()->where('estatus', 0)->count();
+        return $participacion + $formacion + $fortalezomiento;
+    }
+
+    protected function getPendientes(GestionHumana $record): int
+    {
+        $participacion = $record->participacion()->whereNull('estatus')->count();
+        $formacion = $record->formacion()->whereNull('estatus')->count();
+        $fortalezomiento = $record->fortalecimiento()->whereNull('estatus')->count();
+        return $participacion + $formacion + $fortalezomiento;
     }
 
     protected function createIconColumn(string $semana)
@@ -148,17 +227,17 @@ class Cumplimiento extends Page implements HasActions, HasSchemas, HasTable
         switch ($semana) {
             case 'actual':
                 $inicio = $hoy->copy()->startOfWeek();
-                $fin    = $hoy->copy()->endOfWeek();
+                $fin = $hoy->copy()->endOfWeek();
                 break;
 
             case 'anterior':
                 $inicio = $hoy->copy()->subWeek()->startOfWeek();
-                $fin    = $hoy->copy()->subWeek()->endOfWeek();
+                $fin = $hoy->copy()->subWeek()->endOfWeek();
                 break;
 
             case 'proxima':
                 $inicio = $hoy->copy()->addWeek()->startOfWeek();
-                $fin    = $hoy->copy()->addWeek()->endOfWeek();
+                $fin = $hoy->copy()->addWeek()->endOfWeek();
                 break;
         }
 
@@ -171,7 +250,7 @@ class Cumplimiento extends Page implements HasActions, HasSchemas, HasTable
         // regla de "a tiempo"
         if ($semana === 'proxima') {
             // lunes a miércoles de la semana actual
-            $lunesActual     = $hoy->copy()->startOfWeek();
+            $lunesActual = $hoy->copy()->startOfWeek();
             $miercolesActual = $lunesActual->copy()->addDays(2);
 
             $aTiempo = $participacion
@@ -179,7 +258,7 @@ class Cumplimiento extends Page implements HasActions, HasSchemas, HasTable
                 ->count();
         } elseif ($semana === 'actual') {
             // lunes a miércoles de la semana pasada
-            $lunesPasada     = $hoy->copy()->subWeek()->startOfWeek();
+            $lunesPasada = $hoy->copy()->subWeek()->startOfWeek();
             $miercolesPasada = $lunesPasada->copy()->addDays(2);
 
             $aTiempo = $participacion
@@ -187,7 +266,7 @@ class Cumplimiento extends Page implements HasActions, HasSchemas, HasTable
                 ->count();
         } elseif ($semana === 'anterior') {
             // lunes a miércoles de la semana previa a la evaluada
-            $lunesPrevio     = $inicio->copy()->subWeek()->startOfWeek();
+            $lunesPrevio = $inicio->copy()->subWeek()->startOfWeek();
             $miercolesPrevio = $lunesPrevio->copy()->addDays(2);
 
             $aTiempo = $participacion
@@ -226,7 +305,6 @@ class Cumplimiento extends Page implements HasActions, HasSchemas, HasTable
 
         return $resultado;
     }
-
 
 
 }
