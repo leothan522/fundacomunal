@@ -113,9 +113,9 @@ class ParticipacionInfoList
                             ->color('primary')
                             ->copyable()
                             ->inlineLabel(),
-                        TextEntry::make('promotor.nombre')
+                        TextEntry::make('promotor.short_name')
                             ->label('Promotor')
-                            ->formatStateUsing(fn(Participacion $record) => Str::upper(strtok($record->promotor->nombre, ' ') . ' ' . strtok($record->promotor->apellido, ' ')))
+                            ->formatStateUsing(fn(string $state): string => Str::upper($state))
                             ->size(TextSize::Medium)
                             ->weight(FontWeight::Bold)
                             ->color('primary')

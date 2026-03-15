@@ -36,6 +36,8 @@ class ParticipacionResource extends Resource
 
     protected static ?int $globalSearchSort = 2;
 
+    protected static int $globalSearchResultsLimit = 10;
+
     public static function getGloballySearchableAttributes(): array
     {
         return ['situr_obpp', 'nombre_obpp', 'promotor.nombre', 'promotor.apellido'];
@@ -48,6 +50,19 @@ class ParticipacionResource extends Resource
             'Proceso' => $record->proceso->nombre,
             'Fecha' => getFecha($record->fecha),
         ];
+    }
+
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()->orderByDesc('fecha');
+    }
+
+    public static function getGlobalSearchResultUrl(Model $record): ?string
+    {
+        return self::getUrl('index', [
+            'tableAction' => 'view', // Nombre de la acción en tu método table()
+            'tableActionRecord' => $record->getKey(), // El ID del registro
+        ]);
     }
 
     public static function form(Schema $schema): Schema

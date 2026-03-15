@@ -83,4 +83,9 @@ class GestionHumana extends Model
         return Attribute::make(get: fn() => $this->nombre.' '.$this->apellido);
     }
 
+    public function shortName(): Attribute
+    {
+        return Attribute::make(get: fn()=> strtok($this->nombre, " ") . " " . strtok($this->apellido, " "));
+    }
+
 }

@@ -40,7 +40,7 @@ class GestionHumanaResource extends Resource
 
     public static function getGlobalSearchResultTitle(Model $record): string|Htmlable
     {
-        return Str::upper($record->full_name);
+        return Str::upper($record->short_name);
     }
 
     public static function getGloballySearchableAttributes(): array

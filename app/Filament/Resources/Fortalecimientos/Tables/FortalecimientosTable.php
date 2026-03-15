@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Fortalecimientos\Tables;
 
 use App\Filament\Schemas\FechaFilter;
+use App\Filament\Schemas\PromotorFilter;
 use App\Models\AreaItem;
 use App\Models\Fortalecimiento;
 use App\Models\GestionHumana;
@@ -74,8 +75,8 @@ class FortalecimientosTable
                     ->searchable()
                     ->wrap()
                     ->visibleFrom('md'),
-                TextColumn::make('promotor.nombre')
-                    ->formatStateUsing(fn(Fortalecimiento $record) => strtok($record->promotor->nombre, " ") . " " . strtok($record->promotor->apellido, " "))
+                TextColumn::make('promotor.short_name')
+                    ->formatStateUsing(fn(string $state): string => Str::upper($state))
                     ->wrap()
                     ->visibleFrom('md'),
                 IconColumn::make('estatus')
@@ -103,15 +104,7 @@ class FortalecimientosTable
                     )
                     ->searchable()
                     ->preload(),
-                SelectFilter::make('promotor')
-                    ->relationship(
-                        'promotor',
-                        'nombre',
-                        fn(Builder $query) => $query->whereRelation('tipoPersonal', 'nombre', 'PROMOTORES')->orderBy('nombre')
-                    )
-                    ->getOptionLabelFromRecordUsing(fn(GestionHumana $record) => strtok($record->nombre, " ") . " " . strtok($record->apellido, " "))
-                    ->searchable(['nombre', 'apellido'])
-                    ->preload(),
+                PromotorFilter::schema(),
                 SelectFilter::make('obpp')
                     ->label('Tipo OSP')
                     ->relationship(
