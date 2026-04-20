@@ -88,4 +88,9 @@ class GestionHumana extends Model
         return Attribute::make(get: fn()=> strtok($this->nombre, " ") . " " . strtok($this->apellido, " "));
     }
 
+    public function vacaciones(): HasMany
+    {
+        return $this->hasMany(Vacaciones::class, 'gestion_humana_id', 'id');
+    }
+
 }

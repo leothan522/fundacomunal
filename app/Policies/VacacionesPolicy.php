@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\GestionHumana;
 use App\Models\User;
+use App\Models\Vacaciones;
 use Illuminate\Auth\Access\Response;
 
-class GestionHumanaPolicy
+class VacacionesPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +19,7 @@ class GestionHumanaPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, GestionHumana $gestionHumana): bool
+    public function view(User $user, Vacaciones $vacaciones): bool
     {
         return isAdmin() || $user->hasRole('GESTION HUMANA');
     }
@@ -35,15 +35,15 @@ class GestionHumanaPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, GestionHumana $gestionHumana): bool
+    public function update(User $user, Vacaciones $vacaciones): bool
     {
-        return isAdmin() || $user->hasRole('GESTION HUMANA');
+        return (isAdmin() || $user->hasRole('GESTION HUMANA')) && !$vacaciones->deleted_at;
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, GestionHumana $gestionHumana): bool
+    public function delete(User $user, Vacaciones $vacaciones): bool
     {
         return isAdmin() || $user->hasRole('GESTION HUMANA');
     }
@@ -51,16 +51,16 @@ class GestionHumanaPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, GestionHumana $gestionHumana): bool
+    public function restore(User $user, Vacaciones $vacaciones): bool
     {
-        return isAdmin();
+        return isAdmin() || $user->hasRole('GESTION HUMANA');
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, GestionHumana $gestionHumana): bool
+    public function forceDelete(User $user, Vacaciones $vacaciones): bool
     {
-        return $user->is_root;
+        return isAdmin() || $user->hasRole('GESTION HUMANA');
     }
 }
