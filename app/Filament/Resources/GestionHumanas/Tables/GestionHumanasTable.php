@@ -79,7 +79,19 @@ class GestionHumanasTable
                     ->alignCenter()
                     ->visibleFrom('md'),
                 TextColumn::make('categoria.nombre')
-                    ->default('-')
+                    ->getStateUsing(function (GestionHumana $record): string {
+                        // Buscamos si tiene vacaciones hoy
+                        $enVacaciones = $record->vacaciones()
+                            ->whereDate('fecha_inicio', '<=', now())
+                            ->whereDate('fecha_fin', '>=', now())
+                            ->exists();
+
+                        if ($enVacaciones) {
+                            return 'VACACIONES';
+                        }
+
+                        return $record->categoria?->nombre ?? '-';
+                    })
                     ->alignCenter()
                     ->wrap()
                     ->visibleFrom('md'),
@@ -157,7 +169,20 @@ class GestionHumanasTable
                 }
             })
             ->modalHeading(fn(?GestionHumana $record): string => $record ? $record->nombre . ' ' . $record->apellido : '')
-            ->modalWidth(Width::Small);
+            ->modalWidth(Width::Small)
+            // Deshabilitar si tiene vacaciones en curso
+            ->disabled(fn (GestionHumana $record): bool =>
+            $record->vacaciones()
+                ->whereDate('fecha_inicio', '<=', now())
+                ->whereDate('fecha_fin', '>=', now())
+                ->exists()
+            )
+            // Opcional: un tooltip para explicar por qué está deshabilitado
+            ->tooltip(fn (GestionHumana $record): ?string =>
+            $record->vacaciones()->whereDate('fecha_inicio', '<=', now())->whereDate('fecha_fin', '>=', now())->exists()
+                ? 'Tiene vacaciones en curso en el sistema'
+                : null
+            );
     }
 
     protected static function imageUpload()
@@ -372,7 +397,15 @@ class GestionHumanasTable
                 Column::make('municipio.nombre')->heading('MUNICIPIO'),
                 Column::make('parroquia')->heading('PARROQUIA'),
                 Column::make('tipoPersonal.nombre')->heading('LABOR QUE EJERCE'),
-                Column::make('categoria.nombre')->heading('CATEGORIA'),
+                Column::make('categoria.nombre')->heading('CATEGORIA')->formatStateUsing(function ($state, $record) {
+                    // Verificamos si tiene vacaciones activas en el sistema
+                    $enVacaciones = $record->vacaciones()
+                        ->whereDate('fecha_inicio', '<=', now())
+                        ->whereDate('fecha_fin', '>=', now())
+                        ->exists();
+
+                    return $enVacaciones ? 'VACACIONES' : ($state ?? '-');
+                }),
                 Column::make('nombre')->heading('NOMBRE')->formatStateUsing(fn($state) => Str::upper($state)),
                 Column::make('apellido')->heading('APELLIDO')->formatStateUsing(fn($state) => Str::upper($state)),
                 Column::make('cedula')->heading('CÉDULA'),

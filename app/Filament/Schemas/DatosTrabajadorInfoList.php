@@ -79,7 +79,15 @@ class DatosTrabajadorInfoList
                         ->copyable(),
                     TextEntry::make('categoria.nombre')
                         ->label('Categoría')
-                        ->default('-')
+                        ->getStateUsing(function (GestionHumana $record): string {
+                            // Misma lógica de verificación por sistema
+                            $enVacacionesModulo = $record->vacaciones()
+                                ->whereDate('fecha_inicio', '<=', now())
+                                ->whereDate('fecha_fin', '>=', now())
+                                ->exists();
+
+                            return $enVacacionesModulo ? 'VACACIONES (EN CURSO)' : ($record->categoria?->nombre ?? '-');
+                        })
                         ->inlineLabel()
                         ->size(TextSize::Medium)
                         ->weight(FontWeight::Bold)

@@ -38,7 +38,15 @@
             <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->municipio->nombre) }}</td>
             <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->parroquia) }}</td>
             <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->tipoPersonal->nombre) }}</td>
-            <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->categoria->nombre) }}</td>
+            <td style="border: 1px solid #404040; text-align: center">
+                @php
+                    $enVacaciones = $data->vacaciones()
+                        ->whereDate('fecha_inicio', '<=', now())
+                        ->whereDate('fecha_fin', '>=', now())
+                        ->exists();
+                @endphp
+                {{ $enVacaciones ? 'VACACIONES' : \Illuminate\Support\Str::upper($data->categoria->nombre ?? '-') }}
+            </td>
             <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->nombre) }}</td>
             <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->apellido) }}</td>
             <td style="border: 1px solid #404040; text-align: center">{{ \Illuminate\Support\Str::upper($data->cedula) }}</td>
