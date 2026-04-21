@@ -97,6 +97,7 @@ class VacacionesResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn(Builder $query) => $query->orderByDesc('created_at'))
             ->recordTitleAttribute('periodo')
             ->columns([
                 TextColumn::make('periodo')
@@ -123,11 +124,13 @@ class VacacionesResource extends Resource
                     ->label('Inicio')
                     ->date()
                     ->alignCenter()
+                    ->sortable()
                     ->visibleFrom('md'),
                 TextColumn::make('fecha_fin')
                     ->label('Fin')
                     ->date()
                     ->alignCenter()
+                    ->sortable()
                     ->visibleFrom('md'),
                 TextColumn::make('dias')
                     ->label('Días')
