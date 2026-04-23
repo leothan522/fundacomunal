@@ -6,7 +6,6 @@ use App\Filament\Resources\Vacaciones\Pages\ManageVacaciones;
 use App\Models\GestionHumana;
 use App\Models\Vacaciones;
 use BackedEnum;
-use Exception;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
@@ -73,19 +72,19 @@ class VacacionesResource extends Resource
                     ->columnSpanFull(),
                 DatePicker::make('fecha_inicio')
                     ->label('Fecha de Inicio')
-                    ->required()
-                    ->live()
-                    ->afterStateUpdated(fn($state, $set, $get) => self::calcularDias($state, $get('fecha_fin'), $set)),
+                    ->required(),
                 DatePicker::make('fecha_fin')
-                    ->label('Fecha de Fin')
+                    ->label('Fecha de Culminación')
                     ->required()
-                    ->live()
-                    ->after('fecha_inicio')
-                    ->afterStateUpdated(fn($state, $set, $get) => self::calcularDias($get('fecha_inicio'), $state, $set)),
+                    ->after('fecha_inicio'),
+                DatePicker::make('fecha_reintegro')
+                    ->label('Fecha de Reintegro')
+                    ->required()
+                    ->after('fecha_fin'),
                 TextInput::make('dias')
                     ->label('Total Días')
                     ->numeric()
-                    ->readonly() // Para que se llene solo con la lógica de fechas
+                    ->minValue(1)
                     ->prefix('Días'),
 
                 Textarea::make('observaciones')
@@ -109,11 +108,13 @@ class VacacionesResource extends Resource
                     ->icon(fn(Vacaciones $record): string => match (self::getEstado($record)) {
                         'Próximas' => 'heroicon-m-clock',
                         'En curso' => 'heroicon-m-play',
+                        'Por Reintegrar' => 'heroicon-m-calendar-days',
                         'Finalizadas' => 'heroicon-m-check-circle',
                     })
                     ->iconColor(fn(Vacaciones $record): string => match (self::getEstado($record)) {
                         'Próximas' => 'info',
                         'En curso' => 'success',
+                        'Por Reintegrar' => 'danger', // Color ámbar para la espera
                         'Finalizadas' => 'gray',
                     })
                     ->hiddenFrom('md'),
@@ -127,7 +128,13 @@ class VacacionesResource extends Resource
                     ->sortable()
                     ->visibleFrom('md'),
                 TextColumn::make('fecha_fin')
-                    ->label('Fin')
+                    ->label('Culminación')
+                    ->date()
+                    ->alignCenter()
+                    ->sortable()
+                    ->visibleFrom('md'),
+                TextColumn::make('fecha_reintegro')
+                    ->label('Reintegro')
                     ->date()
                     ->alignCenter()
                     ->sortable()
@@ -144,11 +151,13 @@ class VacacionesResource extends Resource
                     ->color(fn(string $state): string => match ($state) {
                         'Próximas' => 'info',
                         'En curso' => 'success',
+                        'Por Reintegrar' => 'danger', // Color ámbar para la espera
                         'Finalizadas' => 'gray',
                     })
                     ->icon(fn(string $state): string => match ($state) {
                         'Próximas' => 'heroicon-m-clock',
                         'En curso' => 'heroicon-m-play',
+                        'Por Reintegrar' => 'heroicon-m-calendar-days',
                         'Finalizadas' => 'heroicon-m-check-circle',
                     })
                     ->alignCenter()
@@ -243,36 +252,27 @@ class VacacionesResource extends Resource
             ]);
     }
 
-    // Función auxiliar para calcular días automáticamente
-
-    /**
-     * @throws Exception
-     */
-    protected static function calcularDias($inicio, $fin, $set): void
-    {
-        if ($inicio && $fin) {
-            try {
-                $inicio = \Carbon\Carbon::parse($inicio);
-                $fin = \Carbon\Carbon::parse($fin);
-                $set('dias', $inicio->diffInDays($fin) + 1);
-            } catch (\Exception $e) {
-                // Silenciar para evitar que rompa el JS del modal
-            }
-        }
-    }
-
     protected static function getEstado($record): string
     {
         $hoy = now()->startOfDay();
         $inicio = \Carbon\Carbon::parse($record->fecha_inicio)->startOfDay();
         $fin = \Carbon\Carbon::parse($record->fecha_fin)->startOfDay();
+        $reintegro = \Carbon\Carbon::parse($record->fecha_reintegro)->startOfDay();
 
+        // Si aún no ha llegado la fecha de inicio
         if ($hoy->lt($inicio)) {
             return 'Próximas';
         }
 
+        // Si está entre el inicio y el último día de vacaciones
         if ($hoy->between($inicio, $fin)) {
             return 'En curso';
+        }
+
+        // NUEVO: Si ya terminó las vacaciones pero hoy es antes del reintegro
+        // (Útil para esos días de fin de semana previos a volver)
+        if ($hoy->lt($reintegro)) {
+            return 'Por Reintegrar';
         }
 
         return 'Finalizadas';

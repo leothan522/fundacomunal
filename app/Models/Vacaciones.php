@@ -14,6 +14,7 @@ class Vacaciones extends Model
         'gestion_humana_id',
         'fecha_inicio',
         'fecha_fin',
+        'fecha_reintegro',
         'dias',
         'periodo',
         'observaciones',

@@ -42,7 +42,7 @@
                 @php
                     $enVacaciones = $data->vacaciones()
                         ->whereDate('fecha_inicio', '<=', now())
-                        ->whereDate('fecha_fin', '>=', now())
+                        ->whereDate('fecha_reintegro', '>=', now())
                         ->exists();
                 @endphp
                 {{ $enVacaciones ? 'VACACIONES' : \Illuminate\Support\Str::upper($data->categoria->nombre ?? '-') }}

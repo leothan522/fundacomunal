@@ -83,7 +83,7 @@ class GestionHumanasTable
                         // Buscamos si tiene vacaciones hoy
                         $enVacaciones = $record->vacaciones()
                             ->whereDate('fecha_inicio', '<=', now())
-                            ->whereDate('fecha_fin', '>=', now())
+                            ->whereDate('fecha_reintegro', '>=', now())
                             ->exists();
 
                         if ($enVacaciones) {
@@ -174,7 +174,7 @@ class GestionHumanasTable
             ->disabled(fn (GestionHumana $record): bool =>
             $record->vacaciones()
                 ->whereDate('fecha_inicio', '<=', now())
-                ->whereDate('fecha_fin', '>=', now())
+                ->whereDate('fecha_reintegro', '>=', now())
                 ->exists()
             )
             // Opcional: un tooltip para explicar por qué está deshabilitado
@@ -401,7 +401,7 @@ class GestionHumanasTable
                     // Verificamos si tiene vacaciones activas en el sistema
                     $enVacaciones = $record->vacaciones()
                         ->whereDate('fecha_inicio', '<=', now())
-                        ->whereDate('fecha_fin', '>=', now())
+                        ->whereDate('fecha_reintegro', '>=', now())
                         ->exists();
 
                     return $enVacaciones ? 'VACACIONES' : ($state ?? '-');

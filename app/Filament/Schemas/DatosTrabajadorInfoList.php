@@ -83,7 +83,7 @@ class DatosTrabajadorInfoList
                             // Misma lógica de verificación por sistema
                             $enVacacionesModulo = $record->vacaciones()
                                 ->whereDate('fecha_inicio', '<=', now())
-                                ->whereDate('fecha_fin', '>=', now())
+                                ->whereDate('fecha_reintegro', '>=', now())
                                 ->exists();
 
                             return $enVacacionesModulo ? 'VACACIONES (EN CURSO)' : ($record->categoria?->nombre ?? '-');
