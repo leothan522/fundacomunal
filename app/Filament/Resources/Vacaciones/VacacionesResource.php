@@ -102,8 +102,8 @@ class VacacionesResource extends Resource
                 TextColumn::make('periodo')
                     ->badge()
                     ->searchable(),
-                TextColumn::make('vacaciones')
-                    ->default(fn(Vacaciones $record): string => Str::upper($record->trabajador->short_name))
+                TextColumn::make('trabajador.nombre')
+                    ->formatStateUsing(fn(Vacaciones $record): string => Str::upper($record->trabajador->short_name))
                     ->description(fn(Vacaciones $record): string => self::getEstado($record))
                     ->icon(fn(Vacaciones $record): string => match (self::getEstado($record)) {
                         'Próximas' => 'heroicon-m-clock',
@@ -117,8 +117,10 @@ class VacacionesResource extends Resource
                         'Por Reintegrar' => 'danger', // Color ámbar para la espera
                         'Finalizadas' => 'gray',
                     })
+                    ->searchable()
                     ->hiddenFrom('md'),
-                TextColumn::make('trabajador.full_name')
+                TextColumn::make('trabajador.apellido')
+                    ->formatStateUsing(fn(Vacaciones $record): string => Str::upper($record->trabajador->full_name))
                     ->searchable()
                     ->visibleFrom('md'),
                 TextColumn::make('fecha_inicio')
