@@ -44,6 +44,7 @@ class ConsejoComunalInfoList
                             ->color('primary')
                             ->copyable(),
                         TextEntry::make('tipo.nombre')
+                            ->label('Tipo')
                             ->formatStateUsing(fn(string $state): string => Str::upper($state))
                             ->inlineLabel()
                             ->size(TextSize::Medium)

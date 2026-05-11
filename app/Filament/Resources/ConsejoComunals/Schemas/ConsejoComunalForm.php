@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\ConsejoComunals\Schemas;
 
 use App\Filament\Schemas\UbicacionGeograficaForm;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
@@ -25,6 +26,8 @@ class ConsejoComunalForm
                         Select::make('tipos_poblacion_id')
                             ->relationship('tipo', 'nombre')
                             ->required(),
+                        DatePicker::make('fecha_asamblea'),
+                        DatePicker::make('fecha_vencimiento'),
                         Select::make('comunas_id')
                             ->relationship('comuna', 'nombre')
                             ->preload()
