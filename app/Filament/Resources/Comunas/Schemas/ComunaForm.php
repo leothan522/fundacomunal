@@ -25,7 +25,7 @@ class ComunaForm
                             ->required(),
                         TextInput::make('cod_com')
                             ->label('COD. COM')
-                            ->unique()
+                            //->unique()
                             ->maxLength(255)
                             ->required(),
                         TextInput::make('cod_situr')
