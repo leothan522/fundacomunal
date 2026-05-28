@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\ConsejoComunals\Schemas;
 
 use App\Filament\Schemas\UbicacionGeograficaInfoList;
+use App\Models\ConsejoComunal;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Schema;
@@ -67,6 +68,24 @@ class ConsejoComunalInfoList
                             ->color('primary')
                             ->copyable()
                             ->hidden(fn($state): bool => empty($state)),
+                        TextEntry::make('status')
+                            ->label('Estatus')
+                            ->inlineLabel()
+                            ->badge()
+                            ->state(fn ($record): string =>
+                            match (true) {
+                                empty($record->fecha_vencimiento) => 'SIN REGISTRO',
+                                \Carbon\Carbon::parse($record->fecha_vencimiento)->isPast() => 'VENCIDO',
+                                default => 'VIGENTE',
+                            }
+                            )
+                            ->color(fn (string $state): string => match ($state) {
+                                'VIGENTE' => 'success',
+                                'VENCIDO' => 'danger',
+                                'SIN REGISTRO' => 'gray',
+                                default => 'gray',
+                            })
+                            ->size(TextSize::Medium),
                         TextEntry::make('comuna.nombre')
                             ->label('Circuito o Comuna')
                             ->formatStateUsing(fn(string $state): string => Str::upper($state))

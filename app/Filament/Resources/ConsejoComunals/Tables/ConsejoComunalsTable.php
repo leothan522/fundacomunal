@@ -55,7 +55,25 @@ class ConsejoComunalsTable
                     ->grow(false),
                 TextColumn::make('municipio.nombre')
                     ->wrap()
-                    ->visibleFrom('md')
+                    ->visibleFrom('xl')
+                    ->grow(false),
+                TextColumn::make('status')
+                    ->label('ESTATUS')
+                    ->badge()
+                    ->state(fn (ConsejoComunal $record): string =>
+                    match (true) {
+                        empty($record->fecha_vencimiento) => 'SIN REGISTRO',
+                        \Carbon\Carbon::parse($record->fecha_vencimiento)->isPast() => 'VENCIDO',
+                        default => 'VIGENTE',
+                    }
+                    )
+                    ->color(fn (string $state): string => match ($state) {
+                        'VIGENTE' => 'success',      // Verde
+                        'VENCIDO' => 'danger',       // Rojo
+                        'SIN REGISTRO' => 'gray',    // Gris neutro
+                        default => 'gray',
+                    })
+                    ->alignCenter()
                     ->grow(false),
             ])
             ->filters([
@@ -105,6 +123,13 @@ class ConsejoComunalsTable
                         Column::make('nombre')->heading('CONSEJOS COMUNALES')->formatStateUsing(fn($state) => Str::upper($state)),
                         Column::make('fecha_asamblea')->heading('FECHA DE ASAMBLEA')->formatStateUsing(fn($state) => $state ? getFecha($state) : null),
                         Column::make('fecha_vencimiento')->heading('FECHA DE VENCIMIENTO')->formatStateUsing(fn($state) => $state ? getFecha($state) : null),
+                        Column::make('estatus_vencimiento') // Puede llamarse como quieras
+                        ->heading('ESTATUS')
+                            ->getStateUsing(fn($record) => match (true) {
+                                empty($record->fecha_vencimiento) => 'SIN REGISTRO',
+                                \Carbon\Carbon::parse($record->fecha_vencimiento)->isPast() => 'VENCIDO',
+                                default => 'VIGENTE',
+                            }),
                     ])
                         ->withFilename('Consejos_Comunales_'.date('d-m-Y'))
                 ]),
