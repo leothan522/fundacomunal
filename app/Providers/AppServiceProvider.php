@@ -46,5 +46,10 @@ class AppServiceProvider extends ServiceProvider
             fn(): string => Blade::render(view('components.loader-html')->render())
         );
 
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::HEAD_END,
+            fn(): string => Blade::render(view('filament.footer')->render())
+        );
+
     }
 }
