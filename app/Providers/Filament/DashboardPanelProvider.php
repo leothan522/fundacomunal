@@ -17,6 +17,7 @@ use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
+use Hammadzafar05\MobileBottomNav\MobileBottomNav;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -81,6 +82,11 @@ class DashboardPanelProvider extends PanelProvider
             ->navigationGroups([
                 NavigationGroup::make('Configuración')
                 ->collapsed()
+            ])
+            ->plugins([
+                MobileBottomNav::make()
+                ->moreButtonLabel('Más')
+                ->fromNavigation(5)
             ]);
     }
 }

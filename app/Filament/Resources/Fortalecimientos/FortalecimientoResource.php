@@ -26,7 +26,7 @@ class FortalecimientoResource extends Resource
 
     protected static ?string $model = Fortalecimiento::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedGlobeAlt;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBookOpen;
     protected static string | UnitEnum | null $navigationGroup = 'Áreas Sustantivas';
     protected static ?string $modelLabel = 'fortalecimiento';
     protected static ?string $pluralLabel = 'fortalecimiento';
