@@ -109,4 +109,103 @@ class Formacion extends Model
         return $this->belongsTo(MedioVerificacion::class, 'medios_verificacion_id', 'id');
     }
 
+    public function generarMensajeWhatsApp(): string
+    {
+        $fechaFormateada = date('d/m/Y', strtotime($this->fecha));
+
+        // Escribimos los emojis adaptados al módulo de Formación
+        $ico_reporte   = "📢"; // Sombrero de graduación para Formación
+        $ico_fecha     = "📅";
+        $ico_promotor  = "👤";
+        $ico_ubicacion = "📍";
+        $ico_municipio = "📌";
+        $ico_comuna    = "🏡";
+        $ico_consejo   = "👥";
+        $ico_item      = "📋";
+        $ico_estrategia = "💡"; // Foco para la Estrategia/Modalidad
+        $ico_poblacion = "👥";
+        $ico_mujeres   = "👩";
+        $ico_hombres   = "👨";
+        $ico_obpp      = "🏢";
+        $ico_vocero    = "📱";
+        $ico_obs       = "📝";
+
+        $shortName = $this->promotor?->shortName ?? 'No asignado';
+
+        $texto = "{$ico_reporte} *REPORTE DE ACTIVIDAD - FORMACIÓN FUNDACOMUNAL*\n\n";
+        $texto .= "{$ico_fecha} *Fecha:* {$fechaFormateada}\n";
+        $texto .= "{$ico_promotor} *Promotor:* {$shortName}\n";
+        $texto .= "{$ico_ubicacion} *Ubicación:* Parroquia {$this->parroquia}, Sector {$this->localidad}\n";
+        $texto .= "{$ico_municipio} *Municipio:* " . ($this->municipio?->nombre ?? 'N/A') . "\n";
+
+        if ($this->comuna) {
+            $texto .= "{$ico_comuna} *Comuna:* {$this->comuna->nombre}\n";
+        }
+        if ($this->consejo) {
+            $texto .= "{$ico_consejo} *Consejo Comunal:* {$this->consejo->nombre}\n";
+        }
+
+        $texto .= "{$ico_item} *Área/Proceso:* " . ($this->proceso?->nombre ?? 'N/A') . " (" . ($this->area?->nombre ?? 'N/A') . ")\n";
+
+        // Datos específicos de Formación: Estrategia y Modalidad
+        $detallesFormacion = [];
+        if ($this->estrategia?->nombre) {
+            $detallesFormacion[] = $this->estrategia->nombre;
+        }
+        if ($this->modalidad?->nombre) {
+            $detallesFormacion[] = $this->modalidad->nombre;
+        }
+        if (!empty($detallesFormacion)) {
+            $texto .= "{$ico_estrategia} *Metodología:* " . implode(' - ', $detallesFormacion) . "\n";
+        }
+
+        if ($this->poblacion?->nombre) {
+            $texto .= "{$ico_poblacion} *Población Atendida:* {$this->poblacion->nombre}\n";
+        }
+
+        // Conteo de participantes desglosado por género
+        if (($this->cantidad_mujeres && $this->cantidad_mujeres > 0) || ($this->cantidad_hombres && $this->cantidad_hombres > 0)) {
+            $asistentes = [];
+            if ($this->cantidad_mujeres > 0) {
+                $asistentes[] = "{$ico_mujeres} {$this->cantidad_mujeres} Mujeres";
+            }
+            if ($this->cantidad_hombres > 0) {
+                $asistentes[] = "{$ico_hombres} {$this->cantidad_hombres} Hombres";
+            }
+            $texto .= "👥 *Participantes:* " . implode(' / ', $asistentes) . "\n";
+        }
+
+        // Mostramos la OBPP con su tipo y su código SITUR (usando situr_obpp directo del modelo)
+        if ($this->nombre_obpp) {
+            $texto .= "{$ico_obpp} *OBPP:* {$this->nombre_obpp}";
+
+            $detallesObpp = [];
+            if ($this->obpp?->nombre) {
+                $detallesObpp[] = $this->obpp->nombre;
+            }
+            if ($this->situr_obpp) {
+                $detallesObpp[] = "SITUR: " . $this->situr_obpp;
+            }
+
+            if (!empty($detallesObpp)) {
+                $texto .= " (" . implode(' - ', $detallesObpp) . ")";
+            }
+            $texto .= "\n";
+        }
+
+        if (!empty(trim($this->vocero_nombre))) {
+            $texto .= "{$ico_vocero} *Vocero:* {$this->vocero_nombre}";
+            if (!empty(trim($this->vocero_telefono))) {
+                $texto .= " ({$this->vocero_telefono})";
+            }
+            $texto .= "\n";
+        }
+
+        if (!empty(trim($this->observacion))) {
+            $texto .= "\n{$ico_obs} *Observaciones:* {$this->observacion}\n";
+        }
+
+        return rawurlencode($texto);
+    }
+
 }
