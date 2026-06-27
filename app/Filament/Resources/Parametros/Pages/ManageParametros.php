@@ -19,14 +19,14 @@ class ManageParametros extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            Action::make('marzo2026')
-                ->label('Actualización Marzo 2026')
+            Action::make('actualizaciones')
+                ->label('Actualización Junio 2026')
                 ->color('success')
                 ->requiresConfirmation()
                 ->action(function (){
-                    Actualizaciones::marzo2026();
+                    Actualizaciones::junio2026();
                 })
-                ->hidden(fn():bool => Parametro::where('nombre', 'marzo_2026')->exists()),
+                ->hidden(fn():bool => Parametro::where('nombre', 'junio_2026')->exists()),
             CreateAction::make()
                 ->createAnother(false)
         ];
