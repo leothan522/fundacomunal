@@ -430,4 +430,58 @@ class Actualizaciones
 
     }
 
+    public static function uatic(): void
+    {
+        $areasSustantivas = [
+            "PARTICIPACION" => [
+                "ACOMPAÑAMIENTO_TECNICO_INTEGRAL_COMUNITARIO_UATIC",
+            ]
+        ];
+
+        foreach ($areasSustantivas as $area => $items){
+            $areas_id = \App\Models\Area::where('nombre', $area)->first()->id;
+            if ($areas_id){
+                foreach ($items as $item){
+                    \App\Models\AreaItem::create([
+                        'nombre' => $item,
+                        'areas_id' => $areas_id
+                    ]);
+                }
+            }
+        }
+
+        $procesosPorItem = [
+
+            'PARTICIPACION' => [
+                "ACOMPAÑAMIENTO_TECNICO_INTEGRAL_COMUNITARIO_UATIC" => [
+                    "NO APLICA"
+                ]
+            ]
+        ];
+
+        foreach ($procesosPorItem as $area => $items){
+            $areas_id = \App\Models\Area::where('nombre', $area)->first()->id;
+            if ($areas_id){
+                foreach ($items as $item => $procesos){
+                    $items_id = \App\Models\AreaItem::where('nombre', $item)->where('areas_id', $areas_id)->first()->id;
+                    if ($items_id){
+                        foreach ($procesos as $proceso){
+                            \App\Models\AreaProceso::create([
+                                'nombre' => $proceso,
+                                'items_id' => $items_id
+                            ]);
+                        }
+                    }
+                }
+            }
+        }
+
+        \App\Models\Parametro::create([
+            'nombre' => 'uatic_2026',
+            'valor_id' => 1,
+            'valor_texto' => 'Actualización Regional para UATIC',
+        ]);
+
+    }
+
 }

@@ -20,13 +20,13 @@ class ManageParametros extends ManageRecords
     {
         return [
             Action::make('actualizaciones')
-                ->label('Actualización Junio 2026')
+                ->label('Actualización UATIC 2026')
                 ->color('success')
                 ->requiresConfirmation()
                 ->action(function (){
-                    Actualizaciones::junio2026();
+                    Actualizaciones::uatic();
                 })
-                ->hidden(fn():bool => Parametro::where('nombre', 'junio_2026')->exists()),
+                ->hidden(fn():bool => Parametro::where('nombre', 'uatic_2026')->exists()),
             CreateAction::make()
                 ->createAnother(false)
         ];
