@@ -21,6 +21,7 @@ use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
+use Filament\Support\Enums\IconPosition;
 use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
@@ -55,9 +56,10 @@ class ParticipacionsTable
                 TextColumn::make('fecha_movil')
                     ->label('Fecha')
                     ->default(fn(Participacion $record) => $record->fecha)
-                    ->description(fn(Participacion $record) => isAdmin() || auth()->user()->hasPermissionTo('jefe_area') ?
-                        Str::upper($record->nombre_obpp . ' (' . strtok($record->promotor->nombre, " ") . " " . strtok($record->promotor->apellido, " ") . ')') :
-                        Str::upper($record->nombre_obpp))
+                    ->description(fn(Participacion $record) => self::getParticipacionDescription($record))
+                    ->icon(fn(Participacion $record) => $record->proceso?->nombre === 'RENOVACION DE VOCERIAS. (ELECCION)' ? Heroicon::HandRaised : null)
+                    ->iconColor('primary')
+                    ->iconPosition(IconPosition::After)
                     ->date()
                     ->wrap()
                     ->hiddenFrom('md'),
@@ -84,6 +86,9 @@ class ParticipacionsTable
                         $record->proceso->nombre == "NO APLICA" ? Str::replace('_', ' ', $record->area->nombre) :
                         $record->proceso->nombre
                     )
+                    ->icon(fn(Participacion $record) => $record->proceso?->nombre === 'RENOVACION DE VOCERIAS. (ELECCION)' ? Heroicon::HandRaised : null)
+                    ->iconColor('primary')
+                    ->iconPosition(IconPosition::After)
                     ->searchable()
                     ->wrap()
                     ->visibleFrom('md'),
@@ -305,5 +310,24 @@ class ParticipacionsTable
                     ->iconButton(),
             ])
             ->recordUrl(null);
+    }
+
+    protected static function getParticipacionDescription(Participacion $record): string
+    {
+        $esAdminOJefe = isAdmin() || auth()->user()->hasPermissionTo('jefe_area');
+
+        // Añadimos ?-> por seguridad si algún registro no tiene proceso asociado
+        $eleccion = $record->proceso?->nombre === 'RENOVACION DE VOCERIAS. (ELECCION)' ? ' (ELECCION)' : '';
+
+        if ($esAdminOJefe) {
+            $primerNombre = strtok($record->promotor?->nombre ?? '', ' ');
+            $primerApellido = strtok($record->promotor?->apellido ?? '', ' ');
+            $nombrePromotor = trim("{$primerNombre} {$primerApellido}");
+
+            return Str::upper("{$record->nombre_obpp}{$eleccion} ({$nombrePromotor})");
+        }
+
+        // Si también deseas que los usuarios normales vean la etiqueta de elección:
+        return Str::upper("{$record->nombre_obpp}{$eleccion}");
     }
 }
