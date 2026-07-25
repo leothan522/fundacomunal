@@ -175,22 +175,7 @@ class ParticipacionsTable
                         ->icon(Heroicon::OutlinedCheckCircle)
                         ->color('success')
                         ->authorize('update')
-                        ->schema([
-                            TextInput::make('cantidad_familias')
-                                ->label('Cantidad de familias beneficiadas')
-                                ->numeric()
-                                ->minValue(1)
-                                ->required(),
-                            TextInput::make('cantidad_asistentes')
-                                ->label('Cantidad de personas asistentes ')
-                                ->numeric()
-                                ->minValue(1)
-                                ->required(),
-                            Select::make('medios_verificacion_id')
-                                ->label('Medio de Verificación')
-                                ->options(MedioVerificacion::pluck('nombre', 'id'))
-                                ->required()
-                        ])
+                        ->schema(fn(?Participacion $record) => self::formReportar($record))
                         ->action(function (array $data, ?Participacion $record): void {
                             if (!$record) {
                                 noDisponibleNotification();
@@ -198,6 +183,10 @@ class ParticipacionsTable
                                 $record->cantidad_familias = $data['cantidad_familias'];
                                 $record->cantidad_asistentes = $data['cantidad_asistentes'];
                                 $record->medios_verificacion_id = $data['medios_verificacion_id'];
+                                // Asignamos la población electoral si viene en el arreglo de datos
+                                if (isset($data['poblacion_electoral'])) {
+                                    $record->poblacion_electoral = $data['poblacion_electoral'];
+                                }
                                 $record->estatus = 1;
                                 $record->save();
                             }
@@ -293,6 +282,7 @@ class ParticipacionsTable
                         Column::make('area.nombre')->heading('ACOMPAÑAMIENTO')->formatStateUsing(fn($state) => Str::upper($state)),
                         Column::make('proceso.nombre')->heading('PROCESO')->formatStateUsing(fn($state) => Str::upper($state)),
                         Column::make('cantidad_familias')->heading('CANTIDAD DE FAMILIAS BENEFICIADAS '),
+                        Column::make('poblacion_electoral')->heading('POBLACIÓN ELECTORAL '),
                         Column::make('cantidad_asistentes')->heading('CANTIDAD DE PERSONAS ASISTENTES A LA ACTIVIDAD'),
                         Column::make('vocero_nombre')->heading('NOMBRE Y APELLIDO')->formatStateUsing(fn($state) => Str::upper($state)),
                         Column::make('vocero_telefono')->heading('TELÉFONO'),
@@ -329,5 +319,44 @@ class ParticipacionsTable
 
         // Si también deseas que los usuarios normales vean la etiqueta de elección:
         return Str::upper("{$record->nombre_obpp}{$eleccion}");
+    }
+
+    protected static function formReportar(?Participacion $record): array
+    {
+        $esEleccion = $record && $record->proceso?->nombre === 'RENOVACION DE VOCERIAS. (ELECCION)';
+
+        return [
+            TextInput::make('cantidad_familias')
+                ->label('Cantidad de familias beneficiadas')
+                ->numeric()
+                ->integer()
+                ->minValue(1)
+                ->required(),
+
+            // Campo condicional: Población Electoral
+            TextInput::make('poblacion_electoral')
+                ->label('Población Electoral')
+                ->numeric()
+                ->integer()
+                ->minValue(1)
+                ->placeholder('Ej: 350')
+                ->helperText('Cantidad total de electores registrados en la comunidad.')
+                ->visible($esEleccion)
+                ->required($esEleccion),
+
+            // Label dinámico para asistentes según el proceso
+            TextInput::make('cantidad_asistentes')
+                ->label($esEleccion ? 'Cantidad de votos emitidos' : 'Cantidad de personas asistentes')
+                ->helperText($esEleccion ? 'Ingrese únicamente el número de participantes que votaron.' : null)
+                ->numeric()
+                ->integer()
+                ->minValue(1)
+                ->required(),
+
+            Select::make('medios_verificacion_id')
+                ->label('Medio de Verificación')
+                ->options(MedioVerificacion::pluck('nombre', 'id'))
+                ->required()
+        ];
     }
 }

@@ -35,6 +35,7 @@ class Participacion extends Model
         'consejos_comunales_id',
         'users_id',
         'estatus',
+        'poblacion_electoral',
     ];
 
     public function redi(): BelongsTo
@@ -116,8 +117,10 @@ class Participacion extends Model
         $ico_obpp      = "🏢";
         $ico_vocero    = "📱";
         $ico_obs       = "📝";
+        $ico_electoral = "🗳️";
 
         $shortName = $this->promotor?->shortName ?? 'No asignado';
+        $esEleccion = $this->proceso?->nombre === 'RENOVACION DE VOCERIAS. (ELECCION)';
 
         $texto = "{$ico_reporte} *REPORTE DE ACTIVIDAD - PARTICIPACIÓN FUNDACOMUNAL*\n\n";
         $texto .= "{$ico_fecha} *Fecha:* {$fechaFormateada}\n";
@@ -137,8 +140,14 @@ class Participacion extends Model
         if (!empty($this->cantidad_familias) && $this->cantidad_familias > 0) {
             $texto .= "{$ico_familias} *Familias Atendidas:* {$this->cantidad_familias}\n";
         }
+        // Muestra la Población Electoral si es una elección y existe el dato
+        if ($esEleccion && !empty($this->poblacion_electoral) && $this->poblacion_electoral > 0) {
+            $texto .= "{$ico_electoral} *Población Electoral:* {$this->poblacion_electoral}\n";
+        }
+        // Adapta el texto entre 'Votos Emitidos' y 'Asistentes' segun el tipo de proceso
         if (!empty($this->cantidad_asistentes) && $this->cantidad_asistentes > 0) {
-            $texto .= "{$ico_consejo} *Asistentes:* {$this->cantidad_asistentes}\n";
+            $etiquetaAsistentes = $esEleccion ? "Votos Emitidos" : "Asistentes";
+            $texto .= "{$ico_consejo} *{$etiquetaAsistentes}:* {$this->cantidad_asistentes}\n";
         }
 
         // Mostramos la OBPP con su tipo y su código SITUR (usando situr_obpp)

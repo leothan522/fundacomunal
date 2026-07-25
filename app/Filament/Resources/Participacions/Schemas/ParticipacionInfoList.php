@@ -142,8 +142,23 @@ class ParticipacionInfoList
                             ->color('primary')
                             ->copyable()
                             ->hidden(fn($state) => empty($state)),
+                        // Población Electoral (Visible solo si es Elección y tiene valor)
+                        TextEntry::make('poblacion_electoral')
+                            ->label('Población Electoral')
+                            ->numeric()
+                            ->size(TextSize::Medium)
+                            ->weight(FontWeight::Bold)
+                            ->color('primary')
+                            ->copyable()
+                            ->visible(fn(Participacion $record): bool =>
+                                $record->proceso?->nombre === 'RENOVACION DE VOCERIAS. (ELECCION)' && !empty($record->poblacion_electoral)
+                            ),
                         TextEntry::make('cantidad_asistentes')
-                            ->label('Personas Asistentes')
+                            ->label(fn(Participacion $record): string =>
+                            $record->proceso?->nombre === 'RENOVACION DE VOCERIAS. (ELECCION)'
+                                ? 'Votos Emitidos'
+                                : 'Personas Asistentes'
+                            )
                             ->numeric()
                             ->size(TextSize::Medium)
                             ->weight(FontWeight::Bold)
