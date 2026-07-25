@@ -80,6 +80,10 @@ class ParticipacionsTable
                 TextColumn::make('nombre_obpp')
                     ->label('Nombre de la OBPP')
                     ->formatStateUsing(fn($state) => Str::upper($state))
+                    ->description(fn(Participacion $record): string =>
+                        $record->proceso->nombre == "NO APLICA" ? Str::replace('_', ' ', $record->area->nombre) :
+                        $record->proceso->nombre
+                    )
                     ->searchable()
                     ->wrap()
                     ->visibleFrom('md'),
@@ -127,7 +131,21 @@ class ParticipacionsTable
                         'nombre',
                         fn(Builder $query) => $query->whereRelation('area', 'nombre', 'PARTICIPACION')->whereNull('deleted_at') // Excluye los elementos con borrado lógico
                     )
-                    ->getOptionLabelFromRecordUsing(fn(AreaItem $record) => Str::replace('_', ' ', $record->nombre)),
+                    ->getOptionLabelFromRecordUsing(fn(AreaItem $record) => Str::replace('_', ' ', $record->nombre))
+                    ->indicateUsing(function (array $state): ?string {
+                        if (blank($state['value'] ?? null)) {
+                            return null;
+                        }
+
+                        $record = AreaItem::find($state['value']);
+
+                        if (! $record) {
+                            return null;
+                        }
+
+                        // Formateamos la etiqueta del indicador activo
+                        return 'Acompañamiento: ' . Str::replace('_', ' ', $record->nombre);
+                    }),
                 TrashedFilter::make(),
             ])
             ->recordActions([

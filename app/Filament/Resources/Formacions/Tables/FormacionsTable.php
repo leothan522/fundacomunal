@@ -117,7 +117,21 @@ class FormacionsTable
                         'nombre',
                         fn(Builder $query) => $query->whereRelation('area', 'nombre', 'FORMACION')->whereNull('deleted_at') // Excluye los elementos con borrado lógico
                     )
-                    ->getOptionLabelFromRecordUsing(fn(AreaItem $record) => Str::replace('_', ' ', $record->nombre)),
+                    ->getOptionLabelFromRecordUsing(fn(AreaItem $record) => Str::replace('_', ' ', $record->nombre))
+                    ->indicateUsing(function (array $state): ?string {
+                        if (blank($state['value'] ?? null)) {
+                            return null;
+                        }
+
+                        $record = AreaItem::find($state['value']);
+
+                        if (! $record) {
+                            return null;
+                        }
+
+                        // Formateamos la etiqueta del indicador activo
+                        return 'Tipo de Proceso: ' . Str::replace('_', ' ', $record->nombre);
+                    }),
                 SelectFilter::make('estrategia')
                     ->label('Estrategia')
                     ->relationship('estrategia', 'nombre'),
