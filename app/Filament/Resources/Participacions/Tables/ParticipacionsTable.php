@@ -125,7 +125,7 @@ class ParticipacionsTable
                     ->relationship(
                         'area',
                         'nombre',
-                        fn(Builder $query) => $query->whereRelation('area', 'nombre', 'PARTICIPACION')
+                        fn(Builder $query) => $query->whereRelation('area', 'nombre', 'PARTICIPACION')->whereNull('deleted_at') // Excluye los elementos con borrado lógico
                     )
                     ->getOptionLabelFromRecordUsing(fn(AreaItem $record) => Str::replace('_', ' ', $record->nombre)),
                 TrashedFilter::make(),

@@ -115,7 +115,7 @@ class FormacionsTable
                     ->relationship(
                         'area',
                         'nombre',
-                        fn(Builder $query) => $query->whereRelation('area', 'nombre', 'FORMACION')
+                        fn(Builder $query) => $query->whereRelation('area', 'nombre', 'FORMACION')->whereNull('deleted_at') // Excluye los elementos con borrado lógico
                     )
                     ->getOptionLabelFromRecordUsing(fn(AreaItem $record) => Str::replace('_', ' ', $record->nombre)),
                 SelectFilter::make('estrategia')
