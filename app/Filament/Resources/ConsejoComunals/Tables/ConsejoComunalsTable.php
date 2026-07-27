@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\ConsejoComunals\Tables;
 
 use App\Models\ConsejoComunal;
+use Carbon\Carbon;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
@@ -12,6 +13,11 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -60,18 +66,17 @@ class ConsejoComunalsTable
                 TextColumn::make('status')
                     ->label('ESTATUS')
                     ->badge()
-                    ->state(fn (ConsejoComunal $record): string =>
-                    match (true) {
+                    ->state(fn (ConsejoComunal $record): string => match (true) {
+                        (bool) $record->is_eleccion => 'RENOVADO',
                         empty($record->fecha_vencimiento) => 'SIN REGISTRO',
                         \Carbon\Carbon::parse($record->fecha_vencimiento)->isPast() => 'VENCIDO',
                         default => 'VIGENTE',
-                    }
-                    )
+                    })
                     ->color(fn (string $state): string => match ($state) {
+                        'RENOVADO' => 'warning',     // Amarillo
                         'VIGENTE' => 'success',      // Verde
                         'VENCIDO' => 'danger',       // Rojo
-                        'SIN REGISTRO' => 'gray',    // Gris neutro
-                        default => 'gray',
+                        default => 'gray',           // Gris neutro
                     })
                     ->alignCenter()
                     ->grow(false),
@@ -100,6 +105,42 @@ class ConsejoComunalsTable
                     ->extraModalFooterActions(fn(Action $action): array => [
                         EditAction::make(),
                     ]),
+                    Action::make('registrarEleccion')
+                        ->label('Elección')
+                        ->icon(Heroicon::HandRaised)
+                        ->color('primary')
+                        ->modalHeading('Estatus Elección')
+                        ->modalSubmitActionLabel('Guardar')
+                        ->modalWidth(Width::Small)
+                        ->fillForm(fn (ConsejoComunal $record): array => [
+                            'is_eleccion' => $record->is_eleccion ?? false,
+                            'fecha_eleccion' => $record->fecha_eleccion ? Carbon::parse($record->fecha_eleccion)->format('Y-m-d') : null,
+                        ])
+                        ->schema([
+                            Toggle::make('is_eleccion')
+                                ->label('¿Realizada?')
+                                ->live()
+                                ->afterStateUpdated(function (Set $set, $state) {
+                                    if (! $state) {
+                                        $set('fecha_eleccion', null);
+                                    }
+                                }),
+
+                            DatePicker::make('fecha_eleccion')
+                                ->label('Fecha de la elección')
+                                ->visible(fn (Get $get): bool => (bool) $get('is_eleccion'))
+                                ->required(fn (Get $get): bool => (bool) $get('is_eleccion')),
+                        ])
+                        ->action(function (ConsejoComunal $record, array $data): void {
+                            // Si no se marcó como elección, nos aseguramos de resetear la fecha a null
+                            $isEleccion = (bool) ($data['is_eleccion'] ?? false);
+
+                            $record->update([
+                                'is_eleccion' => $isEleccion,
+                                'fecha_eleccion' => $isEleccion ? $data['fecha_eleccion'] : null,
+                            ]);
+                        })
+                        ->visible(fn (ConsejoComunal $record): bool => ! empty($record->fecha_vencimiento) && Carbon::parse($record->fecha_vencimiento)->isPast()),
                     EditAction::make(),
                     DeleteAction::make(),
                 ])
@@ -126,10 +167,14 @@ class ConsejoComunalsTable
                         Column::make('estatus_vencimiento') // Puede llamarse como quieras
                         ->heading('ESTATUS')
                             ->getStateUsing(fn($record) => match (true) {
+                                (bool) $record->is_eleccion => 'RENOVADO',
                                 empty($record->fecha_vencimiento) => 'SIN REGISTRO',
                                 \Carbon\Carbon::parse($record->fecha_vencimiento)->isPast() => 'VENCIDO',
                                 default => 'VIGENTE',
                             }),
+                        Column::make('fecha_eleccion')
+                            ->heading('FECHA DE ELECCIÓN')
+                            ->getStateUsing(fn($record) => $record->is_eleccion && $record->fecha_eleccion ? getFecha($record->fecha_eleccion) : null),
                     ])
                         ->withFilename('Consejos_Comunales_'.date('d-m-Y'))
                 ]),

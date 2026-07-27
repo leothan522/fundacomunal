@@ -13,6 +13,7 @@
         <th style="background-color: #C00000; color: #ffffff; border: 1px solid #404040; font-weight: bold; text-align: center">FECHA DE ASAMBLEA</th>
         <th style="background-color: #C00000; color: #ffffff; border: 1px solid #404040; font-weight: bold; text-align: center">FECHA DE VENCIMIENTO</th>
         <th style="background-color: #C00000; color: #ffffff; border: 1px solid #404040; font-weight: bold; text-align: center">ESTATUS</th>
+        <th style="background-color: #C00000; color: #ffffff; border: 1px solid #404040; font-weight: bold; text-align: center">FECHA DE ELECCIÓN</th>
     </tr>
     </thead>
     <tbody>
@@ -31,13 +32,18 @@
             <td style="border: 1px solid #404040; text-align: center">{{ $data->fecha_asamblea ? \PhpOffice\PhpSpreadsheet\Shared\Date::dateTimeToExcel(\Carbon\Carbon::parse($data->fecha_asamblea)) : null }}</td>
             <td style="border: 1px solid #404040; text-align: center">{{ $data->fecha_vencimiento ? \PhpOffice\PhpSpreadsheet\Shared\Date::dateTimeToExcel(\Carbon\Carbon::parse($data->fecha_vencimiento)) : null }}</td>
             <td style="border: 1px solid #404040; text-align: center">
-                @if(empty($data->fecha_vencimiento))
+                @if($data->is_eleccion)
+                    RENOVADO
+                @elseif(empty($data->fecha_vencimiento))
                     SIN REGISTRO
                 @elseif(\Carbon\Carbon::parse($data->fecha_vencimiento)->isPast())
                     VENCIDO
                 @else
                     VIGENTE
                 @endif
+            </td>
+            <td style="border: 1px solid #404040; text-align: center">
+                {{ $data->is_eleccion && $data->fecha_eleccion ? \PhpOffice\PhpSpreadsheet\Shared\Date::dateTimeToExcel(\Carbon\Carbon::parse($data->fecha_eleccion)) : null }}
             </td>
         </tr>
     @endforeach

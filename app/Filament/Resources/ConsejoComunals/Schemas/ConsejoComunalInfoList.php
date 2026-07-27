@@ -4,6 +4,7 @@ namespace App\Filament\Resources\ConsejoComunals\Schemas;
 
 use App\Filament\Schemas\UbicacionGeograficaInfoList;
 use App\Models\ConsejoComunal;
+use Carbon\Carbon;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Schema;
@@ -72,20 +73,28 @@ class ConsejoComunalInfoList
                             ->label('Estatus')
                             ->inlineLabel()
                             ->badge()
-                            ->state(fn ($record): string =>
-                            match (true) {
+                            ->state(fn ($record): string => match (true) {
+                                (bool) $record->is_eleccion => 'RENOVADO',
                                 empty($record->fecha_vencimiento) => 'SIN REGISTRO',
-                                \Carbon\Carbon::parse($record->fecha_vencimiento)->isPast() => 'VENCIDO',
+                                Carbon::parse($record->fecha_vencimiento)->isPast() => 'VENCIDO',
                                 default => 'VIGENTE',
-                            }
-                            )
+                            })
                             ->color(fn (string $state): string => match ($state) {
+                                'RENOVADO' => 'warning',
                                 'VIGENTE' => 'success',
                                 'VENCIDO' => 'danger',
-                                'SIN REGISTRO' => 'gray',
                                 default => 'gray',
                             })
                             ->size(TextSize::Medium),
+                        TextEntry::make('fecha_eleccion')
+                            ->label('Fecha de Elección')
+                            ->date()
+                            ->inlineLabel()
+                            ->size(TextSize::Medium)
+                            ->weight(FontWeight::Bold)
+                            ->color('primary')
+                            ->copyable()
+                            ->visible(fn ($record): bool => (bool) $record->is_eleccion),
                         TextEntry::make('comuna.nombre')
                             ->label('Circuito o Comuna')
                             ->formatStateUsing(fn(string $state): string => Str::upper($state))

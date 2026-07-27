@@ -29,6 +29,7 @@ class ConsejosComunalesExport implements FromView, WithTitle, ShouldAutoSize, Wi
         return [
             'J' => NumberFormat::FORMAT_DATE_DDMMYYYY,
             'K' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+            'M' => NumberFormat::FORMAT_DATE_DDMMYYYY,
         ];
     }
 }
