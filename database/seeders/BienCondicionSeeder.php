@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\BienCondicion;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 
 class BienCondicionSeeder extends Seeder
 {
@@ -18,5 +19,6 @@ class BienCondicionSeeder extends Seeder
         foreach ($condiciones as $condicion) {
             BienCondicion::firstOrCreate(['nombre' => $condicion]);
         }
+        Role::create(['name' => 'BIENES']);
     }
 }
