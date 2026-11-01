@@ -41,6 +41,7 @@ class DatabaseSeeder extends Seeder
             GestionHumanaSeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
+            BienCondicionSeeder::class,
         ]);
 
     }
