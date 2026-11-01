@@ -96,7 +96,12 @@ class ComunasTable
                                     $nombre = Str::upper(Str::slug($record->nombre));
                                     $path = storage_path("app/public/export-images/$nombre.png");
                                     $browsershot = Browsershot::html($html)
-                                        ->windowSize(430, 932);
+                                        ->windowSize(430, 932)
+                                        ->addChromiumArguments([
+                                            'no-sandbox',
+                                            'disable-setuid-sandbox',
+                                            'disable-dev-shm-usage',
+                                        ]);
 
                                     // ✅ Condiciona la variable de entorno
                                     if (config('app.chrome_path')) {
