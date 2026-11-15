@@ -118,10 +118,12 @@ class VacacionesResource extends Resource
                         'Finalizadas' => 'gray',
                     })
                     ->searchable()
+                    ->wrap()
                     ->hiddenFrom('md'),
                 TextColumn::make('trabajador.apellido')
                     ->formatStateUsing(fn(Vacaciones $record): string => Str::upper($record->trabajador->full_name))
                     ->searchable()
+                    ->wrap()
                     ->visibleFrom('md'),
                 TextColumn::make('fecha_inicio')
                     ->label('Inicio')

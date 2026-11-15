@@ -65,6 +65,22 @@ class DatosTrabajadorInfoList
                         ->color('primary')
                         ->copyable()
                         ->hidden(fn(GestionHumana $record): bool => empty($record->fecha_nacimiento)),
+                    TextEntry::make('profesion')
+                        ->label('Profesión')
+                        ->formatStateUsing(fn(?string $state): string => Str::upper($state))
+                        ->placeholder('POR CARGAR')
+                        ->size(TextSize::Medium)
+                        ->weight(FontWeight::Bold)
+                        ->color('primary')
+                        ->copyable(fn($state): bool => filled($state)),
+                    TextEntry::make('postgrado')
+                        ->label('Postgrado')
+                        ->formatStateUsing(fn(?string $state): string => $state ? Str::upper($state) : '-')
+                        ->size(TextSize::Medium)
+                        ->weight(FontWeight::Bold)
+                        ->color('primary')
+                        ->copyable()
+                        ->hidden(fn(GestionHumana $record): bool => empty($record->postgrado)),
                 ])
                 ->columns(3)
                 ->columnSpanFull(),

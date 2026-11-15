@@ -45,6 +45,14 @@ class GestionHumanaForm
                             ->email()
                             ->unique(),
                         DatePicker::make('fecha_nacimiento'),
+                        TextInput::make('profesion')
+                            ->label('Profesión')
+                            ->placeholder('Profesional o técnica')
+                            ->maxLength(255),
+                        TextInput::make('postgrado')
+                            ->label('Estudios de Postgrado')
+                            ->placeholder('Ej. Especialización, Maestría (opcional)')
+                            ->maxLength(255),
                     ])
                     ->compact()
                     ->collapsible()

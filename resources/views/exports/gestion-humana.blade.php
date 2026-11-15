@@ -25,6 +25,8 @@
         <th style="background-color: #757171; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">OBSERVACIÓN</th>
         <th style="background-color: #C00000; color: #ffffff; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">FECHA DE NACIMIENTO</th>
         <th style="background-color: #C00000; color: #ffffff; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">FECHA DE INGRESO</th>
+        <th style="background-color: #757171; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">PROFESIÓN</th>
+        <th style="background-color: #757171; color: #000000; border: 1px solid #000000; font-weight: bold; text-align: center; font-size: 12pt">POSTGRADO</th>
     </tr>
     </thead>
     <tbody>
@@ -59,6 +61,12 @@
             </td>
             <td style="border: 1px solid #404040; text-align: center">
                 {{ $data->fecha_ingreso ? \PhpOffice\PhpSpreadsheet\Shared\Date::dateTimeToExcel(\Carbon\Carbon::parse($data->fecha_ingreso)) : null }}
+            </td>
+            <td style="border: 1px solid #404040; text-align: center">
+                {{ $data->profesion ? \Illuminate\Support\Str::upper($data->profesion) : '' }}
+            </td>
+            <td style="border: 1px solid #404040; text-align: center">
+                {{ $data->postgrado ? \Illuminate\Support\Str::upper($data->postgrado) : '' }}
             </td>
         </tr>
     @endforeach
