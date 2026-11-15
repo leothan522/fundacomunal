@@ -275,6 +275,17 @@ class FortalecimientosTable
                         Column::make('promotor.email')->heading('CORREO')->formatStateUsing(fn($state) => Str::lower($state)),
                         Column::make('promotor.ente')->heading('ÓRGANO O ENTE ADSCRITO')->formatStateUsing(fn($state) => Str::upper($state)),
                         Column::make('observacion')->heading('OBSERVACIÓN')->formatStateUsing(fn($state) => Str::upper($state)),
+                        Column::make('estatus')
+                            ->heading('ESTATUS')
+                            ->getStateUsing(function ($record) {
+                                $valor = $record->estatus;
+
+                                return match (true) {
+                                    $valor === 0 || $valor === '0' || $valor === false => 'SUSPENDIDA',
+                                    $valor === 1 || $valor === '1' || $valor === true => 'REALIZADA',
+                                    default => 'SIN REPORTE',
+                                };
+                            }),
                     ])
                 ]),
                 Action::make('actualizar')
