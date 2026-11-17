@@ -415,6 +415,8 @@ class GestionHumanasTable
                 Column::make('observacion')->heading('OBSERVACIÓN')->formatStateUsing(fn($state) => Str::upper($state)),
                 Column::make('fecha_nacimiento')->heading('FECHA NACIMIENTO')->formatStateUsing(fn($state) => Carbon::parse($state)->format('d/m/Y')),
                 Column::make('fecha_ingreso')->heading('FECHA INGRESO')->formatStateUsing(fn($state) => Carbon::parse($state)->format('d/m/Y')),
+                Column::make('sexo')->heading('SEXO')->formatStateUsing(fn($state) => Str::upper($state)),
+                Column::make('cargo.cargo')->heading('CARGO')->formatStateUsing(fn($state) => Str::upper($state)),
                 Column::make('profesion')->heading('PROFESIÓN')->formatStateUsing(fn($state) => filled($state) ? Str::upper($state) : ''),
                 Column::make('postgrado')->heading('POSTGRADO')->formatStateUsing(fn($state) => filled($state) ? Str::upper($state) : ''),
             ])

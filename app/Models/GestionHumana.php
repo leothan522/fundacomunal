@@ -28,8 +28,10 @@ class GestionHumana extends Model
         'observacion',
         'fecha_nacimiento',
         'fecha_ingreso',
+        'cargos_id',
         'profesion',
         'postgrado',
+        'sexo',
         'image_path',
         'image_fecha',
         'users_id',
@@ -93,6 +95,11 @@ class GestionHumana extends Model
     public function vacaciones(): HasMany
     {
         return $this->hasMany(Vacaciones::class, 'gestion_humana_id', 'id');
+    }
+
+    public function cargo(): BelongsTo
+    {
+        return $this->belongsTo(Cargo::class, 'cargos_id', 'id');
     }
 
 }

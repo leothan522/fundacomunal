@@ -65,6 +65,14 @@ class DatosTrabajadorInfoList
                         ->color('primary')
                         ->copyable()
                         ->hidden(fn(GestionHumana $record): bool => empty($record->fecha_nacimiento)),
+                    TextEntry::make('sexo')
+                        ->label('Sexo')
+                        ->formatStateUsing(fn(?string $state): string => $state ? Str::upper($state) : '-')
+                        ->size(TextSize::Medium)
+                        ->weight(FontWeight::Bold)
+                        ->color('primary')
+                        ->copyable()
+                        ->hidden(fn(GestionHumana $record): bool => empty($record->sexo)),
                     TextEntry::make('profesion')
                         ->label('Profesión')
                         ->formatStateUsing(fn(?string $state): string => Str::upper($state))
@@ -117,6 +125,15 @@ class DatosTrabajadorInfoList
                         ->weight(FontWeight::Bold)
                         ->color('primary')
                         ->copyable(),
+                    TextEntry::make('cargo.cargo')
+                        ->formatStateUsing(fn(string $state): string => Str::upper($state))
+                        ->label('Cargo')
+                        ->inlineLabel()
+                        ->size(TextSize::Medium)
+                        ->weight(FontWeight::Bold)
+                        ->color('primary')
+                        ->copyable()
+                        ->hidden(fn(GestionHumana $record): bool => !$record->cargo()->exists()),
                     TextEntry::make('fecha_ingreso')
                         ->date()
                         ->inlineLabel()

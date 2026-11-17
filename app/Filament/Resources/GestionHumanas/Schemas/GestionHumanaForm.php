@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\GestionHumanas\Schemas;
 
 use App\Filament\Schemas\UbicacionGeograficaForm;
+use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -11,6 +12,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\Width;
 use Illuminate\Database\Eloquent\Builder;
 
 class GestionHumanaForm
@@ -45,6 +47,12 @@ class GestionHumanaForm
                             ->email()
                             ->unique(),
                         DatePicker::make('fecha_nacimiento'),
+                        Select::make('sexo')
+                            ->options([
+                                'FEMENINO' => 'FEMENINO',
+                                'MASCULINO' => 'MASCULINO',
+                            ])
+                            ->required(),
                         TextInput::make('profesion')
                             ->label('Profesión')
                             ->placeholder('Profesional o técnica')
@@ -72,6 +80,18 @@ class GestionHumanaForm
                             ->label('Órgano o Ente Adscrito')
                             ->default('FUNDACOMUNAL')
                             ->required(),
+                        Select::make('cargos_id')
+                            ->label('Cargo')
+                            ->relationship('cargo', 'cargo')
+                            ->createOptionForm([
+                                TextInput::make('cargo')
+                                    ->label('Cargo')
+                                    ->unique()
+                                    ->required(),
+                            ])
+                            ->createOptionAction(fn(Action $action) => $action->modalWidth(Width::ExtraSmall))
+                            ->searchable()
+                            ->preload(),
                         DatePicker::make('fecha_ingreso'),
                         Textarea::make('observacion')
                             ->label('Observación')
